@@ -1,0 +1,16 @@
+@startmindmap
+'https://plantuml.com/mindmap-diagram
+
+Title Class Mind map
+* Core
+** commands
+** Setup
+** Character Creation
+** player
+*** Allies/Pets
+*** inventory
+** combat
+** place
+** shop?
+
+@endmindmap
