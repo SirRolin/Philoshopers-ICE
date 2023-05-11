@@ -59,10 +59,15 @@ Item <|-- Currency
 Interface Enemies{
 
 }
+Enemies <-- Item
 Place <-- Enemies
 class Combat {
 
 }
+class FileIO{
+
+}
+Main <- FileIO
 Combat --> Main
 Combat <-- Place
 Combat <-- Player
