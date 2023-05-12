@@ -1,8 +1,7 @@
 import ICE.util.ErrorHandler;
+import ICE.util.FileIO;
 
-import java.io.Serializable;
-
-public class Philosophers_ICE {
+public class Launcher {
     public static void main(String[] args){
         for(String s: args){
             String[] split = s.split("=");
@@ -12,7 +11,11 @@ public class Philosophers_ICE {
                 }
             }
         }
+        GameState newGS = new GameState();
+        newGS.p1 = new Player("test");
+        FileIO.writeSerialised(newGS, "Data/Test.sav");
 
+        GameState loadedGS = FileIO.readSerialised("Data/Test.sav");
+        System.out.println(loadedGS.p1.name);
     }
-
 }

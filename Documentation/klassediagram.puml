@@ -47,7 +47,7 @@ class Commands {
     + Void Action()
     + void Search(String text)
 }
-class Player {
+class Player extends External.Serializable {
     + Player(int Str, int Agi, int Con, int Wits, int IQ, int Magi)
     + Player(Object obj)
     + String name
@@ -81,7 +81,7 @@ class Allies {
     + ArrayList<Effect> buffs
     + String name
 }
-class Inventory {
+class Inventory extends External.Serializable {
     - ArrayList<Item> items
     - Item equippedWeaponMainHand
     - Item equippedWeaponOffHand
@@ -99,7 +99,7 @@ class MapTile extends External.Serializable {
     + ArrayList<Enemy> enemy
     + ArrayList<Boon> boons
 }
-abstract class Item{
+abstract class Item extends External.Serializable{
     + ArrayList<Effect> buffs
     + String name
     + String description
@@ -131,7 +131,7 @@ class Consumable extends Item{
 }
 class Accessory extends Item{
 }
-class Enchantment{
+class Enchantment extends External.Serializable{
     + ArrayList<Effect> stats
     + String prefix
     + String suffix
@@ -145,7 +145,7 @@ class Currency{
     + getValue()
 
 }
-class Enemy{
+class Enemy extends External.Serializable {
     - String name
     - String description
     + getName()
