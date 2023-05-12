@@ -4,108 +4,186 @@
 class Launcher {
     main()
     GameState game
+    GUI ui
 }
-class GameState {
-    Place[5][5]
+interface GUI {
+    update()
 }
-abstract class God {
+class explorerScene extends GUI {
+
+}
+class CharacterScene extends GUI{
+    + player createPlayer()
+    + Player levelUpMenu(player)
+
+}
+abstract class StateSaver Extends util.FileIO {
     Boolean savePlace(Place)
     Boolean saveGame(GameState)
     GameState loadGame(SaveFolder)
     GameState newGame()
 }
 abstract class util.FileIO {
-    String defaultPath
-    readSerialised(String)
-    readTextFile(String)
-    writeSerialised(Object, String)
+    + String defaultPath
+    + readSerialised(String)
+    + readTextFile(String)
+    + writeSerialised(Object, String)
 }
-abstract class CharacterManager {
-
+class GameState extends External.Serializable{
+    + Name
+    + MapTile[5][5] map
+    + Player p1
+    + ArrayList<Commands> commands
+    + ArrayList<MapTile> mapTilePool
+    + HashMap<GUI> guis
+    + GUI activeGUI
+}
+abstract class JSONInterpreter {
+    + List<Object> Interpret(String[] lines)
+    - List<Object> Interpret(String[] lines, Int start)
+}
+class Commands {
+    - String searchPatterns
+    + Void Action()
+    + void Search(String text)
 }
 class Player {
-
+    + Player(int Str, int Agi, int Con, int Wits, int IQ, int Magi)
+    + Player(Object obj)
+    + String name
+    + int str
+    + int agi
+    + int con
+    + int wits
+    + int willPower
+    + int magi
+    - int hp
+    - int mp
+    + int getMaxHP()
+    + int getMaxMP()
+    + int getSpeed()
+    + ArrayList<Boon> boons
+    + Inventory inventory
+    + int getInitiative()
+    + int getSpellBuffProc()
+    + int increaseHP(int hp)
+    + int increaseMP(int mp)
+    + int getHP()
+    + int getMP()
+    + void recover()
 }
-Interface Allies {
-
+class Effect{
+    + String statName
+    + Int valueBy
+    + Effect(String, Int)
+}
+class Allies {
+    + ArrayList<Effect> buffs
+    + String name
 }
 class Inventory {
-
+    - ArrayList<Item> items
+    - Item equippedWeaponMainHand
+    - Item equippedWeaponOffHand
+    - Item equippedArmour
+    - Accessory equippedAccessory
+    - int maxSize
+    + ArrayList<Item> getItems()
+    + void addToItems(Item)
+    + int getDamage()
+    + int getDefence()
+    + void equipItem(Item)
 }
-Interface Place {
-
+class MapTile extends External.Serializable {
+    + String imagePath
+    + ArrayList<Enemy> enemy
+    + ArrayList<Boon> boons
 }
-Abstract Class Item{
-
+abstract class Item{
+    + ArrayList<Effect> buffs
+    + String name
+    + String description
+    + String
 }
-interface Weapon{
-
+interface Weapon extends Item{
+    +getName()
+    +getDmg()
+    +getType()
+    +getDamageType()
 }
-class Melee{
-
+class Melee extends Weapon{
+    - String name
+    - boolean type
 }
-class Ranged{
-
+class Ranged extends Weapon{
+    - String name
+    - boolean type
 }
-interface Armour{
-
+interface Armour extends Item{
+    + String name
+    + String type
+    + getDef()
 }
-class Consumable{
-
+class Consumable extends Item{
+    - String description
+    + String get description()
+    + String name
 }
-class Accessory{
-
+class Accessory extends Item{
 }
 class Enchantment{
-
+    + ArrayList<Effect> stats
+    + String prefix
+    + String suffix
 }
 interface Currency{
 
 }
-class Food {
-
-}
-interface Enemy{
-
+class Enemy{
+    - String name
+    - String description
+    + getName()
+    + getDescription()
+    + getDefence()
+    + getDamage()
 }
 class Combat {
 
 }
 class Boon {
-
+    + ArrayList<Effect> buffs
+    + String name
+    + String desc
 }
-interface Serializable {
-}
-Launcher --> God
+interface External.Serializable
+Launcher --> StateSaver
 Launcher *-- GameState
-util.FileIO <|-- God
-God -> Place
-God -> GameState
-GameState <-- CharacterManager
+Launcher *- GUI
+GUI -> MapTile
+StateSaver -> MapTile
+StateSaver -> GameState
+GameState --> CharacterScene
+GameState -* explorerScene
+JSONInterpreter --> GameState
+Player <- CharacterScene
 GameState *-- Player
+GameState *- Commands
 Player o-- Allies
 Player *-- Inventory
-GameState "5x5" *-- Place
+GameState "5x5" *-- MapTile
 Inventory "0-?" o-- Item
-Item <|-- Weapon
-Weapon <|-- Melee
-Weapon <|-- Ranged
-Item <|-- Armour
-Item <|-- Consumable
-Item <|-- Accessory
-Food --|> Consumable
 Enchantment -o Item
+Effect --* Enchantment
+Effect --* Allies
+Effect --* Boon
 Inventory *- Currency
 Enemy o-- Currency
 Enemy o- Item
-Place o-- Enemy
-Serializable <|- Place
-GameState -|> Serializable
-'GameState <-- Combat
-Place o-- Combat
-Player -* Combat
-Combat *- Enemy
+MapTile o-- Enemy
+MapTile o-- CombatScene
+Player -* CombatScene
+CombatScene *- Enemy
 Player o-- Boon
-Place o-- Boon
+MapTile o-- Boon
 
 @enduml
