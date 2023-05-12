@@ -1,0 +1,111 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class Launcher {
+    main()
+    GameState game
+}
+class GameState {
+    Place[5][5]
+}
+abstract class God {
+    Boolean savePlace(Place)
+    Boolean saveGame(GameState)
+    GameState loadGame(SaveFolder)
+    GameState newGame()
+}
+abstract class util.FileIO {
+    String defaultPath
+    readSerialised(String)
+    readTextFile(String)
+    writeSerialised(Object, String)
+}
+abstract class CharacterManager {
+
+}
+class Player {
+
+}
+Interface Allies {
+
+}
+class Inventory {
+
+}
+Interface Place {
+
+}
+Abstract Class Item{
+
+}
+interface Weapon{
+
+}
+class Melee{
+
+}
+class Ranged{
+
+}
+interface Armour{
+
+}
+class Consumable{
+
+}
+class Accessory{
+
+}
+class Enchantment{
+
+}
+interface Currency{
+
+}
+class Food {
+
+}
+interface Enemy{
+
+}
+class Combat {
+
+}
+class Boon {
+
+}
+interface Serializable {
+}
+Launcher --> God
+Launcher *-- GameState
+util.FileIO <|-- God
+God -> Place
+God -> GameState
+GameState <-- CharacterManager
+GameState *-- Player
+Player o-- Allies
+Player *-- Inventory
+GameState "5x5" *-- Place
+Inventory "0-?" o-- Item
+Item <|-- Weapon
+Weapon <|-- Melee
+Weapon <|-- Ranged
+Item <|-- Armour
+Item <|-- Consumable
+Item <|-- Accessory
+Food --|> Consumable
+Enchantment -o Item
+Inventory *- Currency
+Enemy o-- Currency
+Enemy o- Item
+Place o-- Enemy
+Serializable <|- Place
+GameState -|> Serializable
+'GameState <-- Combat
+Place o-- Combat
+Player -* Combat
+Combat *- Enemy
+Player o-- Boon
+Place o-- Boon
+
+@enduml

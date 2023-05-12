@@ -1,0 +1,47 @@
+@startuml
+'https://plantuml.com/object-diagram
+
+object Main {
+}
+object Player {
+
+}
+Main <-- Player
+object Allies {
+
+}
+Allies --> Player
+object Inventory {
+
+}
+Player <- Inventory
+object Place {
+
+}
+Main <-- Place
+object Item{
+
+}
+Inventory <-- Item
+object Enchantment{
+
+}
+Enchantment -> Item
+object Enemy{
+
+}
+Enemy <-- Item
+Place <-- Enemy
+object Combat {
+
+}
+Main <-- Combat
+Place -> Combat
+Combat <- Player
+
+object Boons {
+
+}
+Player <-- Boons
+Place <-- Boons
+@enduml
