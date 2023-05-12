@@ -1,8 +1,10 @@
 @startuml
 'https://plantuml.com/class-diagram
 
-class Launcher {
-    main()
+class Launcher extends javafx.Application {
+    + void start(Stage stage) throws Exception
+    - Parent createContent()
+    void main(String[] args)
     GameState game
     GUI ui
 }
@@ -136,7 +138,13 @@ class Enchantment{
     + String prefix
     + String suffix
 }
-interface Currency{
+class Currency{
+    + int value
+    + String description
+    + getDescription()
+    + String currencyType
+    + getCurrencyType()
+    + getValue()
 
 }
 class Enemy{
@@ -147,7 +155,13 @@ class Enemy{
     + getDefence()
     + getDamage()
 }
-class Combat {
+class CombatScene extends GUI {
+    - ArrayList<Enemy> enemies
+    - currentPlayer p
+    - int maxInitiative
+    + void startCombat(player)
+    + void endCombat()
+
 
 }
 class Boon {
