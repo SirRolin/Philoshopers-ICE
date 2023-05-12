@@ -13,9 +13,9 @@ public class Launcher {
         }
         GameState newGS = new GameState();
         newGS.p1 = new Player("test");
-        FileIO.writeSerialised(newGS, "Data/Test.sav");
+        FileIO.writeSerialised(newGS, "Save/Test.sav");
 
-        GameState loadedGS = FileIO.readSerialised("Data/Test.sav");
+        GameState loadedGS = FileIO.readSerialised("Save/Test.sav");
         System.out.println(loadedGS.p1.name);
     }
 }

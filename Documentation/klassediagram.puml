@@ -105,31 +105,31 @@ abstract class Item extends External.Serializable{
     + String description
     + String
 }
-interface Weapon extends Item{
+interface Weapon extends Item, External.Serializable {
     +getName()
     +getDmg()
     +getType()
     +getDamageType()
 }
-class Melee extends Weapon{
+class Melee extends Weapon, External.Serializable {
     - String name
     - boolean type
 }
-class Ranged extends Weapon{
+class Ranged extends Weapon, External.Serializable {
     - String name
     - boolean type
 }
-interface Armour extends Item{
+interface Armour extends Item, External.Serializable {
     + String name
     + String type
     + getDef()
 }
-class Consumable extends Item{
+class Consumable extends Item, External.Serializable {
     - String description
     + String get description()
     + String name
 }
-class Accessory extends Item{
+class Accessory extends Item, External.Serializable {
 }
 class Enchantment extends External.Serializable{
     + ArrayList<Effect> stats
