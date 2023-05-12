@@ -4,20 +4,19 @@
 class Launcher extends javafx.Application {
     + void start(Stage stage) throws Exception
     - Parent createContent()
-    void main(String[] args)
-    GameState game
-    GUI ui
+    + void main(String[] args)
+    + GameState game
+    + MainMenuGUI ui
 }
-interface GUI {
-    update()
+abstract class GUI {
+    + update(GameState gs)
+    + ArrayList<Commands> commands
 }
 class explorerScene extends GUI {
-
 }
 class CharacterScene extends GUI{
     + player createPlayer()
     + Player levelUpMenu(player)
-
 }
 abstract class StateSaver Extends util.FileIO {
     Boolean savePlace(Place)
@@ -33,9 +32,8 @@ abstract class util.FileIO {
 }
 class GameState extends External.Serializable{
     + Name
-    + MapTile[5][5] map
+    + MapTile[5][5] miniMap
     + Player p1
-    + ArrayList<Commands> commands
     + ArrayList<MapTile> mapTilePool
     + HashMap<GUI> guis
     + GUI activeGUI
@@ -172,7 +170,8 @@ class Boon {
 interface External.Serializable
 Launcher --> StateSaver
 Launcher *-- GameState
-Launcher *- GUI
+Launcher *-- MainMenuGUI
+GameState *-- GUI
 GUI -> MapTile
 StateSaver -> MapTile
 StateSaver -> GameState
@@ -181,7 +180,9 @@ GameState -* explorerScene
 JSONInterpreter --> GameState
 Player <- CharacterScene
 GameState *-- Player
-GameState *- Commands
+Commands --* explorerScene
+Commands --* CharacterScene
+Commands --* CombatScene
 Player o-- Allies
 Player *-- Inventory
 GameState "5x5" *-- MapTile
