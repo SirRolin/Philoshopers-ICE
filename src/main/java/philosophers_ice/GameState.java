@@ -11,6 +11,10 @@ public class GameState implements Serializable {
     int y = 0;
     GameState(String name){
         this.name = name;
+        StateSaver.saveGame(this);
+    }
+    GameState(){
+
     }
 
     //HashMap<philosophers_ice.GUI> guis;
