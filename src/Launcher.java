@@ -10,12 +10,7 @@ public class Launcher {
                     ErrorHandler.errorLogPath = split[1];
                 }
 
-<<<<<<< Updated upstream
-                case "debugLog" -> {
-                    ErrorHandler.debugLogPath = split[1];
-                }
 
-=======
                 case "debugLog" ->{
                     ErrorHandler.debugLogPath = split[1];
                 }
@@ -23,9 +18,6 @@ public class Launcher {
                 case "saveLoadFolder" ->{
                     FileIO.defaultPath = split[1];
                 }
-
-
->>>>>>> Stashed changes
             }
         }
         GameState newGS = new GameState();
