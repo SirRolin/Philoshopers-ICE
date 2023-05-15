@@ -4,13 +4,13 @@ public class Melee extends Weapon{
     private String name;
     private int minDamage;
     private int maxDamage;
-    private boolean isTwoHanded;
 
-    Melee(String name, int minDamage,int maxDamage,boolean isTwoHanded){
+    Melee(String name, int minDamage,int maxDamage,boolean isOneHanded, boolean isTwoHanded){
+        super(isOneHanded,isTwoHanded);
         this.name = name;
         this.minDamage = minDamage;
         this.maxDamage = maxDamage;
-        this.isTwoHanded = isTwoHanded;
+
     }
     @Override
     public int getDmg() {
@@ -19,8 +19,9 @@ public class Melee extends Weapon{
     }
     @Override
     public Boolean getType() {
-        return isTwoHanded;
+        return false;
     }
+
     @Override
     public String getDmgType() {
         return "Slash";
