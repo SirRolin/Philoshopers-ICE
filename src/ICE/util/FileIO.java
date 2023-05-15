@@ -29,7 +29,7 @@ public abstract class FileIO {
         }
         return null;
     }
-    public static void writeSerialised(Object obj, String path){
+    public static boolean writeSerialised(Object obj, String path){
         try {
             File file = new File(defaultPath + path);
             file.getParentFile().mkdirs(); // Will create parent directories if not exists
@@ -39,8 +39,10 @@ public abstract class FileIO {
             oos.writeObject(obj);
             oos.flush();
             oos.close();
+            return true;
         } catch (IOException e) {
             ErrorHandler.handleError(e);
+            return false;
         }
     }
 }
