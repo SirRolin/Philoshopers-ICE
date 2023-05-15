@@ -1,6 +1,8 @@
 package philosophers_ice;
 
-public class Enemy {
+import java.io.Serializable;
+
+public class Enemy implements Serializable {
 
     private String name;
 

@@ -7,8 +7,11 @@ public class GameState implements Serializable {
 
     public String name = "Tess";
     MapTile[][] maptile = getMinimap();
-
-    ArrayList<MapTile> mapTilePool = new ArrayList<>();
+    int x = 0;
+    int y = 0;
+    GameState(String name){
+        this.name = name;
+    }
 
     //HashMap<philosophers_ice.GUI> guis;
 

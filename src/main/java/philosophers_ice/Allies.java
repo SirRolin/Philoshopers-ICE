@@ -1,8 +1,9 @@
 package philosophers_ice;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Allies {
+public class Allies implements Serializable {
     public ArrayList<Effect> buffs;
     public String name;
     

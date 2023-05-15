@@ -1,8 +1,9 @@
 package philosophers_ice;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class MapTile {
+public class MapTile implements Serializable {
 
     String imagePath = "";
 

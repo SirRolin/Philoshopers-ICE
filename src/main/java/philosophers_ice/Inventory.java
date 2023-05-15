@@ -1,9 +1,10 @@
 package philosophers_ice;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Inventory {
+public class Inventory implements Serializable {
     private ArrayList<Item> items;
     private Weapon equippedWeaponMainHand;
     private Weapon equippedWeaponOffhand;

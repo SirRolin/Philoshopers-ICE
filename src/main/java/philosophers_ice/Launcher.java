@@ -22,11 +22,11 @@ public class Launcher {
                 }
             }
         }
-        GameState newGS = new GameState();
+        GameState newGS = new GameState("test");
         newGS.p1 = new Player("test");
-        FileIO.writeSerialised(newGS, "Save/Test.sav");
+        StateSaver.saveGame(newGS);
 
-        GameState loadedGS = FileIO.readSerialised("Save/Test.sav");
+        GameState loadedGS = StateSaver.loadGame("test");
         System.out.println(loadedGS.p1.name);
     }
 }

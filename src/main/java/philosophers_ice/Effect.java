@@ -1,6 +1,8 @@
 package philosophers_ice;
 
-public class Effect {
+import java.io.Serializable;
+
+public class Effect implements Serializable {
     String name;
     int valueBy;
     Effect(String name,int valueBy){

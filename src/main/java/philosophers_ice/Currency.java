@@ -1,8 +1,9 @@
 package philosophers_ice;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class Currency {
+public class Currency implements Serializable {
     public int value;
 
     public String description;
