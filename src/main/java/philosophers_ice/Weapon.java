@@ -1,4 +1,8 @@
-public abstract class Weapon extends Item{
+package philosophers_ice;
+
+import philosophers_ice.Item;
+
+public abstract class Weapon extends Item {
     private boolean isOneHanded;
     private boolean isTwoHanded;
     Weapon(boolean isOneHanded,boolean isTwoHanded){

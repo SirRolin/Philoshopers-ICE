@@ -1,3 +1,5 @@
+package philosophers_ice;
+
 public class Effect {
     String name;
     int valueBy;

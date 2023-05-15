@@ -1,3 +1,5 @@
+package philosophers_ice;
+
 import java.util.ArrayList;
 
 public class MapTile {

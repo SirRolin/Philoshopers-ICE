@@ -1,3 +1,5 @@
+package philosophers_ice;
+
 import java.util.Random;
 
 public class Ranged extends Weapon{

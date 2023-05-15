@@ -1,3 +1,5 @@
+package philosophers_ice;
+
 import ICE.util.ErrorHandler;
 import ICE.util.FileIO;
 

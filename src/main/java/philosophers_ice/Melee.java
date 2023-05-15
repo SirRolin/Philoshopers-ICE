@@ -1,6 +1,8 @@
+package philosophers_ice;
+
 import java.util.Random;
 
-public class Melee extends Weapon{
+public class Melee extends Weapon {
     private String name;
     private int minDamage;
     private int maxDamage;

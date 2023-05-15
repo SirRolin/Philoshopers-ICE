@@ -1,6 +1,7 @@
+package philosophers_ice;
+
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class GameState implements Serializable {
 
@@ -9,7 +10,7 @@ public class GameState implements Serializable {
 
     ArrayList<MapTile> mapTilePool = new ArrayList<>();
 
-    HashMap<GUI> guis;
+    //HashMap<philosophers_ice.GUI> guis;
 
     GUI activeGUI;
 
@@ -18,9 +19,8 @@ public class GameState implements Serializable {
     MapTile[][] getMinimap(){
         MapTile output[][] = new MapTile[5][5];
         for(int i = 0; i < 5; ++i){
-
             for(int j = 0; j < 5; ++j){
-                output[i-2][-2] = new MapTile();
+                output[i][j] = new MapTile();
             }
         }
 

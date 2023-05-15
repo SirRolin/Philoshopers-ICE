@@ -1,4 +1,8 @@
+package philosophers_ice;
+
 import ICE.util.FileIO;
+import philosophers_ice.GameState;
+import philosophers_ice.MapTile;
 
 public class StateSaver extends FileIO {
     Boolean savePlace(MapTile map, int x, int y){

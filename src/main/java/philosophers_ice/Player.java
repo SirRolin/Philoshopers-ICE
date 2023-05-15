@@ -1,3 +1,8 @@
+package philosophers_ice;
+
+import philosophers_ice.Boon;
+import philosophers_ice.Inventory;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -29,7 +34,7 @@ public class Player implements Serializable {
         this.mp = mp;
         inventory = new Inventory();
     }
-    /*Player(Object obj){
+    /*philosophers_ice.Player(Object obj){
     }*/
     public int getMaxHP(){
         return con*3+50;

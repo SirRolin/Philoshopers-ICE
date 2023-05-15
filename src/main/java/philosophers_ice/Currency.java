@@ -1,3 +1,5 @@
+package philosophers_ice;
+
 import java.util.HashMap;
 
 public class Currency {

@@ -1,3 +1,5 @@
+package philosophers_ice;
+
 public class Enemy {
 
     private String name;
