@@ -34,7 +34,6 @@ class GameState extends External.Serializable{
     + Name
     + MapTile[5][5] miniMap
     + Player p1
-    + ArrayList<MapTile> mapTilePool
     + HashMap<GUI> guis
     + GUI activeGUI
 }
@@ -49,7 +48,6 @@ class Commands {
 }
 class Player extends External.Serializable {
     + Player(int Str, int Agi, int Con, int Wits, int IQ, int Magi)
-    + Player(Object obj)
     + String name
     + int str
     + int agi
@@ -105,7 +103,7 @@ abstract class Item extends External.Serializable{
     + String description
     + String
 }
-interface Weapon extends Item, External.Serializable {
+abstract class Weapon extends Item, External.Serializable {
     +getName()
     +getDmg()
     +getType()
@@ -119,7 +117,7 @@ class Ranged extends Weapon, External.Serializable {
     - String name
     - boolean type
 }
-interface Armour extends Item, External.Serializable {
+abstract class Armour extends Item, External.Serializable {
     + String name
     + String type
     + getDef()
