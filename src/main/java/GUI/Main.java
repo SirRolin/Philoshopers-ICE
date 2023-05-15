@@ -1,41 +1,24 @@
 package GUI;
 
-import com.almasb.fxgl.core.collection.grid.Grid;
 import javafx.application.Application;
-import javafx.event.EventHandler;
-import javafx.geometry.NodeOrientation;
-import javafx.geometry.Orientation;
-import javafx.geometry.Pos;
-import javafx.scene.control.*;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
-import javafx.stage.Popup;
-import javafx.stage.Stage;
-import javafx.event.ActionEvent;
-import javafx.scene.Scene;
-import javafx.scene.layout.*;
-import javafx.stage.Stage;
-import javafx.stage.Screen;
 import javafx.geometry.Rectangle2D;
+import javafx.stage.Screen;
+import javafx.stage.Stage;
+import javafx.scene.Scene;
 import philosophers_ice.*;
-import javafx.stage.Window;
-import javafx.stage.PopupWindow;
-import javafx.stage.Popup;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+
 
 
 public class Main extends Application {
 
+    Stage window;
     Scene mainMenu;
     Scene characterCreation;
     Scene loadGame;
     Scene gameScene;
     Scene fightSequence;
-
-    Scene saveName;
-    Stage alert;
-    GameState gs;
 
 
     public static void main(String[] args){
@@ -43,36 +26,24 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage primaryStage) throws Exception {
 
-        Stage primaryStage = stage;
-
-        //Popup creation
-        TilePane saveNameLayout = new TilePane();
-        Label label = new Label("Enter your save name:");
-        TextField saveNameField = new TextField();
-        //Button enterButton = new Button("ENTER");
-        saveNameLayout.getChildren().addAll(label,saveNameField);
-        saveNameLayout.setAlignment(Pos.CENTER);
-        saveNameLayout.setOrientation(Orientation.HORIZONTAL);
-        saveNameLayout.setPrefRows(1);
-
-
-        alert = new Stage();
-        saveNameField.setOnAction(e -> {gs = StateSaver.newGame(saveNameField.getCharacters().toString()); primaryStage.setScene(characterCreation); alert.close();});
-        saveName = new Scene(saveNameLayout, 200,100);
-        alert.setScene(saveName);
-
-
-
-
-
-
-        //Getting screensize
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
 
-        //Setting the window title
+        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("mainMenu.fxml"));
         primaryStage.setTitle("Philosophers ICE");
+        primaryStage.setScene(new Scene(root,screenBounds.getMaxX()/2,screenBounds.getMaxY()/2));
+        primaryStage.show();
+
+        /*
+        window = primaryStage;
+        //Getting screensize
+
+
+        //Setting the window title
+        window.setTitle("Philosophers ICE");
+
+        window.setOnCloseRequest(e -> closeProgram());
 
 
         //MAIN MENU SETUP
@@ -102,21 +73,23 @@ public class Main extends Application {
         }
 
         //Sets functions to buttons:
-        mainButtons[0].setOnAction(e -> {alert.show();});
-        mainButtons[1].setOnAction(e -> primaryStage.setScene(loadGame));
-        mainButtons[2].setOnAction(e -> primaryStage.close());
+        //mainButtons[0].setOnAction(e -> {alert.show();});
+        mainButtons[0].setOnAction(e -> {gs = AlertBox.display("Creating save file", "Please enter the name of your save", "name"); window.setScene(characterCreation);});
+        mainButtons[1].setOnAction(e -> window.setScene(loadGame));
+        mainButtons[2].setOnAction(e -> closeProgram());
 
 
 
         //sets the scenes:
         //Mainmenu:
         mainMenu = new Scene(menuLayout, screenBounds.getMaxX()/2, screenBounds.getMaxY()/2);
-        primaryStage.setScene(mainMenu);
-        primaryStage.setFullScreenExitHint("");
-        primaryStage.setMaximized(true);
-        primaryStage.setWidth(screenBounds.getWidth());
-        primaryStage.setHeight(screenBounds.getHeight());
-        primaryStage.show();
+        window.setScene(mainMenu);
+        window.setFullScreenExitHint("");
+        window.setMaximized(true);
+        window.setWidth(screenBounds.getWidth());
+        window.setHeight(screenBounds.getHeight());
+        window.show();
+
 //---------------------------------------------------------------------------------------------------------------------------------
 
         //CHARACTER CREATION:
@@ -124,6 +97,8 @@ public class Main extends Application {
         characterCreationLayout.setOrientation(Orientation.VERTICAL);
         characterCreationLayout.setAlignment(Pos.CENTER);
         characterCreationLayout.setPrefRows(4);
+        Label gameState = new Label(gs.name);
+
 
         Button[] characterCreationButtons = new Button[]{
                 new Button("Start"),
@@ -141,8 +116,15 @@ public class Main extends Application {
             characterCreationLayout.getChildren().add(b);
         }
 
-        characterCreationLayout.getChildren().add(inputName);
+        characterCreationLayout.getChildren().addAll(inputName, gameState);
         characterCreation = new Scene(characterCreationLayout, screenBounds.getMaxX(), screenBounds.getMaxX());
+
+         */
+    }
+
+    private void closeProgram() {
+        // HER SKAL TING KØRES FOR AT GEMME
+        window.close();
     }
 }
 
