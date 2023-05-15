@@ -5,4 +5,13 @@ public class Effect {
         this.name = name;
         this.valueBy = valueBy;
     }
+
+    public String getName(){
+        return name;
+    }
+
+    public int getValueBy(){
+        return valueBy;
+    }
+
 }
