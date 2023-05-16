@@ -13,7 +13,7 @@
          </font>
       </Label>
       <Button mnemonicParsing="false" onAction="#switchToCharacterCreation" prefHeight="25.0" prefWidth="104.0" text="Start Game" />
-      <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="89.0" text="Load Game" />
+      <Button mnemonicParsing="false" onAction="#switchToLoadGame" prefHeight="25.0" prefWidth="89.0" text="Load Game" />
       <Button mnemonicParsing="false" onAction="#closeProgram" text="End Game" />
    </children>
 </VBox>

@@ -7,12 +7,12 @@ public class Melee extends Weapon {
     private int minDamage;
     private int maxDamage;
 
+
     Melee(String name, int minDamage,int maxDamage,boolean isOneHanded, boolean isTwoHanded){
         super(isOneHanded,isTwoHanded);
         this.name = name;
         this.minDamage = minDamage;
         this.maxDamage = maxDamage;
-
     }
     @Override
     public int getDmg() {
