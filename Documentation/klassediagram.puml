@@ -145,8 +145,10 @@ class Currency{
 }
 class Enemy extends External.Serializable {
     - String name
+    - int initiative
     - String description
     + getName()
+    + getInitiative()
     + getDescription()
     + getDefence()
     + getDamage()
