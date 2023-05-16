@@ -12,6 +12,7 @@ import philosophers_ice.*;
 public class AlertBox {
 
     static GameState gs;
+    static boolean isClosed = true;
 
     public static void display(String title, String message){
         Stage window = new Stage();
@@ -35,17 +36,19 @@ public class AlertBox {
     }
 
 
-    public static GameState display(String title, String message, String typeOfInput){
+    public static GameState display(String title, String message, String typeOfInput, Scene currentScene){
         Stage window = new Stage();
 
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle(title);
         window.setMinWidth(300);
 
+
         Label label = new Label(message);
         TextField input = new TextField(typeOfInput);
         input.setOnAction(e -> {
             gs = StateSaver.newGame(input.getText());
+            isClosed = false;
             window.close();
         });
 
