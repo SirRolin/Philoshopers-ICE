@@ -5,11 +5,11 @@ import java.util.ArrayList;
 
 public class GameState implements Serializable {
 
-    public String name = "Tess";
+    public String name = "";
     MapTile[][] maptile = getMinimap();
     int x = 0;
     int y = 0;
-    GameState(String name){
+    public GameState(String name){
         this.name = name;
         StateSaver.saveGame(this);
     }
