@@ -8,6 +8,6 @@ public class MapTile implements Serializable {
     String imagePath = "";
 
     ArrayList<Enemy> enemies = new ArrayList<Enemy>();
-    ArrayList<Boon> boons = new ArrayList<Boon>();
+    ArrayList<EffectCard> effectCards = new ArrayList<EffectCard>();
 
 }
