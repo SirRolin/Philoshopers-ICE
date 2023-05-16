@@ -23,6 +23,8 @@ public class GameState implements Serializable {
 
     public Player p1;
 
+
+
     MapTile[][] getMinimap(){
         MapTile output[][] = new MapTile[5][5];
         for(int i = 0; i < 5; ++i){

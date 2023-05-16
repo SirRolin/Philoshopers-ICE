@@ -34,6 +34,7 @@ public class Main extends Application {
         primaryStage.setTitle("Philosophers ICE");
         primaryStage.setScene(new Scene(root,screenBounds.getMaxX()/2,screenBounds.getMaxY()/2));
         primaryStage.show();
+        //sejt
 
         /*
         window = primaryStage;
