@@ -1,8 +1,5 @@
 package philosophers_ice;
 
-import philosophers_ice.Boon;
-import philosophers_ice.Inventory;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -16,7 +13,7 @@ public class Player implements Serializable {
     public int magi;
     private int hp;
     private int mp;
-    ArrayList<Boon> boons;
+    ArrayList<EffectCard> effectCards;
     Inventory inventory;
 
     public Player(String name){

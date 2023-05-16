@@ -98,7 +98,7 @@ class MapTile extends External.Serializable {
     + ArrayList<Boon> boons
 }
 abstract class Item extends External.Serializable{
-    + ArrayList<Effect> buffs
+    + ArrayList<Effect> statChanges
     + String name
     + String description
     + String
@@ -162,8 +162,8 @@ class CombatScene extends GUI {
 
 
 }
-class Boon {
-    + ArrayList<Effect> buffs
+class EffectCard {
+    + ArrayList<Effect> statChanges
     + String name
     + String desc
 }
@@ -190,7 +190,7 @@ Inventory "0-?" o-- Item
 Enchantment -o Item
 Effect --* Enchantment
 Effect --* Allies
-Effect --* Boon
+Effect --* EffectCard
 Inventory *- Currency
 Enemy o-- Currency
 Enemy o- Item
@@ -198,7 +198,7 @@ MapTile o-- Enemy
 MapTile o-- CombatScene
 Player -* CombatScene
 CombatScene *- Enemy
-Player o-- Boon
-MapTile o-- Boon
+Player o-- EffectCard
+MapTile o-- EffectCard
 
 @enduml
