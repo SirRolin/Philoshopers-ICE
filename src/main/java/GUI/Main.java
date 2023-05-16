@@ -1,45 +1,49 @@
 package GUI;
 
-import com.almasb.fxgl.core.collection.grid.Grid;
 import javafx.application.Application;
-import javafx.geometry.Orientation;
-import javafx.geometry.Pos;
-import javafx.scene.control.TextArea;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
-import javafx.stage.Stage;
-import javafx.event.ActionEvent;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.*;
-import javafx.stage.Stage;
-import javafx.stage.Screen;
 import javafx.geometry.Rectangle2D;
+import javafx.stage.Screen;
+import javafx.stage.Stage;
+import javafx.scene.Scene;
+import philosophers_ice.*;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+
 
 
 public class Main extends Application {
 
+    Stage window;
     Scene mainMenu;
     Scene characterCreation;
     Scene loadGame;
     Scene gameScene;
     Scene fightSequence;
 
+
     public static void main(String[] args){
         launch(args);
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage primaryStage) throws Exception {
 
-
-        //Getting screensize
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
 
+        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("mainMenu.fxml"));
+        primaryStage.setTitle("Philosophers ICE");
+        primaryStage.setScene(new Scene(root,screenBounds.getMaxX()/2,screenBounds.getMaxY()/2));
+        primaryStage.show();
+
+        /*
+        window = primaryStage;
+        //Getting screensize
+
+
         //Setting the window title
-        stage.setTitle("Philosophers ICE");
+        window.setTitle("Philosophers ICE");
+
+        window.setOnCloseRequest(e -> closeProgram());
 
 
         //MAIN MENU SETUP
@@ -69,26 +73,58 @@ public class Main extends Application {
         }
 
         //Sets functions to buttons:
-        mainButtons[0].setOnAction(e -> stage.setScene(characterCreation));
-        mainButtons[1].setOnAction(e -> stage.setScene(loadGame));
-        mainButtons[2].setOnAction(e -> stage.close());
+        //mainButtons[0].setOnAction(e -> {alert.show();});
+        mainButtons[0].setOnAction(e -> {gs = AlertBox.display("Creating save file", "Please enter the name of your save", "name"); window.setScene(characterCreation);});
+        mainButtons[1].setOnAction(e -> window.setScene(loadGame));
+        mainButtons[2].setOnAction(e -> closeProgram());
 
 
 
         //sets the scenes:
         //Mainmenu:
         mainMenu = new Scene(menuLayout, screenBounds.getMaxX()/2, screenBounds.getMaxY()/2);
-        stage.setScene(mainMenu);
-        stage.setFullScreenExitHint("");
-        stage.setFullScreen(true);
-        stage.show();
+        window.setScene(mainMenu);
+        window.setFullScreenExitHint("");
+        window.setMaximized(true);
+        window.setWidth(screenBounds.getWidth());
+        window.setHeight(screenBounds.getHeight());
+        window.show();
+
+//---------------------------------------------------------------------------------------------------------------------------------
 
         //CHARACTER CREATION:
+        TilePane characterCreationLayout = new TilePane();
+        characterCreationLayout.setOrientation(Orientation.VERTICAL);
+        characterCreationLayout.setAlignment(Pos.CENTER);
+        characterCreationLayout.setPrefRows(4);
+        Label gameState = new Label(gs.name);
 
 
+        Button[] characterCreationButtons = new Button[]{
+                new Button("Start"),
+                new Button("<--"),
+                new Button("<-"),
+                new Button("->"),
+                new Button("-1"),
+                new Button("+1"),
+                new Button("Enter"),
+        };
 
-        //characterCreation = new Scene();
+        TextField inputName = new TextField("Character name");
 
+        for(Button b : characterCreationButtons){
+            characterCreationLayout.getChildren().add(b);
+        }
+
+        characterCreationLayout.getChildren().addAll(inputName, gameState);
+        characterCreation = new Scene(characterCreationLayout, screenBounds.getMaxX(), screenBounds.getMaxX());
+
+         */
+    }
+
+    private void closeProgram() {
+        // HER SKAL TING KØRES FOR AT GEMME
+        window.close();
     }
 }
 
