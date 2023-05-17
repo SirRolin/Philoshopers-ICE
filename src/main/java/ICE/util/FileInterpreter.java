@@ -2,6 +2,7 @@ package ICE.util;
 
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -12,27 +13,40 @@ import java.util.regex.Pattern;
 
 
 public abstract class FileInterpreter {
-    public static ArrayList<Object> parseFile(String path) {
+    public static ArrayList<Object> parseFolder(String path) {
         ArrayList<Object> output = new ArrayList<>();
         File fileOrFolder = new File(path);
 
-        if(fileOrFolder.isDirectory()){
-            for(File file: fileOrFolder.listFiles(File::isDirectory)){
-                try {
-                    ArrayList<String> objectsFound = FileInterpreter.parse(Files.readAllLines(Paths.get(file.getPath())), path);
-                } catch (IOException e){
-                    ErrorHandler.handleError(e);
-                }
+        if (fileOrFolder.isDirectory()) {
+            for (File file: fileOrFolder.listFiles()) {
+                output.add(parseFile(file.toPath().toString()));
             }
         }
-        String fileText = null; //// TO DO load file.
-
-        //// seperate the objects defined in the file
-
-        for (String s : objectsFound) { //// parse each object
-            output.add(parse(s, path));
-        }
         return output;
+    }
+    public static Object parseFile(String path) {
+        File fileOrFolder = new File(path);
+
+        if (!fileOrFolder.isDirectory()) {
+            try {
+                //// get data from file
+                File file = new File(path);
+                FileInputStream fis = new FileInputStream(file);
+                byte[] data = new byte[(int) file.length()];
+                int bytesRead = fis.read(data);
+                fis.close();
+                String content = new String(data, 0, bytesRead);
+
+                //// convert data to a hashmap
+                Object parsed = FileInterpreter.parse(content, path);
+                return parsed;
+            } catch (IOException e) {
+                ErrorHandler.handleError(e);
+            }
+        } else {
+            ErrorHandler.handleError(new Exception("Can't load a folder as a file - use the parseFolder instead"));
+        }
+        return null;
     }
 
     final static Pattern patternNumber = Pattern.compile("(?<whole>\\s*(?<key>\\w+)\\s*=\\s*(?<value>\\d+.?\\d*)\\s*)");
