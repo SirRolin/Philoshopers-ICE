@@ -15,7 +15,6 @@ public class Player implements Serializable {
     public int con;
     public int wits;
     public int initiative;
-    public int maxInitiative;
     public int willPower;
     public int magi;
     private int hp;
@@ -37,8 +36,7 @@ public class Player implements Serializable {
         this.magi = magi;
         this.hp = hp;
         this.mp = mp;
-        this.maxInitiative = wits*2+3;
-        this.initiative = maxInitiative;
+        this.initiative = wits*2+3;
         inventory = new Inventory();
     }
     /*philosophers_ice.Player(Object obj){
@@ -54,12 +52,6 @@ public class Player implements Serializable {
     }
     public int getInitiative(){
         return initiative;
-    }
-    public int getMaxInitiative(){
-        return maxInitiative;
-    }
-    public void updateIniative(int input){
-        this.initiative += input;
     }
     public int getSpellBuffProc(){
         return magi*2+30;
