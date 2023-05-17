@@ -14,12 +14,16 @@ public class MapTile implements Serializable {
     public ArrayList<Enemy> enemies = new ArrayList<Enemy>();
     public ArrayList<EffectCard> effectCards = new ArrayList<EffectCard>();
     public MapTile(String name){
+        this(name,null);
+    }
+    public MapTile(String name, String imagePath){
         this.name = name;
     }
     public MapTile(MapTile mt){
         this.name = mt.name;
+        this.imagePath = mt.imagePath;
     }
-    public MapTile(HashMap map){
+    public MapTile(HashMap<?,?> map){
         name = HashMapExplorer.getString(map, "name");
         imagePath = HashMapExplorer.getString(map, "imagePath");
     }
