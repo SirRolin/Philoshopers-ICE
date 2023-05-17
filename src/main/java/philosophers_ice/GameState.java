@@ -11,7 +11,7 @@ public class GameState implements Serializable {
     int y = 0;
     public GameState(String name){
         this.name = name;
-        StateSaver.saveGame(this);
+        //StateSaver.saveGame(this);
     }
     GameState(){
 
