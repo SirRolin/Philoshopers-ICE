@@ -137,9 +137,9 @@ class Enchantment extends External.Serializable{
 }
 class Currency{
     + int value
+    + String name
     + String description
     + getDescription()
-    + String currencyType
     + getCurrencyType()
     + getValue()
 

@@ -1,15 +1,21 @@
 package philosophers_ice;
 
+import javafx.scene.image.Image;
+
+import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Player implements Serializable {
     public String name;
+    private String race;
+    private String imagePath;
     public int str;
     public int agi;
     public int con;
     public int wits;
     public int initiative;
+    public int maxInitiative;
     public int willPower;
     public int magi;
     private int hp;
@@ -20,8 +26,9 @@ public class Player implements Serializable {
     public Player(String name){
         this.name = name;
     }
-    public Player(String name, int str, int agi, int con,int wits,int willPower,int magi,int hp,int mp){
+    public Player(String name, String race, int str, int agi, int con,int wits,int willPower,int magi,int hp,int mp){
         this.name = name;
+        this.race = race;
         this.str = str;
         this.agi = agi;
         this.con = con;
@@ -30,7 +37,8 @@ public class Player implements Serializable {
         this.magi = magi;
         this.hp = hp;
         this.mp = mp;
-        this.initiative = wits*2+3;
+        this.maxInitiative = wits*2+3;
+        this.initiative = maxInitiative;
         inventory = new Inventory();
     }
     /*philosophers_ice.Player(Object obj){
@@ -46,6 +54,9 @@ public class Player implements Serializable {
     }
     public int getInitiative(){
         return initiative;
+    }
+    public int getMaxInitiative(){
+        return maxInitiative;
     }
     public void updateIniative(int input){
         this.initiative += input;
@@ -83,5 +94,17 @@ public class Player implements Serializable {
         for (Item i: items) {
             this.inventory.addToItems(i);
         }
+    }
+
+    public Image getImage(){
+        String path = imagePath != null ? imagePath : "Data/gfx/item/" + name + ".png";
+        File file = new File(path);
+
+        //// if it does exist
+        if(file.exists()){
+            new Image(file.toURI().toString());
+        }
+        //// if it doesn't exist
+        return new Image("_NULL_.png");
     }
 }
