@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class Player implements Serializable {
     public String name;
-    private String race;
+    public Race race;
     private String imagePath;
     public int str;
     public int agi;
@@ -25,7 +25,7 @@ public class Player implements Serializable {
     public Player(String name){
         this.name = name;
     }
-    public Player(String name, String race, int str, int agi, int con,int wits,int willPower,int magi,int hp,int mp){
+    public Player(String name, Race race, int str, int agi, int con,int wits,int willPower,int magi,int hp,int mp){
         this.name = name;
         this.race = race;
         this.str = str;

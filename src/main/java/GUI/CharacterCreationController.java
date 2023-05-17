@@ -16,6 +16,7 @@ import javafx.fxml.FXML;
 import philosophers_ice.GameState;
 import philosophers_ice.Player;
 import philosophers_ice.StateSaver;
+import philosophers_ice.*;
 
 
 import java.io.File;
@@ -27,9 +28,21 @@ public class CharacterCreationController implements Initializable {
     private Stage stage;
     private Scene scene;
     private Parent root;
-    private ArrayList<File> files = new ArrayList<>();
-    private ArrayList<Image> images= new ArrayList<>();
     private Player currentPlayer;
+
+    private String playerName;
+    private int playerStr;
+    private int playerAgi;
+    private int playerCon;
+    private int playerWits;
+    private int playerInitiative;
+    private int playerMaxInitiative;
+    private int playerWillPower;
+    private int playerMagi;
+    private int playerHp;
+    private int playerMp;
+    private Race playerRace;
+
     public GameState gs;
     @FXML
     private Button startButton;
@@ -54,8 +67,7 @@ public class CharacterCreationController implements Initializable {
             gs = SharedData.gs;
             if(gs.p1 != null) {
                 currentPlayer = gs.p1;
-                    //currentRaceImage = gs.p1.get;
-                
+                currentRaceImage = gs.p1.getImage();
                 raceImage.setImage(currentRaceImage);
                 raceImage.setScaleX(2.0);
                 raceImage.setScaleY(2.0);
@@ -71,6 +83,18 @@ public class CharacterCreationController implements Initializable {
                 raceImage.setScaleX(2.0);
                 raceImage.setScaleY(2.0);
                 raceImage.setSmooth(false);
+
+                gs.p1.name = "";
+                gs.p1.race = null;
+                gs.p1.agi = 0;
+                gs.p1.con = 0;
+                gs.p1.wits = 0;
+                gs.p1.initiative = 0;
+                gs.p1.maxInitiative = 0;
+                gs.p1.willPower = 0;
+                gs.p1.magi = 0;
+
+
             }
         }else {
             System.out.println("Error");

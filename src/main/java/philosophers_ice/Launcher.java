@@ -2,6 +2,7 @@ package philosophers_ice;
 
 import ICE.util.ErrorHandler;
 import ICE.util.FileIO;
+import GUI.Main;
 
 import java.util.ArrayList;
 
@@ -24,6 +25,6 @@ public class Launcher {
                 }
             }
         }
-        ArrayList<Enemy> enemies = new ArrayList<>();
+        Main.main(args);
     }
 }
