@@ -47,9 +47,7 @@ public class Player implements Serializable {
     public int getInitiative(){
         return initiative;
     }
-    public void updateIniative(int input){
-        this.initiative += input;
-    }
+
     public int getSpellBuffProc(){
         return magi*2+30;
     }

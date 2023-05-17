@@ -11,9 +11,9 @@ class CombatSceneTest {
     CombatScene scene1;
     @BeforeEach
     void setUp() {
-        Player p1 = new Player("Patrick",10, 10, 10,10,10,10,10,10);
+        Player p1 = new Player("Patrick",10, 10, 10,10,10,10,100,10);
         ArrayList<Enemy> enemies = new ArrayList<>();
-        Enemy e1 = new Enemy("Rat","path" ,"its brown! ARGH", 25,1000,25 ,5);
+        Enemy e1 = new Enemy("Rat","path" ,"its brown! ARGH", 25,100,25 ,5);
         enemies.add(e1);
         scene1 = new CombatScene(p1,enemies);
     }

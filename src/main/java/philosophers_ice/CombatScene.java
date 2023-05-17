@@ -7,11 +7,13 @@ import java.util.Scanner;
 public class CombatScene {
     private ArrayList<Enemy> enemies;
     private Player currentPlayer;
+    private int tmpPlayerInitiative;
     private int maxInitiative;
     int turn = 1;
     public CombatScene(Player player,ArrayList<Enemy> enemies){
         this.currentPlayer = player;
         this.enemies = enemies;
+        this.tmpPlayerInitiative = currentPlayer.getInitiative();
     }
 
 
@@ -23,22 +25,21 @@ public class CombatScene {
                 enemyInitative = tmpEnemyInitative;
             }
         }
-        maxInitiative = Math.max(currentPlayer.getInitiative(),enemyInitative);
+        maxInitiative = Math.max(tmpPlayerInitiative,enemyInitative);
         combat();
     }
     private void combat(){
 
         while(currentPlayer.getHP()>0 && enemies.size()>0 && turn < 99){
-            System.out.println(turn);
-            if(currentPlayer.initiative >= getHigestInitiativeEnemy().getInitiative()){
+            if(tmpPlayerInitiative >= getHigestInitiativeEnemy().getInitiative()){
                 chooseActionPlayer();
             }else{
                currentPlayer.increaseHP(-getHigestInitiativeEnemy().attack());
                getHigestInitiativeEnemy().updateInitiative(-maxInitiative);
             }
 
-            if(currentPlayer.getInitiative() < maxInitiative && enemyNotAboveMaxInitiative()){
-                currentPlayer.updateIniative(maxInitiative);
+            if(tmpPlayerInitiative < maxInitiative && enemyNotAboveMaxInitiative()){
+                tmpPlayerInitiative += maxInitiative;
                 for (Enemy e: enemies) {
                     e.updateInitiative(maxInitiative);
                 }
@@ -57,17 +58,17 @@ public class CombatScene {
         System.out.println("3. Use Item");
         System.out.println("4. Use Recover");
         Scanner scan = new Scanner(System.in);
-            int input = 1; // scan.nextInt();
-            //scan.nextLine();
+            int input = scan.nextInt();
+            scan.nextLine();
             switch (input) {
                 case 1 -> {
                     Enemy choosenEnemy = chooseEnemyToAttack();
                     choosenEnemy.updateHP(-currentPlayer.attack());
-                    if (choosenEnemy.getHp() >= 0) {
+                    if (choosenEnemy.getHp() <= 0) {
                         currentPlayer.getLoot(choosenEnemy.droppedLoot()); // PLACEHOLDER!!
                         enemies.remove(choosenEnemy);
                     }
-                    currentPlayer.updateIniative(-maxInitiative);
+                    tmpPlayerInitiative-= maxInitiative;
                     turn++;
                     break;
                 }
