@@ -90,7 +90,7 @@ public class CharacterCreationController implements Initializable {
                 gs.p1.con = 0;
                 gs.p1.wits = 0;
                 gs.p1.initiative = 0;
-                gs.p1.maxInitiative = 0;
+                //gs.p1.maxInitiative = 0;
                 gs.p1.willPower = 0;
                 gs.p1.magi = 0;
 
