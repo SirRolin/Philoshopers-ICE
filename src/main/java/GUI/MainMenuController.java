@@ -10,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import philosophers_ice.GameState;
+import philosophers_ice.StateSaver;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -63,6 +64,9 @@ public class MainMenuController implements Initializable {
 
     public void closeProgram() {
         // HER SKAL TING KØRES FOR AT GEMME
+        if(gs != null){
+            StateSaver.saveGame(gs);
+        }
         System.exit(0);
     }
 
