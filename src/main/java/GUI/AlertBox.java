@@ -36,7 +36,7 @@ public class AlertBox {
     }
 
 
-    public static GameState display(String title, String message, String typeOfInput, Scene currentScene){
+    public static GameState display(String title, String message, String typeOfInput){
         Stage window = new Stage();
 
         window.initModality(Modality.APPLICATION_MODAL);
