@@ -1,6 +1,10 @@
 package ICE.util;
 
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
@@ -10,10 +14,20 @@ import java.util.regex.Pattern;
 public abstract class FileInterpreter {
     public static ArrayList<Object> parseFile(String path) {
         ArrayList<Object> output = new ArrayList<>();
+        File fileOrFolder = new File(path);
+
+        if(fileOrFolder.isDirectory()){
+            for(File file: fileOrFolder.listFiles(File::isDirectory)){
+                try {
+                    ArrayList<String> objectsFound = FileInterpreter.parse(Files.readAllLines(Paths.get(file.getPath())), path);
+                } catch (IOException e){
+                    ErrorHandler.handleError(e);
+                }
+            }
+        }
         String fileText = null; //// TO DO load file.
 
         //// seperate the objects defined in the file
-        ArrayList<String> objectsFound = FileInterpreter.findObjects(fileText, path, false);
 
         for (String s : objectsFound) { //// parse each object
             output.add(parse(s, path));

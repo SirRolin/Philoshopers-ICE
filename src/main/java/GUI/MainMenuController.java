@@ -35,7 +35,7 @@ public class MainMenuController implements Initializable {
             stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             scene = new Scene(root, screenBounds.getMaxX()/2,screenBounds.getMaxY()/2);
             stage.setScene(scene);
-            stage.setTitle("Philosophers ICE - "+gs.name);
+            stage.setTitle("Philosophers ICE - " + gs.name);
             stage.show();
         }else{
             gs = null;

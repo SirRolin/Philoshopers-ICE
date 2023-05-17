@@ -29,7 +29,7 @@ public class GameState implements Serializable {
         MapTile output[][] = new MapTile[5][5];
         for(int i = 0; i < 5; ++i){
             for(int j = 0; j < 5; ++j){
-                output[i][j] = new MapTile();
+                output[i][j] = StateSaver.loadMap(this, x, y);
             }
         }
 
