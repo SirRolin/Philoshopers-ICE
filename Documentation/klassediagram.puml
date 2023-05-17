@@ -100,10 +100,9 @@ class MapTile extends External.Serializable {
     + ArrayList<Boon> boons
 }
 abstract class Item extends External.Serializable{
-    + ArrayList<Effect> statChanges
+    + ArrayList<Enchantment> enchantment
     + String name
     + String description
-    + String
 }
 abstract class Weapon extends Item, External.Serializable {
     +getName()
