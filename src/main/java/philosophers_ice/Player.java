@@ -69,7 +69,15 @@ public class Player implements Serializable {
         this.hp += (con+(str/2)+willPower)+ 20;
     }
     public int attack(){
-        return 50;
+        int damage = inventory.getDamage() ;
+        inventory.getEffectModifiers(); // WORK IN PROGESS !!!! Part of nice to have
+        if(inventory.getEquippedWeaponMainHand() instanceof Melee){
+           damage *= str/2;
+        }
+        if(inventory.getEquippedWeaponMainHand() instanceof Ranged){
+            damage *= agi/2;
+        }
+        return damage;
     }
     public void getLoot(ArrayList<Item> items){
         for (Item i: items) {

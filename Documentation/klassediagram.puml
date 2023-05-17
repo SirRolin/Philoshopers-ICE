@@ -93,6 +93,8 @@ class Inventory extends External.Serializable {
     + void equipItem(Item)
 }
 class MapTile extends External.Serializable {
+    + updateEffectsPlayer()
+    + updateEffectsEnemy()
     + String imagePath
     + ArrayList<Enemy> enemy
     + ArrayList<Boon> boons

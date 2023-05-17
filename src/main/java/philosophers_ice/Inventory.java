@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Inventory implements Serializable {
-    private ArrayList<Item> items;
+    private ArrayList<Item> items = new ArrayList<>();
     private Weapon equippedWeaponMainHand = null;
     private Weapon equippedWeaponOffhand = null;
     private Armour equippedArmour = null;
@@ -29,11 +29,33 @@ public class Inventory implements Serializable {
     }
 
     public int getDamage() {
-        int dmg = equippedWeaponMainHand.getDmg();
-        if (!equippedWeaponOffhand.getType()) {
-            dmg += equippedWeaponOffhand.getDmg();
+        //todo implement mainhand and offhand correctly
+        int dmg = 1;
+        if(equippedWeaponMainHand != null) {
+            dmg += equippedWeaponMainHand.getDmg();
+            if (!equippedWeaponOffhand.getType()) {
+                dmg += equippedWeaponOffhand.getDmg();
+            }
         }
         return dmg;
+    }
+    public void getEffectModifiers(){
+       // WORK IN PROGRESS!! part of nice to have
+    }
+    public Weapon getEquippedWeaponMainHand() {
+        return equippedWeaponMainHand;
+    }
+
+    public Weapon getEquippedWeaponOffhand() {
+        return equippedWeaponOffhand;
+    }
+
+    public Armour getEquippedArmour() {
+        return equippedArmour;
+    }
+
+    public Accessory getEquippedAccessory() {
+        return equippedAccessory;
     }
 
     public int getDefence() {
@@ -74,6 +96,7 @@ public class Inventory implements Serializable {
     }
 
     private void equipWeapon(Weapon item) {
+        //todo implement mainhand and offhand correctly (you should be able to unequip)
         if (item.isOneHanded()) {
             equipOneHanded(item);
         } else if (item.isTwoHanded()) {

@@ -17,7 +17,7 @@ public class Enemy implements Serializable {
     private int initiative;
 
     private int damage;
-    private ArrayList<Item> loot;
+    private ArrayList<Item> loot = new ArrayList<>();
 
 
     public Enemy(String name,String imagePath ,String description, int defence,int hp,int initiative ,int damage) {
