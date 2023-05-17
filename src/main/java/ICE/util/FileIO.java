@@ -24,8 +24,12 @@ public abstract class FileIO {
             ObjectInputStream ois = new ObjectInputStream(fis);
             final T t = (T) ois.readObject();
             return t;
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (ClassNotFoundException e) {
             ErrorHandler.handleError(e);
+        } catch (FileNotFoundException ignored){
+
+        } catch (IOException e){
+            ErrorHandler.handleError(new Exception("Save is not compatible with the current version sorry."));
         }
         return null;
     }

@@ -1,4 +1,5 @@
 package GUI;
+import ICE.util.FileInterpreter;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -22,6 +23,8 @@ import philosophers_ice.*;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class CharacterCreationController implements Initializable {
@@ -83,14 +86,19 @@ public class CharacterCreationController implements Initializable {
                 raceImage.setScaleX(2.0);
                 raceImage.setScaleY(2.0);
                 raceImage.setSmooth(false);
-
+                ArrayList<HashMap<?, ?>> races = new ArrayList<>();
+                for(Object obj: FileInterpreter.parseFile("common/Races")){
+                    if(obj instanceof HashMap<?, ?> map){
+                        races.add(map);
+                    }
+                }
+                gs.p1 = new Player("name", new Race(races.get(0)),0,0,0,0,0,0,0,0);
                 gs.p1.name = "";
                 gs.p1.race = null;
                 gs.p1.agi = 0;
                 gs.p1.con = 0;
                 gs.p1.wits = 0;
                 gs.p1.initiative = 0;
-                //gs.p1.maxInitiative = 0;
                 gs.p1.willPower = 0;
                 gs.p1.magi = 0;
 
