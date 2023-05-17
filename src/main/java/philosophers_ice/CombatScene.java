@@ -8,13 +8,14 @@ public class CombatScene {
     private ArrayList<Enemy> enemies;
     private Player currentPlayer;
     private int maxInitiative;
+    int turn = 1;
     public CombatScene(Player player,ArrayList<Enemy> enemies){
         this.currentPlayer = player;
         this.enemies = enemies;
     }
 
 
-    public void startCombat(Player currentPlayer, ArrayList<Enemy> enemies){
+    public void startCombat(){
         int enemyInitative = 0;
         for (Enemy enemy: enemies) {
             int tmpEnemyInitative = enemy.getInitiative();
@@ -23,32 +24,24 @@ public class CombatScene {
             }
         }
         maxInitiative = Math.max(currentPlayer.getInitiative(),enemyInitative);
-        combat(currentPlayer,enemies);
+        combat();
     }
-    public void combat(Player currentPlayer,ArrayList<Enemy> enemies){
-        int turn = 1;
-        while(currentPlayer.getHP()<=0 || enemies.size()<=0|| turn == 99){
-            if(currentPlayer.getInitiative() < maxInitiative){
-                currentPlayer.updateIniative(maxInitiative);
-                turn++;
-            }
-            if(enemyNotAboveMaxInitiative(enemies)){
-                for (Enemy e: enemies) {
-                    if(e.getInitiative() < maxInitiative){
-                        e.updateInitiative(maxInitiative);
-                        turn++;
-                    }
-                }
-            }
-            if(currentPlayer.initiative > getHigestInitiativeEnemy(enemies).getInitiative()){
-                Enemy choosenEnemy = chooseEnemyToAttack(enemies);
-                choosenEnemy.updateHP(-currentPlayer.attack());
-                if(choosenEnemy.getHp() >= 0){
-                    currentPlayer.getLoot(choosenEnemy.droppedLoot()); // PLACEHOLDER!!
-                    enemies.remove(choosenEnemy);
-                }
+    private void combat(){
+
+        while(currentPlayer.getHP()>0 && enemies.size()>0 && turn < 99){
+            System.out.println(turn);
+            if(currentPlayer.initiative >= getHigestInitiativeEnemy().getInitiative()){
+                chooseActionPlayer();
             }else{
-               currentPlayer.increaseHP(-getHigestInitiativeEnemy(enemies).attack());
+               currentPlayer.increaseHP(-getHigestInitiativeEnemy().attack());
+               getHigestInitiativeEnemy().updateInitiative(-maxInitiative);
+            }
+
+            if(currentPlayer.getInitiative() < maxInitiative && enemyNotAboveMaxInitiative()){
+                currentPlayer.updateIniative(maxInitiative);
+                for (Enemy e: enemies) {
+                    e.updateInitiative(maxInitiative);
+                }
             }
         }
         if(currentPlayer.getHP() <= 0){
@@ -56,13 +49,58 @@ public class CombatScene {
         }
         endCombat();
     }
-    public void endCombat(){
 
+    private void chooseActionPlayer() {
+        System.out.println("You have the following choices: ");
+        System.out.println("1. Attack an enemy");
+        System.out.println("2. Cast a spell");
+        System.out.println("3. Use Item");
+        System.out.println("4. Use Recover");
+        Scanner scan = new Scanner(System.in);
+            int input = 1; // scan.nextInt();
+            //scan.nextLine();
+            switch (input) {
+                case 1 -> {
+                    Enemy choosenEnemy = chooseEnemyToAttack();
+                    choosenEnemy.updateHP(-currentPlayer.attack());
+                    if (choosenEnemy.getHp() >= 0) {
+                        currentPlayer.getLoot(choosenEnemy.droppedLoot()); // PLACEHOLDER!!
+                        enemies.remove(choosenEnemy);
+                    }
+                    currentPlayer.updateIniative(-maxInitiative);
+                    turn++;
+                    break;
+                }
+                case 2 -> {
+                    // WORK IN PROGESS
+                    System.out.println("Work in progress please choose an other option");
+                    chooseActionPlayer();
+                }
+                case 3 -> {
+                    // WORK IN PROGESS
+                    System.out.println("Work in progress please choose an other option!");
+                    chooseActionPlayer();
+                }
+                case 4 -> {
+                    System.out.println("You sit down and rest recovering hp");
+                    currentPlayer.recover();
+                    turn++;
+                }
+                default -> {
+                    System.out.println("Did not recognise command, try again");
+                    chooseActionPlayer();
+                }
+            }
+
+    }
+
+    public void endCombat(){
+        System.out.println("woohoo it worked?");
     }
     public void endGame(){
         
     }
-    private boolean enemyNotAboveMaxInitiative(ArrayList<Enemy> enemies){
+    private boolean enemyNotAboveMaxInitiative(){
         boolean tmp = false;
         for(int i = 0;i < enemies.size();i++){
             if(enemies.get(i).getInitiative() < maxInitiative){
@@ -71,7 +109,7 @@ public class CombatScene {
         }
         return tmp;
     }
-    private Enemy getHigestInitiativeEnemy(ArrayList<Enemy> enemies){
+    private Enemy getHigestInitiativeEnemy(){
         Enemy highestInitiativeEnemy = enemies.get(0);
         int tmpInitiative = highestInitiativeEnemy.getInitiative();
         for(int i = 1;i < enemies.size();i++){
@@ -82,35 +120,19 @@ public class CombatScene {
         }
         return highestInitiativeEnemy;
     }
-    private Enemy chooseEnemyToAttack(ArrayList<Enemy> enemies){
+    private Enemy chooseEnemyToAttack(){
+        if(enemies.size() == 1){
+            return enemies.get(0);
+        }
         System.out.println("which enemy do you want to attack? 1 - " + enemies.size());
         Scanner scan = new Scanner(System.in);
         int input = scan.nextInt();
-        scan.nextInt();
+        scan.nextLine();
         if(input > enemies.size()){
             System.out.println("there's not that many enemies");
-            return chooseEnemyToAttack(enemies);
+            return chooseEnemyToAttack();
         }
         return enemies.get(input - 1);
-        /*switch (input){
-            case 1 -> {
-                choosenEnemy = enemies.get(0);
-            }
-            case 2 ->  {
-                if(enemies.size()<2){
-                    System.out.println("there's less than 2 enemies");
-                   return chooseEnemyToAttack(enemies);
-                }
-                choosenEnemy = enemies.get(1);
-            }
-            case 3 ->{
-                if(enemies.size()<3){
-                    System.out.println("there's less than 3 enemies");
-                    return chooseEnemyToAttack(enemies);
-                }
-                choosenEnemy = enemies.get(2);
-            }
-        }*/
     }
 
 }
