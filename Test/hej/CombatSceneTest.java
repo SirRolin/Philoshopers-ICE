@@ -1,7 +1,10 @@
-package philosophers_ice;
+package hej;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import philosophers_ice.CombatScene;
+import philosophers_ice.Enemy;
+import philosophers_ice.Player;
 
 import java.util.ArrayList;
 
