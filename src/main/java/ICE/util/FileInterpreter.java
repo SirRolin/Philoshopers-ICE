@@ -2,6 +2,8 @@ package ICE.util;
 
 
 import java.util.*;
+import java.util.regex.MatchResult;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
@@ -21,7 +23,7 @@ public abstract class FileInterpreter {
 
     final static Pattern patternNumber = Pattern.compile("(?<whole>\\s*(?<key>\\w+)\\s*=\\s*(?<value>\\d+.?\\d*)\\s*)");
     final static Pattern patternString = Pattern.compile("(?<whole>\\s*(?<key>\\w+)\\s*=\\s*\"(?<value>[^\"]*)\")");
-    final static Pattern patternObject = Pattern.compile("(?:\\s*\"([\\s\\w]+)\"|(\\d+))");
+    final static Pattern patternObject = Pattern.compile("(?:\\s*\"([\\s\\w]+)\"|(?<value>\\d+.?\\d*))");
 
     public static Object parse(String text, String path) { //// usually returns HashMap
         HashMap<String, Object> mapsForOutput = new HashMap<String, Object>();
@@ -46,15 +48,17 @@ public abstract class FileInterpreter {
             if (isRandomList) {
                 return weight; //// it's not actually the weight but the number value
             } else {
-                return objectName;
+                return objectName.replace("\"", "");
             }
         }
+
+        String analyseText;
 
         //// otherwise find all values in it
         int firstBracket = splitText[1].indexOf('{');
         int endBracket = splitText[1].lastIndexOf('}');
         if (firstBracket < endBracket) {
-            String analyseText = splitText[1].substring(firstBracket + 1, endBracket);
+            analyseText = splitText[1].substring(firstBracket + 1, endBracket);
             ArrayList<String> nest = findObjects(analyseText, path + "." + objectName, false);
             for (String nestedObject : nest) {
                 String[] splitObject = nestedObject.split("=", 2);
@@ -64,22 +68,46 @@ public abstract class FileInterpreter {
                 Number keyWeight = 0;
                 try { //// is it a weight_object? aka an item in a random_list
                     keyWeight = Float.parseFloat(key);
-                    listsForOutput.add(new WeightedObject(keyWeight, objects));
-                } catch (NumberFormatException ignored) {
+                    //mapsForOutput.put(key, new WeightedObject(keyWeight, objects));
                     listsForOutput.add(objects);
+                } catch (NumberFormatException ignored) {
+                    mapsForOutput.put(key, objects);
+                    //listsForOutput.add(objects);
                 }
-                //analyseText = analyseText.replace(nestedObject, "");
+                analyseText = analyseText.replace(nestedObject, "");
             }
-            if (listsForOutput.size() > 0) {
-                mapsForOutput.put("list", listsForOutput);
-            }
-            return mapsForOutput;
+        } else {
+            analyseText = splitText[1];
         }
-        if (isRandomList) {
+        Matcher objects = patternObject.matcher(analyseText.trim());
+
+        //// any strings or numbers?
+        if (objects.matches()) {
+            objects.reset();
+            for (MatchResult s : objects.results().toList()) {
+                try { //// Find out if it's a number, if so add it as such
+                    return Float.parseFloat(s.group(0));
+                } catch (NumberFormatException nfe) {
+                    return s.group(0).replace("\"", "");
+                }
+            }
+        }
+        ////
+        if (listsForOutput.size() > 0 || isRandomList) {
+            if (isRandomList) {
+                return new WeightedObject(weight, listsForOutput);
+                //mapsForOutput.put("value", new WeightedObject(weight, listsForOutput));
+            } else { //// if it has a list of things
+                mapsForOutput.put("value", listsForOutput);
+            }
+        }
+        return mapsForOutput;
+        /*if (isRandomList) {
             return new WeightedObject(weight, parse(splitText[1], path + "." + weight)); //// it's not actually the weight but the number value
         } else {
-            return new HashMap<String, Object>().put(objectName, parse(splitText[1], path + "." + objectName));
-        }
+        mapsForOutput.put(objectName, parse(splitText[1].trim(), path + "." + objectName));
+        return parse(splitText[1], path + "." + objectName);
+        } */
         /*
         Matcher numbers = patternNumber.matcher(text.trim());
         Matcher strings = patternString.matcher(text.trim());
@@ -99,27 +127,6 @@ public abstract class FileInterpreter {
             //text = text.replace(numbers.group("whole"), "");
         }
 
-        Matcher objects = patternObject.matcher(text.trim());
-
-        //// any strings or numbers?
-        if (objects.matches()) {
-            objects.reset();
-            for (MatchResult s : objects.results().toList()) {
-                try { //// Find out if it's a number, if so add it as such
-                    Number theNumber = Float.parseFloat(s.group(0));
-                    listsForOutput.add(theNumber);
-                } catch (NumberFormatException nfe) {
-                    listsForOutput.add(s.group(0));
-                }
-            }
-            if (isRandomList) {
-                mapsForOutput.put("value", new WeightedObject(weight, listsForOutput));
-                //mapsForOutput.put(objectName, new WeightedObject(weight, listsForOutput));
-            } else {
-                mapsForOutput.put("value", listsForOutput);
-                //mapsForOutput.put(objectName, listsForOutput);
-            }
-        }
         if (listsForOutput.size() > 0) {
                 mapsForOutput.put("list", listsForOutput);
             }
@@ -154,12 +161,13 @@ public abstract class FileInterpreter {
             } else if (brackets == 0) { //// We haven't started an entry yet
                 if (c == '\n') { //// keep track of line number and resetting
                     ++line;
-                    if (temp.length() > 0) {
+                    if (!temp.isEmpty()) {
                         if (doThrowTokenError) {
                             temp.setLength(0);
                             ErrorHandler.handleError(new Exception("token error, missing { at line: " + line + " in file: " + path));
                         } else {
-                            output.add(temp.toString());
+                            if (temp.indexOf("=") > 1)
+                                output.add(temp.toString());
                             temp.setLength(0); //// reset data
                         }
                     }
