@@ -72,7 +72,7 @@ public class Race implements Serializable {
 
         //// if it does exist
         if(file.exists()){
-            new Image(file.toURI().toString());
+            return new Image(file.toURI().toString());
         }
         //// if it doesn't exist
         return new Image("_NULL_.png");

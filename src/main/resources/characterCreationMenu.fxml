@@ -30,7 +30,7 @@
             <Font size="18.0" />
          </font>
       </Button>
-      <TextField text="Name" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <TextField fx:id="nameField" text="Name" GridPane.columnIndex="1" GridPane.rowIndex="2" />
       <Button mnemonicParsing="false" onAction="#switchToMainMenu" text="Back" />
       <Label text="Stats" GridPane.columnIndex="2" GridPane.halignment="CENTER">
          <font>
@@ -38,7 +38,7 @@
          </font></Label>
       <VBox nodeOrientation="LEFT_TO_RIGHT" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
          <children>
-            <GridPane alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT">
+            <GridPane fx:id="statPane" alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -53,24 +53,6 @@
                   <RowConstraints maxHeight="28.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button mnemonicParsing="false" text="-" GridPane.halignment="CENTER" />
-                  <Label text="Str: 0" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-                  <Label text="Agi: 0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                  <Label text="Con: 0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                  <Label text="Wits: 0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-                  <Label text="Willpower: 0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
-                  <Button mnemonicParsing="false" text="+" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
-                  <Button mnemonicParsing="false" text="-" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                  <Button mnemonicParsing="false" text="+" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                  <Button mnemonicParsing="false" text="-" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                  <Button mnemonicParsing="false" text="+" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                  <Button mnemonicParsing="false" text="-" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-                  <Button mnemonicParsing="false" text="+" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-                  <Button mnemonicParsing="false" text="-" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
-                  <Button mnemonicParsing="false" text="+" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
-                  <Label text="Magi: 0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
-                  <Button mnemonicParsing="false" text="-" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
-                  <Button mnemonicParsing="false" text="+" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
                </children>
             </GridPane>
          </children>
@@ -86,8 +68,8 @@
         </rowConstraints>
          <children>
             <Label text="race" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="46.0" text="&lt;-" GridPane.halignment="CENTER" />
-            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="46.0" text="-&gt;" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
+            <Button fx:id="leftRaceButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="46.0" text="&lt;-" GridPane.halignment="CENTER" />
+            <Button fx:id="rightRaceButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="46.0" text="-&gt;" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
          </children>
       </GridPane>
       <DialogPane contentText="Wow sikke en sej race! Jeg håber virkeligt ikke, at der sker noget slemt ved dem, efter denne skærm. Det ville være ret så trist! Anyway, jeg skriver egentligt bare videre for, at tjekke hvor meget tekst der kan være herinde, tilsyneladende ret meget." expanded="true" headerText="Race name:" prefHeight="172.0" prefWidth="200.0" GridPane.rowIndex="1" />

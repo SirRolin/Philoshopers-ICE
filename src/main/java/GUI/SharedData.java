@@ -15,7 +15,10 @@ public abstract class SharedData {
 
     public static String getDefineString(String key){
         for(HashMap<String, Object> def: defines){
-            return (String) HashMapExplorer.getString(def,key);
+            String temp = (String) HashMapExplorer.getString(def,key);
+            if(temp.equals(key)){
+                return temp;
+            }
         }
         return null;
     }
