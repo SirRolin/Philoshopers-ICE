@@ -36,6 +36,17 @@ public class Race implements Serializable {
         load();
     }
 
+    public static int getIndexOf(ArrayList<Race> list, String name){
+        int i = 0;
+        for (Race r: list) {
+            if(r.name.equals(name)){
+                return i;
+            }
+            ++i;
+        }
+        return -1;
+    }
+
     public String name;
     private String imagePath;
 
