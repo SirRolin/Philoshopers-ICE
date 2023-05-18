@@ -44,7 +44,7 @@ public class Race implements Serializable {
             }
             ++i;
         }
-        return -1;
+        return 0;
     }
 
     public String name;
