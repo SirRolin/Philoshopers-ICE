@@ -4,27 +4,31 @@ package ICE.util;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.*;
-import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
 public abstract class FileInterpreter {
-    public static ArrayList<Object> parseFolder(String path) {
-        ArrayList<Object> output = new ArrayList<>();
+    public static ArrayList<HashMap<String, Object>> parseFolder(String path) {
+        return parseFolder(path, false);
+    }
+    public static ArrayList<HashMap<String, Object>> parseFolder(String path, boolean careForFirstKey) {
+        ArrayList<HashMap<String, Object>> output = new ArrayList<>();
         File fileOrFolder = new File(path);
 
         if (fileOrFolder.isDirectory()) {
-            for (File file: fileOrFolder.listFiles()) {
-                output.add(parseFile(file.toPath().toString()));
+            for (File file : fileOrFolder.listFiles()) {
+                output.add(parseFile(file.toPath().toString(), careForFirstKey));
             }
         }
         return output;
     }
-    public static Object parseFile(String path) {
+
+    public static HashMap<String, Object> parseFile(String path) {
+        return parseFile(path, false);
+    }
+    public static HashMap<String, Object> parseFile(String path, boolean careForFirstKey) {
         File fileOrFolder = new File(path);
 
         if (!fileOrFolder.isDirectory()) {
@@ -38,7 +42,7 @@ public abstract class FileInterpreter {
                 String content = new String(data, 0, bytesRead);
 
                 //// convert data to a hashmap
-                Object parsed = FileInterpreter.parse(content, path);
+                HashMap<String, Object> parsed = FileInterpreter.parse(content, path);
                 return parsed;
             } catch (IOException e) {
                 ErrorHandler.handleError(e);
@@ -49,10 +53,27 @@ public abstract class FileInterpreter {
         return null;
     }
 
-    final static Pattern patternNumber = Pattern.compile("(?<whole>\\s*(?<key>\\w+)\\s*=\\s*(?<value>\\d+.?\\d*)\\s*)");
-    final static Pattern patternString = Pattern.compile("(?<whole>\\s*(?<key>\\w+)\\s*=\\s*\"(?<value>[^\"]*)\")");
-    final static Pattern patternObject = Pattern.compile("(?:\\s*\"([\\s\\w]+)\"|(?<value>\\d+.?\\d*))");
 
+    public static ArrayList<HashMap<String, Object>> parseList(String text, String path) {
+        return parseList(text, path, false);
+    }
+    public static ArrayList<HashMap<String, Object>> parseList(String text, String path, boolean careForFirstKey) {
+        ArrayList<HashMap<String, Object>> output = new ArrayList<HashMap<String, Object>>();
+        for (String s : findObjects(text, path, true)) {
+            if(careForFirstKey){
+                output.add(parse(s, path + " -> " + s));
+            } else {
+                int firstBracket = s.indexOf('{');
+                int endBracket = s.lastIndexOf('}');
+                if (firstBracket < endBracket) {
+                    output.add(parse(s.substring(firstBracket + 1,  endBracket), path + " -> " + s));
+                }
+            }
+        }
+
+        return output;
+    }
+    /*
     public static Object parse(String text, String path) { //// usually returns HashMap
         HashMap<String, Object> mapsForOutput = new HashMap<String, Object>();
         ArrayList<Object> listsForOutput = new ArrayList<>();
@@ -130,38 +151,160 @@ public abstract class FileInterpreter {
             }
         }
         return mapsForOutput;
-        /*if (isRandomList) {
-            return new WeightedObject(weight, parse(splitText[1], path + "." + weight)); //// it's not actually the weight but the number value
-        } else {
-        mapsForOutput.put(objectName, parse(splitText[1].trim(), path + "." + objectName));
-        return parse(splitText[1], path + "." + objectName);
-        } */
-        /*
-        Matcher numbers = patternNumber.matcher(text.trim());
-        Matcher strings = patternString.matcher(text.trim());
+//        if (isRandomList) {
+//            return new WeightedObject(weight, parse(splitText[1], path + "." + weight)); //// it's not actually the weight but the number value
+//        } else {
+//        mapsForOutput.put(objectName, parse(splitText[1].trim(), path + "." + objectName));
+//        return parse(splitText[1], path + "." + objectName);
+//        }
+//
+//        Matcher numbers = patternNumber.matcher(text.trim());
+//        Matcher strings = patternString.matcher(text.trim());
+//
+//        while (strings.find()) {
+//            String g1 = strings.group("key");
+//            String g2 = strings.group("value");
+//            return g2;
+//            //mapsForOutput.put("value", g2);
+//            //text = text.replace(strings.group("whole"), "");
+//        }
+//        while (numbers.find()) {
+//            String g1 = numbers.group("key");
+//            String g2 = numbers.group("value");
+//            return Float.parseFloat(g2);
+//            //mapsForOutput.put("value", Float.parseFloat(g2));
+//            //text = text.replace(numbers.group("whole"), "");
+//        }
+//
+//        if (listsForOutput.size() > 0) {
+//            mapsForOutput.put("list", listsForOutput);
+//        }
+//        if (randomListsForOutput.size() > 0) {
+//            mapsForOutput.put("random_list", randomListsForOutput);
+//        }
+//        return mapsForOutput;
+    }*/
 
+    private static HashMap<String, Object> parse(String text, String path) { //// usually returns HashMap
+        HashMap<String, Object> mapsForOutput = new HashMap<String, Object>();
+        ArrayList<Object> listsForOutput = new ArrayList<>();
+
+
+        //// Extract all the something = { something }
+        text = ExtractElements(text, mapsForOutput, listsForOutput, path);
+
+        //// Extract all the word = something
+        text = ExtractProperty(text, mapsForOutput);
+
+        //// extracts all the number = something
+        text = ExtractRandomNumbers(text, listsForOutput);
+
+        //// extracts all the once standing alone
+        text = ExtractList(text, listsForOutput);
+        if (!listsForOutput.isEmpty()) {
+            mapsForOutput.put("list", listsForOutput);
+        }
+        return mapsForOutput;
+    }
+
+    private static String ExtractList(String text, ArrayList<Object> listsForOutput) {
+        for(String s: text.split("[ \n]+",-1)){
+            if (!s.equals("\n") && !s.equals("")) {
+                listsForOutput.add(tryParseFloat(s, false));
+                text = text.replace(s, "");
+            }
+        }
+        return text;
+    }
+
+    final static Pattern patternMap = Pattern.compile("(?<whole>(?<firstReplace>\\s*(?<key>\\w+)\\s*=\\s*\\{)(?s)(?<value>.*))(?-s)");
+    private static String ExtractElements(String text, HashMap<String, Object> map, ArrayList<Object> list, String path) {
+        Matcher elements = patternMap.matcher(text);
+        while (elements.find()) {
+            String g1 = elements.group("key");
+            String g2 = elements.group("value");
+            int charToClosingBracket = charsToPairedClosingBracket(g2);
+            g2 = g2.substring(0, charToClosingBracket - 1);
+            if (isNumeric(g1)) {
+                list.add(new WeightedObject((Number) tryParseFloat(g1,true),parse(g2, path + " -> " + g1 + "(" + g2 + ")")));
+            } else {
+                map.put(g1, parse(g2, path + " -> " + g1));
+            }
+            String replace = elements.group("firstReplace") + g2 + "}";
+            text = text.replace(replace, "");
+            elements = patternMap.matcher(text);
+        }
+        return text;
+    }
+
+    final static Pattern patternProperty = Pattern.compile("(?<whole>\\s*(?<key>\\w+)\\s*=\\s*(?<value>\"[^\"]*\"|\\d+.?\\d*))");
+    private static String ExtractProperty(String text, HashMap<String, Object> mapsForOutput) {
+        Matcher strings = patternProperty.matcher(text.trim());
         while (strings.find()) {
+            String group = strings.group(0);
             String g1 = strings.group("key");
             String g2 = strings.group("value");
-            return g2;
-            //mapsForOutput.put("value", g2);
-            //text = text.replace(strings.group("whole"), "");
+            mapsForOutput.put(g1, tryParseFloat(g2, false));
+            text = text.replace(strings.group("whole"), "");
         }
+        return text;
+    }
+    final static Pattern patternNumber = Pattern.compile("(?<whole>\\s*(?<key>\\d+.?\\d*)\\s*=\\s*(?<value>\\d+.?\\d*)\\s*)");
+    private static String ExtractRandomNumbers(String text, ArrayList<Object> listsForOutput) {
+        Matcher numbers = patternNumber.matcher(text.trim());
         while (numbers.find()) {
             String g1 = numbers.group("key");
             String g2 = numbers.group("value");
-            return Float.parseFloat(g2);
-            //mapsForOutput.put("value", Float.parseFloat(g2));
-            //text = text.replace(numbers.group("whole"), "");
-        }
+            listsForOutput.add(
+                    new WeightedObject(
+                            (Number) tryParseFloat(g1, true),
+                            tryParseFloat(g2, false)));
 
-        if (listsForOutput.size() > 0) {
-                mapsForOutput.put("list", listsForOutput);
+            text = text.replace(numbers.group("whole"), "");
+        }
+        return text;
+    }
+
+    private static Object tryParseFloat(String text, boolean defaultIsZero){
+        try {
+            return Double.parseDouble(text);
+        } catch (NumberFormatException ignored) {
+            if(defaultIsZero){
+                return 0;
+            } else {
+                return text.replace("\"","");
             }
-            if (randomListsForOutput.size() > 0) {
-                mapsForOutput.put("random_list", randomListsForOutput);
+        }
+    }
+
+    private static boolean isNumeric(String text){
+        try {
+            Double.parseDouble(text);
+            return true;
+        } catch (NumberFormatException ignored){
+            return false;
+        }
+    }
+
+    private static int charsToPairedClosingBracket(String text) {
+        int brackets = 1;
+        boolean quoted = false;
+        int output = 0;
+        for (char c : text.toCharArray()) {
+            output++;
+            if (c == '"') { //// enter and leave quote
+                quoted = !quoted;
+            } else if (quoted) { //// while quoted just continue
+            } else if (c == '{') { //// "recursive" increase bracket tracking
+                ++brackets;
+            } else if (c == '}') { //// "recursive" decrease bracket tracking
+                --brackets;
             }
-            return mapsForOutput;*/
+            if (brackets == 0) {
+                return output;
+            }
+        }
+        return -1; ////bracket was not found
     }
 
     //// lines is the lines of text, path is just for error handling.

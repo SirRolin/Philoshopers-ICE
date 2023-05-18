@@ -1,24 +1,23 @@
 package philosophers_ice;
 
+import ICE.util.HashMapExplorer;
+import ICE.util.RngHandler;
+import ICE.util.WeightedObject;
 import javafx.scene.image.Image;
+import kotlin.random.Random;
 
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Enemy implements Serializable {
-
     private String name;
-
     private String imagePath;
-
     private String description;
-
     private int defence;
     private int hp;
-
     private int initiative;
-
     private int damage;
     private ArrayList<Item> loot = new ArrayList<>();
 
@@ -33,6 +32,32 @@ public class Enemy implements Serializable {
         this.damage = damage;
         this.loot.add(new Melee("Ged",23,53,true,false)); // PLACEHOLDER!!!
     }
+    public Enemy(HashMap<String, Object> map){
+        name = HashMapExplorer.getString(map,"name");
+        imagePath = HashMapExplorer.getString(map,"imagePath");
+        description = HashMapExplorer.getString(map,"description");
+        defence = (int) HashMapExplorer.getNumber(map,"defence");
+        hp = (int) HashMapExplorer.getNumber(map,"hp");
+        initiative = (int) HashMapExplorer.getNumber(map,"initiative");
+        damage = (int) HashMapExplorer.getNumber(map,"damage");
+        ArrayList lst = HashMapExplorer.getList(map, "droplist");
+        float totalWeight = 0;
+        ArrayList<Object> items = new ArrayList<>();
+        for(int ite = 0; ite < lst.size(); ++ite){
+            if(lst.get(ite) instanceof WeightedObject chanceItem){
+                if(chanceItem.weight.floatValue() > 0f) {
+                    totalWeight += (float) chanceItem.weight;
+                    items.add(chanceItem);
+                }
+            } else if(lst.get(ite) instanceof String garenteedItem) {
+                items.add(garenteedItem);
+            }
+        }
+        RngHandler.WeightedObjectsToList(totalWeight, items, loot);
+        //loot.add(new Melee("Ged",23,53,true,false)); // PLACEHOLDER!!!
+
+    }
+
     public String getName(){
         return name;
     }

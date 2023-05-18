@@ -46,10 +46,8 @@ public class TestFileInterpreter {
                 name = "small rat"
                 droplist = {
                     "Knife"
-                    random_list = {
-                        2 = { "Cheese" }
-                        2 = {}
-                    }
+                    2 = {"yes?"}
+                    0 = {}
                 }
                 defence = 2
                 damage = {
@@ -58,11 +56,11 @@ public class TestFileInterpreter {
                 }
             }""";
         ArrayList<String> objectsFound = FileInterpreter.findObjects(first, "UnitTest testParse of FileInterpreter", false);
-        Object hashMap = FileInterpreter.parse(objectsFound.get(0), "UnitTest testParse of FileInterpreter");
+        ArrayList<HashMap<String, Object>> hashMap = FileInterpreter.parseList(objectsFound.get(0), "UnitTest testParse of FileInterpreter");
 
-        Assertions.assertEquals("small rat", HashMapExplorer.getString(hashMap, "name"));
-        Assertions.assertEquals(2, HashMapExplorer.getNumber(hashMap, "defence").intValue());
-        Assertions.assertEquals(2.0, HashMapExplorer.getNumber(hashMap,"damage.min").floatValue());
+        Assertions.assertEquals("small rat", HashMapExplorer.getString(hashMap.get(0), "name"));
+        Assertions.assertEquals(2, HashMapExplorer.getNumber(hashMap.get(0), "defence").intValue());
+        Assertions.assertEquals(2.0, HashMapExplorer.getNumber(hashMap.get(0),"damage.min").floatValue());
     }
 
     @Test

@@ -1,13 +1,38 @@
 package philosophers_ice;
 
+import ICE.util.FileInterpreter;
 import javafx.scene.image.Image;
 
 import java.io.File;
 import java.io.Serializable;
-import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public abstract class Item implements Serializable {
+    private static final ArrayList<Item> listOfUs = new ArrayList<Item>();
+    public static Item getItem(String nameOfItem){
+        for(Item item: listOfUs){
+            if(item.name == nameOfItem){
+                return item;
+            }
+        }
+        return null;
+    }
+    public static void load(){
+        if(listOfUs.isEmpty()) {
+            for (HashMap<String, Object> s : FileInterpreter.parseFolder("Data/common/items", true)) {
+                if (s.containsKey("melee_weapon")) {
+                    listOfUs.add(new Melee(s));
+                }
+            }
+        }
+    }
+    public static void reload(){
+        listOfUs.clear();
+        load();
+    }
+
+
     public String name;
     public String description;
     public ArrayList<Effect> statChanges;

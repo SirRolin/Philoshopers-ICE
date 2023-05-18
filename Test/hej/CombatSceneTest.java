@@ -8,8 +8,6 @@ import philosophers_ice.Player;
 
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class CombatSceneTest {
     CombatScene scene1;
     @BeforeEach
