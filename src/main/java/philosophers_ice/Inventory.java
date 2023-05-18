@@ -173,6 +173,14 @@ public class Inventory implements Serializable {
             equipOneHanded(item);
         }
     }
+    public Item getItem(String nameOfItem){
+        for(Item item: items){
+            if(item.name.equals(nameOfItem)){
+                return item;
+            }
+        }
+        return null;
+    }
 
     public int getMaxSize() {
         return maxSize += (p1.str * 2);
