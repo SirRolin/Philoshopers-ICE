@@ -21,6 +21,8 @@ public class AlertBox {
         window.setTitle(title);
         window.setMinWidth(250);
 
+        isClosed = true;
+
         Label label = new Label();
         label.setText(message);
         Button closeButton = new Button("Close");
@@ -37,8 +39,10 @@ public class AlertBox {
 
 
     public static GameState display(String title, String message, String typeOfInput){
-        Stage window = new Stage();
 
+        isClosed = true;
+
+        Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle(title);
         window.setMinWidth(300);

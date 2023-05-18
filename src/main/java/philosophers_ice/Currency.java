@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 
 public class Currency implements Serializable {
-    public int value;
+    public int amount;
     public String description;
     public String name;
     public String imagePath;
@@ -16,14 +16,14 @@ public class Currency implements Serializable {
        this.name = (String) map.getOrDefault("currencyType","");
     }
 
-    public Currency(Currency _this, int value){
-        this.value = value;
+    public Currency(Currency _this, int amount){
+        this.amount = amount;
         this.description = _this.description;
         this.name = _this.name;
     }
 
-    public int getValue() {
-        return value;
+    public int getAmount() {
+        return amount;
     }
 
     public String getDescription(){
