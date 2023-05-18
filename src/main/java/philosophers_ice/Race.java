@@ -2,7 +2,9 @@ package philosophers_ice;
 
 import ICE.util.FileInterpreter;
 import ICE.util.HashMapExplorer;
+import javafx.scene.image.Image;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,5 +47,17 @@ public class Race implements Serializable {
     public Race(String name, String imagePath){
         this.name = name;
         this.imagePath = imagePath;
+    }
+
+    public Image getImage(){
+        String path = imagePath != null ? imagePath : "Data/gfx/races/" + name + ".png";
+        File file = new File(path);
+
+        //// if it does exist
+        if(file.exists()){
+            new Image(file.toURI().toString());
+        }
+        //// if it doesn't exist
+        return new Image("_NULL_.png");
     }
 }

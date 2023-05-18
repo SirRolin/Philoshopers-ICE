@@ -9,7 +9,6 @@ import java.util.ArrayList;
 public class Player implements Serializable {
     public String name;
     public Race race;
-    private String imagePath;
     public int str;
     public int agi;
     public int con;
@@ -100,14 +99,9 @@ public class Player implements Serializable {
     }
 
     public Image getImage(){
-        String path = imagePath != null ? imagePath : "Data/gfx/races/" + name + ".png";
-        File file = new File(path);
-
-        //// if it does exist
-        if(file.exists()){
-            new Image(file.toURI().toString());
+        if(race!=null){
+            return race.getImage();
         }
-        //// if it doesn't exist
         return new Image("_NULL_.png");
     }
 }
