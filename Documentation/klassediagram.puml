@@ -2,11 +2,12 @@
 'https://plantuml.com/class-diagram
 
 class Launcher extends javafx.Application {
-    + void start(Stage stage) throws Exception
-    - Parent createContent()
-    + void main(String[] args)
-    + GameState game
-    + MainMenuGUI ui
+    '+ void start(Stage stage) throws Exception
+    '- Parent createContent()
+    '+ void main(String[] args)
+    '+ GameState game
+    '+ MainMenuGUI ui
+    + main
 }
 abstract class GUI {
     + update(GameState gs)
@@ -14,15 +15,28 @@ abstract class GUI {
 }
 class explorerScene extends GUI {
 }
-class CharacterScene extends GUI{
-    + player createPlayer()
-    + Player levelUpMenu(player)
+class CharacterScene{
+    - Player currentPlayer
+    - ArrayList<Enemy> enemies
+    - int maxInitiative
+    - int tmpPlayerInitiative
+    - int turn
+    + CombatScene(Player,ArrayList<Enemy>)
+    + void startCombat()
+    - void combat
+    + void endCombat()
+    + void endGame()
+    - void chooseActionPlayer()
+    - Enemy chooseEnemyToAttack()
+    - boolean enemyNotAboveMaxInitiative()
+
 }
 abstract class StateSaver Extends util.FileIO {
-    Boolean savePlace(Place)
-    Boolean saveGame(GameState)
-    GameState loadGame(SaveFolder)
-    GameState newGame()
+    + Boolean saveMap(GameState,MapTile,int,int)
+    + Boolean saveGame(GameState)
+    + GameState loadGame(String)
+    + MapTile loadMap(GameState,int,int)
+    + GameState newGame()
 }
 abstract class util.FileIO {
     + String defaultPath
@@ -31,11 +45,15 @@ abstract class util.FileIO {
     + writeSerialised(Object, String)
 }
 class GameState extends External.Serializable{
-    + Name
-    + MapTile[5][5] miniMap
-    + Player p1
-    + HashMap<GUI> guis
     + GUI activeGUI
+    + MapTile[][] maptile
+    + String name
+    + Player p1
+    + int x
+    + int y
+    + GameState()
+    + GameState(String)
+    + MapTile[][] getMinimap(int)
 }
 abstract class JSONInterpreter {
     + List<Object> Interpret(String[] lines)
@@ -47,8 +65,10 @@ class Commands {
     + void Search(String text)
 }
 class Player extends External.Serializable {
-    + Player(int Str, int Agi, int Con, int Wits, int IQ, int Magi)
+    + Player(String)
+    + Player(Strin name,String race,int Str, int Agi, int Con, int Wits, int willPower, int Magi)
     + String name
+    + String race
     + int str
     + int agi
     + int con
@@ -57,70 +77,134 @@ class Player extends External.Serializable {
     + int magi
     - int hp
     - int mp
+    - String imagePath
+    + int initiative
+    - ArrayList<EffectCard> effectCards
+    - Inventory inventory
+    - int getDefence()
+    + int attack()
+    + int getHP()
+    + Image getImage()
+    + int getInitiative()
+    + void getLoot(ArrayList<Item>)
     + int getMaxHP()
     + int getMaxMP()
-    + int getSpeed()
-    + ArrayList<Boon> boons
-    + Inventory inventory
-    + int getInitiative()
-    + int getSpellBuffProc()
-    + int increaseHP(int hp)
-    + int increaseMP(int mp)
-    + int getHP()
     + int getMP()
+    + int getSpeed()
+    + int getSpellBuffProc()
+    + void increaseHP(int)
+    + void increaseMP(int)
     + void recover()
+    + int takeDamge(int)
 }
 class Effect{
-    + String statName
-    + Int valueBy
-    + Effect(String, Int)
+    - FINAL ArrayList<Effect> listOfUs
+    + String name
+    + HashMap statChange
+    + int valueBy
+    + Effect(String,int,HashMap<String,Integer>)
+    + Effect getItem(String)
+    + String getName()
+    + int getValue()
+    + void load()
+    + void reload()
+    + int statCalculator(String)
 }
 class Allies {
     + ArrayList<Effect> buffs
     + String name
+    + String description
+    + Allies(ArrayList<Effect>,String,String)
+    + ArrayList<Effect> getbuffs()
+    + String getDescription()
+    + String getName()
 }
 class Inventory extends External.Serializable {
-    - ArrayList<Item> items
-    - Item equippedWeaponMainHand
-    - Item equippedWeaponOffHand
-    - Item equippedArmour
     - Accessory equippedAccessory
+    - Armour equippedArmour
+    - Weapon equippedMainHand
+    - Weapon equippedOffHand
+    - ArrayList<Item> items
     - int maxSize
-    + ArrayList<Item> getItems()
+    + Player p1
+    + inventory()
+    + inventory(Player)
     + void addToItems(Item)
+    - void equipArmour(Armour)
+    + void equipItem(Item)
+    - void equipOneHanded(Weapon)
+    - void equipTwoHanded(Weapon)
+    - void equipWeapon(Weapon)
     + int getDamage()
     + int getDefence()
-    + void equipItem(Item)
+    + void getEffectModifiers()
+    + Accessory getEquippedAccessory()
+    + Armour getEquippedArmour()
+    + Weapon getEquippedMainHand()
+    + Weapon getEquippedOffHand()
+    + Item getItem(String)
+    + ArrayList<Item> getItems()
+    + int getMaxSize()
 }
 class MapTile extends External.Serializable {
-    + updateEffectsPlayer()
-    + updateEffectsEnemy()
+    '+ updateEffectsPlayer()
+    '+ updateEffectsEnemy()
     + String imagePath
     + ArrayList<Enemy> enemy
-    + ArrayList<Boon> boons
+    + ArrayList<EffectCard> effectCards
+    + String name
+    + MapTile(HashMap<?,?>)
+    + MapTile(MapTile)
+    + MapTile(String)
+    + MapTile(String,String)
+    + Image[] getImage()
 }
 abstract class Item extends External.Serializable{
-    + ArrayList<Enchantment> enchantment
+    - ArrayList<Item> listOfUs
     + String name
     + String description
+    + String imagePath
+    + ArrayList<Effect> statChanges
+    + Image getImage()
+    + Item getItem(string)
+    + String getName()
+    + void load()
+    + void reload()
 }
 abstract class Weapon extends Item, External.Serializable {
-    +getName()
-    +getDmg()
-    +getType()
-    +getDamageType()
+    - boolean isOneHanded
+    - boolean isTwoHanded
+    + Weapon(boolean,boolean)
+    + Weapon(HashMap<String,Object>)
+    + int getDmg()
+    + String getDmgType()
+    + boolean getType()
+    + boolean isOneHanded()
+    + boolean isTwoHanded()
 }
 class Melee extends Weapon, External.Serializable {
-    - String name
-    - boolean type
+    + int maxDamage
+    + int minDamage
+    + Melee(HashMap<String,Object>)
+    + Melee(String,int,int,boolean,boolean)
+    + int getDmg()
+    + String getDmgType()
+    + boolean getType()
 }
 class Ranged extends Weapon, External.Serializable {
-    - String name
-    - boolean type
+    - int maxDamage
+    - int minDamage
+    + Ranged(HashMap<String,Object>)
+    + Ranged(String, int,int,boolean,boolean)
+    + int getDmg()
+    + String getDmgType()
+    + boolean getType()
 }
 abstract class Armour extends Item, External.Serializable {
     + String name
     + String type
+    + Armour(HashMap<String,Object>)
+    + Armour(String,int)
     + getDef()
 }
 class Consumable extends Item, External.Serializable {
@@ -134,25 +218,47 @@ class Enchantment extends External.Serializable{
     + ArrayList<Effect> stats
     + String prefix
     + String suffix
+    + Enchantment(ArrayList<Effect>,String,String)
+    + String getPrefix()
+    + String getSufix()
 }
 class Currency{
     + int value
     + String name
     + String description
-    + getDescription()
-    + getCurrencyType()
-    + getValue()
-
+    + String imagePath
+    + Currency(Currency,int)
+    + Currency(HashMap<String,Object>)
+    + String getDescription
+    + Image getImage()
+    + String getName()
+    + int getValue()
 }
 class Enemy extends External.Serializable {
     - String name
     - int initiative
     - String description
-    + getName()
-    + getInitiative()
-    + getDescription()
-    + getDefence()
-    + getDamage()
+    - int damage
+    - int defence
+    - String description
+    - int hp
+    - String imagePath
+    - int initiative
+    - ArrayList<Item> loot
+    - String name
+    + Enemy(HashMap<String, Object>)
+    + Enemy(String,String,String,int,int,int,int)
+    + int attack()
+    + ArrayList<Item> droppedLoot()
+    + int getDefence()
+    + String getDescription()
+    + int getHP()
+    + Image getImage()
+    + String getImagePath()
+    + int getInitiative()
+    + String getName()
+    + int takeDamage(int)
+    + void updateInitiative(int)
 }
 class CombatScene extends GUI {
     - ArrayList<Enemy> enemies
@@ -160,13 +266,27 @@ class CombatScene extends GUI {
     - int maxInitiative
     + void startCombat(player)
     + void endCombat()
-
-
 }
 class EffectCard {
     + ArrayList<Effect> statChanges
     + String name
     + String desc
+    + EffectCard(ArrayList<Effect>,String,String)
+    + void addBuffs()
+    + String getDesc()
+    + String getName()
+    + ArrayList<Effect> getStatChanges()
+}
+class Race extends External.Serializable  {
+    - String imagePath
+    - ArrayList<Race> listOfUs
+    + String name
+    + Race(HashMap<String,Object>,String)
+    + Race(String,String)
+    + Race getRace(String)
+    + ArrayList<Race> getRaces()
+    + void load()
+    + void reload()
 }
 interface External.Serializable
 Launcher --> StateSaver
@@ -186,6 +306,7 @@ Commands --* CharacterScene
 Commands --* CombatScene
 Player o-- Allies
 Player *-- Inventory
+Player *-- Race
 GameState "5x5" *-- MapTile
 Inventory "0-?" o-- Item
 Enchantment -o Item

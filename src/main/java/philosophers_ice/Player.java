@@ -18,8 +18,9 @@ public class Player implements Serializable {
     public int magi;
     private int hp;
     private int mp;
-    ArrayList<EffectCard> effectCards;
-    public Inventory inventory;
+    private ArrayList<EffectCard> effectCards;
+    private Inventory inventory;
+
 
     public Player(String name){
         this.name = name;
