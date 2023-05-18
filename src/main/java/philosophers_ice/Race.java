@@ -1,5 +1,6 @@
 package philosophers_ice;
 
+import ICE.util.ErrorHandler;
 import ICE.util.FileInterpreter;
 import ICE.util.HashMapExplorer;
 import javafx.scene.image.Image;
@@ -44,6 +45,7 @@ public class Race implements Serializable {
             }
             ++i;
         }
+        ErrorHandler.handleError(new Exception("missing " + name + " in race list!"));
         return 0;
     }
 
