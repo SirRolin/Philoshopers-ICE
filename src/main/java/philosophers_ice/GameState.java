@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class GameState implements Serializable {
     public ArrayList<String> commandsList;
     public String name = "";
-    MapTile[][] maptile = getMinimap();
+    transient MapTile[][] maptile = getMinimap(9);
     int x = 0;
     int y = 0;
     public GameState(String name){
@@ -33,13 +33,11 @@ public class GameState implements Serializable {
 
     public Player p1;
 
-
-
-    MapTile[][] getMinimap(){
-        MapTile output[][] = new MapTile[5][5];
-        for(int i = 0; i < 5; ++i){
-            for(int j = 0; j < 5; ++j){
-                output[i][j] = StateSaver.loadMap(this, x, y);
+    MapTile[][] getMinimap(int size){
+        MapTile output[][] = new MapTile[size*2-1][size*2-1];
+        for(int i = 0; i < size*2-1; ++i){
+            for(int j = 0; j < size*2-1; ++j){
+                output[i][j] = StateSaver.loadMap(this, i + x - size*2, j + y - size*2);
             }
         }
 
