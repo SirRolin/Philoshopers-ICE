@@ -39,8 +39,6 @@ public class Player implements Serializable {
         this.initiative = wits*2+3;
         inventory = new Inventory();
     }
-    /*philosophers_ice.Player(Object obj){
-    }*/
     public int getMaxHP(){
         return con*3+50;
     }
@@ -102,7 +100,7 @@ public class Player implements Serializable {
     }
 
     public Image getImage(){
-        String path = imagePath != null ? imagePath : "Data/gfx/item/" + name + ".png";
+        String path = imagePath != null ? imagePath : "Data/gfx/races/" + name + ".png";
         File file = new File(path);
 
         //// if it does exist

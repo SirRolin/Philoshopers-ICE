@@ -1,0 +1,3 @@
+human = {
+    imagePath = "Data/gfx/races/Humanfixedmore.png"
+}

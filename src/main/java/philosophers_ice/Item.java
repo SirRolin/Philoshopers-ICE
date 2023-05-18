@@ -12,7 +12,7 @@ public abstract class Item implements Serializable {
     private static final ArrayList<Item> listOfUs = new ArrayList<Item>();
     public static Item getItem(String nameOfItem){
         for(Item item: listOfUs){
-            if(item.name == nameOfItem){
+            if(item.name.equals(nameOfItem)){
                 return item;
             }
         }
