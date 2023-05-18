@@ -1,5 +1,6 @@
 package philosophers_ice;
 
+import ICE.util.ErrorHandler;
 import javafx.scene.image.Image;
 
 import java.io.File;
@@ -19,12 +20,7 @@ public class Player implements Serializable {
     private int hp;
     private int mp;
     private ArrayList<EffectCard> effectCards;
-    private Inventory inventory;
-
-
-    public Player(String name){
-        this.name = name;
-    }
+    public final Inventory inventory = new Inventory();
     public Player(String name, Race race, int str, int agi, int con,int wits,int willPower,int magi){
         this.name = name;
         this.race = race;
@@ -37,7 +33,6 @@ public class Player implements Serializable {
         this.hp = getMaxHP();
         this.mp = getMaxMP();
         this.initiative = wits*2+3;
-        inventory = new Inventory();
     }
     public int getMaxHP(){
         return con*3+50;
@@ -84,7 +79,8 @@ public class Player implements Serializable {
     }
     public int attack(){
         int damage = inventory.getDamage() ;
-        inventory.getEffectModifiers(); // WORK IN PROGESS !!!! Part of nice to have
+        // WORK IN PROGESS !!!! Part of nice to have
+        damage += (int) inventory.getEffectModifiers("damage"); //todo add more modifiers, and correct once
         if(inventory.getEquippedWeaponMainHand() instanceof Melee){
            damage *= str/2;
         }
@@ -106,5 +102,31 @@ public class Player implements Serializable {
         return new Image("_NULL_.png");
     }
 
+    public int getDerivedStat(int index){
+        switch (index) {
+            case 0 -> {
+                return str + (int) inventory.getEffectModifiers("str");
+            }
+            case 1 -> {
+                return agi + (int) inventory.getEffectModifiers("agi");
+            }
+            case 2 -> {
+                return con + (int) inventory.getEffectModifiers("con");
+            }
+            case 3 -> {
+                return wits + (int) inventory.getEffectModifiers("wits");
+            }
+            case 4 -> {
+                return willPower + (int) inventory.getEffectModifiers("willpower");
+            }
+            case 5 -> {
+                return magi + (int) inventory.getEffectModifiers("magi");
+            }
+            default -> {
+                ErrorHandler.handleError(new Exception("getDerivedStat index not 0 through 5"));
+                return -1;
+            }
+        }
+    }
 
 }

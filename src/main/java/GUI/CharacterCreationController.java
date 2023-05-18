@@ -72,8 +72,6 @@ public class CharacterCreationController implements Initializable {
     @FXML
     private ImageView raceImage;
     @FXML
-    private Image currentRaceImage;
-    @FXML
     private GridPane statPane;
     @FXML
     private TextField nameField;
@@ -95,6 +93,7 @@ public class CharacterCreationController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        Currency.load();
         Race.load();
         SharedData.load();
         String defaultRace = HashMapExplorer.getString(SharedData.defines.get(0),"defaultRace");
@@ -106,8 +105,7 @@ public class CharacterCreationController implements Initializable {
             SharedData.gs = null;
             if(gs.p1 != null) {
                 currentPlayer = gs.p1;
-                currentRaceImage = gs.p1.getImage();
-                raceImage.setImage(currentRaceImage);
+                raceImage.setImage(gs.p1.getImage());
                 raceImage.setScaleX(2.0);
                 raceImage.setScaleY(2.0);
                 raceImage.setSmooth(false);
@@ -127,11 +125,11 @@ public class CharacterCreationController implements Initializable {
                     raceIndex = Race.getIndexOf(races, defaultRace);
                 }
                 gs.p1 = new Player("name",races.get(raceIndex),0,0,0,0,0,0);
+                gs.p1.inventory.addCurrency("Life Essence", 30);
                 currentPlayer = gs.p1;
                 playerName = currentPlayer.name;
                 playerRace = currentPlayer.race;
-                currentRaceImage = currentPlayer.getImage();
-                raceImage.setImage(currentRaceImage);
+                raceImage.setImage(currentPlayer.getImage());
                 raceImage.setScaleX(2.0);
                 raceImage.setScaleY(2.0);
                 raceImage.setSmooth(false);
@@ -143,7 +141,7 @@ public class CharacterCreationController implements Initializable {
                 subtractBtn.setAlignment(Pos.CENTER);
                 Button plusBtn = new Button("+");
                 plusBtn.setAlignment(Pos.CENTER);
-                Label statLabel = new Label(statNames[i]+stats[i]);
+                Label statLabel = new Label(statNames[i]+stats[i]+"("+gs.p1.getDerivedStat(i)+")");
                 statLabel.setAlignment(Pos.CENTER);
                 statLabels.add(statLabel);
                 addButtons.add(plusBtn);
@@ -162,9 +160,10 @@ public class CharacterCreationController implements Initializable {
                 public void handle(ActionEvent actionEvent) {
                     raceIndex -= 1;
                     if(raceIndex < 0){
-                        raceIndex = races.size();
+                        raceIndex = races.size() - 1;
                     }
-                    System.out.println(raceIndex);
+                    raceImage.setImage(races.get(raceIndex).getImage());
+                    System.out.println(races.get(raceIndex).name);
                 }
             });
 
@@ -172,11 +171,11 @@ public class CharacterCreationController implements Initializable {
                 @Override
                 public void handle(ActionEvent actionEvent) {
                     raceIndex += 1;
-                    if(raceIndex > races.size()){
+                    if(raceIndex > races.size() - 1){
                         raceIndex = 0;
-
                     }
-                    System.out.println(raceIndex);
+                    raceImage.setImage(races.get(raceIndex).getImage());
+                    System.out.println(races.get(raceIndex).name);
                 }
             });
 
@@ -196,8 +195,8 @@ public class CharacterCreationController implements Initializable {
         StateSaver.saveGame(gs);
         //System.out.println(file.exists());
         //currentRaceImage =  new Image(file.toURI().toString());
-        raceImage.setImage(currentRaceImage);
-        System.out.println(currentRaceImage.getUrl());
+        //raceImage.setImage(currentRaceImage);
+        System.out.println(raceImage.getImage().getUrl());
 
     }
 
@@ -205,7 +204,7 @@ public class CharacterCreationController implements Initializable {
         subtractButtons.get(index).setOnAction(e -> {
             if(stats[index] != 0 && gs.p1.inventory.getCurrency("Life Essence") != null){
                 stats[index] -=1;
-                statLabels.get(index).setText(statNames[index]+stats[index]);
+                statLabels.get(index).setText(statNames[index]+stats[index]+"("+gs.p1.getDerivedStat(index)+")");
                 gs.p1.inventory.getCurrency("Life Essence").amount += 1;
             }});
     }
@@ -214,7 +213,7 @@ public class CharacterCreationController implements Initializable {
         addButtons.get(index).setOnAction(e -> {
             if(gs.p1.inventory.getCurrency("Life Essence") != null && gs.p1.inventory.getCurrency("Life Essence").amount > 0){
                 stats[index] +=1;
-                statLabels.get(index).setText(statNames[index]+stats[index]);
+                statLabels.get(index).setText(statNames[index]+stats[index]+"("+gs.p1.getDerivedStat(index)+")");
                 gs.p1.inventory.getCurrency("Life Essence").amount -= 1;
             }});
     }
