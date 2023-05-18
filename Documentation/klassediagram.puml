@@ -43,8 +43,9 @@ abstract class JSONInterpreter {
 }
 class Commands {
     - String searchPatterns
-    + Void Action()
-    + void Search(String text)
+    - VoidFunction action
+    commands(String, VoidFunction)
+    + boolean Action(String text)
 }
 class Player extends External.Serializable {
     + Player(int Str, int Agi, int Con, int Wits, int IQ, int Magi)
