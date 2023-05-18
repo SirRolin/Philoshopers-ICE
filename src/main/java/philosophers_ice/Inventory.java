@@ -183,7 +183,7 @@ public class Inventory implements Serializable {
     }
 
     public int getMaxSize() {
-        return maxSize += (p1.str * 2);
+        return maxSize + (p1.str * 2);
     }
 }
 
