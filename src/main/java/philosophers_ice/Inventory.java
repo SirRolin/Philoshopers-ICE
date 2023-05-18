@@ -59,7 +59,11 @@ public class Inventory implements Serializable {
     }
 
     public int getDefence() {
-        return 0;
+        int def = equippedArmour.getDefence();
+        if(equippedArmour == null){
+            def = 1;
+        }
+        return def;
     }
 
     public void equipItem(Item item) {
@@ -107,7 +111,7 @@ public class Inventory implements Serializable {
 
     }
 
-    public void equipOneHanded(Weapon item) {
+    private void equipOneHanded(Weapon item) {
         if (this.equippedWeaponMainHand == null) {
             System.out.println("You equipped " + item.getName() + "in your mainhand.");
             this.equippedWeaponMainHand = ((Weapon) item);
@@ -152,7 +156,7 @@ public class Inventory implements Serializable {
     }
 
 
-    public void equipTwoHanded(Weapon item) {
+    private void equipTwoHanded(Weapon item) {
         if (this.equippedWeaponMainHand == null) {
             this.equippedWeaponMainHand = ((Weapon) item);
             items.remove(item);
