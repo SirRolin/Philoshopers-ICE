@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 public class Ranged extends Weapon{
-    private String name;
+
     private int minDamage;
     private int maxDamage;
 

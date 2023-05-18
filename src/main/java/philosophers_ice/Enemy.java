@@ -80,6 +80,11 @@ public class Enemy implements Serializable {
     public void updateHP(int input){
         this.hp += input;
     }
+    public int takeDamage(int damage){
+        int actualdamage  = (int) ((double) damage) * 100 / (100 + getDefence());
+        this.hp -= actualdamage;
+        return actualdamage;
+    }
     public int attack(){
         return damage;
     }

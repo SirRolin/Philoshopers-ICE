@@ -59,6 +59,16 @@ public class Player implements Serializable {
     public void increaseHP(int hp){
         this.hp += hp;
     }
+    public int takeDamage(int damage){
+        int actualdamage  = (int) ((double) damage) * 100 / (100 + getDefence());
+        this.hp -= actualdamage;
+        return actualdamage;
+    }
+
+    private int getDefence() {
+        return inventory.getDefence();
+    }
+
     public void increaseMP(int mp){
         this.mp += mp;
     }
@@ -70,6 +80,9 @@ public class Player implements Serializable {
     }
     public void recover(){
         this.hp += (con+(str/2)+willPower)+ 20;
+        if(this.hp > getMaxHP()){
+            this.hp = getMaxHP();
+        }
     }
     public int attack(){
         int damage = inventory.getDamage() ;

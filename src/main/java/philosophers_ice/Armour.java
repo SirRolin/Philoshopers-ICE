@@ -5,7 +5,6 @@ import ICE.util.HashMapExplorer;
 import java.util.HashMap;
 
 public class Armour extends Item{
-    public String name;
     public String type;
     public int defence;
 
