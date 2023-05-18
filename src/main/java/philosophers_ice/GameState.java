@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class GameState implements Serializable {
-    public ArrayList<String> commandsList;
+
     public String name = "";
     transient MapTile[][] maptile = getMinimap(9);
     int x = 0;
@@ -13,12 +13,13 @@ public class GameState implements Serializable {
         this.name = name;
 
         StateSaver.saveGame(this);
-        this.commandsList = new ArrayList<>();
+
+        /*this.commandsList = new ArrayList<>();
         commandsList.add("go to");
         commandsList.add("x");
         commandsList.add("inspect");
         commandsList.add("inventory");
-        commandsList.add("i");
+        commandsList.add("i");*/
 
         //StateSaver.saveGame(this);
 
