@@ -97,7 +97,7 @@ public class CharacterCreationController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Race.load();
         SharedData.load();
-        String defaultRace = HashMapExplorer.getString(SharedData.defines,"DefaultRace");
+        String defaultRace = HashMapExplorer.getString(SharedData.defines.get(0),"defaultRace");
         races = Race.getRaces();
 
         if(SharedData.gs != null) {
@@ -126,7 +126,7 @@ public class CharacterCreationController implements Initializable {
                 if(defaultRace != null){
                     raceIndex = Race.getIndexOf(races, defaultRace);
                 }
-                gs.p1 = new Player("name",Race.getRace(defaultRace),0,0,0,0,0,0);
+                gs.p1 = new Player("name",races.get(raceIndex),0,0,0,0,0,0);
                 currentPlayer = gs.p1;
                 playerName = currentPlayer.name;
                 playerRace = currentPlayer.race;
@@ -135,20 +135,7 @@ public class CharacterCreationController implements Initializable {
                 raceImage.setScaleX(2.0);
                 raceImage.setScaleY(2.0);
                 raceImage.setSmooth(false);
-<<<<<<< Updated upstream
-                /*
-                ArrayList<HashMap<?, ?>> races = new ArrayList<>();
-                for(Object obj: FileInterpreter.parseFolder("Data/common/Races/")){
-                    if(obj instanceof HashMap<?, ?> map){
-                        races.add(map);
-                    }
-                }
-                gs.p1 = new Player("name", new Race(races.get(0)),0,0,0,0,0,0,0,0);
-                */
-                gs.p1 = new Player("name", new Race("human", null),0,0,0,0,0,0);
 
-=======
->>>>>>> Stashed changes
             }
 
             for(int i = 0; i < statNames.length; i++){
@@ -199,7 +186,6 @@ public class CharacterCreationController implements Initializable {
     }
 
     public void onStartButton(){
-        //File file = new File("Data/gfx/Races/Orgefixed.png");
         currentPlayer.str = stats[0];
         currentPlayer.agi = stats[1];
         currentPlayer.con = stats[2];

@@ -19,7 +19,7 @@ public class Player implements Serializable {
     private int hp;
     private int mp;
     ArrayList<EffectCard> effectCards;
-    Inventory inventory;
+    public Inventory inventory;
 
     public Player(String name){
         this.name = name;
@@ -104,4 +104,6 @@ public class Player implements Serializable {
         }
         return new Image("_NULL_.png");
     }
+
+
 }
