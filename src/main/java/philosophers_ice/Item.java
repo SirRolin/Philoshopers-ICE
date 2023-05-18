@@ -24,6 +24,12 @@ public abstract class Item implements Serializable {
                 if (s.containsKey("melee_weapon")) {
                     listOfUs.add(new Melee(s));
                 }
+                if(s.containsKey("ranged_weapon")){
+                    listOfUs.add(new Ranged(s));
+                }
+                if(s.containsKey("armour")){
+                    listOfUs.add(new Armour(s));
+                }
             }
         }
     }
