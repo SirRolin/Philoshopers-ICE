@@ -39,13 +39,17 @@ public class Race implements Serializable {
 
     public static int getIndexOf(ArrayList<Race> list, String name){
         int i = 0;
-        for (Race r: list) {
-            if(r.name.equals(name)){
-                return i;
+        if(list != null) {
+            for (Race r : list) {
+                if (r.name.equals(name)) {
+                    return i;
+                }
+                ++i;
             }
-            ++i;
+            ErrorHandler.handleError(new Exception("missing " + name + " in race list!"));
+        } else {
+            ErrorHandler.handleError(new Exception("race list missing!"));
         }
-        ErrorHandler.handleError(new Exception("missing " + name + " in race list!"));
         return 0;
     }
 
