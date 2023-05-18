@@ -34,7 +34,7 @@ public class CombatScene {
             if(tmpPlayerInitiative >= getHigestInitiativeEnemy().getInitiative()){
                 chooseActionPlayer();
             }else{
-               currentPlayer.increaseHP(-getHigestInitiativeEnemy().attack());
+               currentPlayer.takeDamage(getHigestInitiativeEnemy().attack());
                getHigestInitiativeEnemy().updateInitiative(-maxInitiative);
             }
 
@@ -63,7 +63,7 @@ public class CombatScene {
             switch (input) {
                 case 1 -> {
                     Enemy choosenEnemy = chooseEnemyToAttack();
-                    choosenEnemy.updateHP(-currentPlayer.attack());
+                    choosenEnemy.takeDamage(currentPlayer.attack());
                     if (choosenEnemy.getHp() <= 0) {
                         currentPlayer.getLoot(choosenEnemy.droppedLoot()); // PLACEHOLDER!!
                         enemies.remove(choosenEnemy);

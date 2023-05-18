@@ -1,5 +1,6 @@
 package ICE.util;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public abstract class HashMapExplorer {
@@ -25,6 +26,19 @@ public abstract class HashMapExplorer {
             }
         }
         return 0;
+    }
+
+    public static ArrayList<Object> getList(Object obj, String key){
+        if(obj instanceof HashMap<?, ?> map){
+            Object Object = getToObject(map, key);
+            if (Object instanceof ArrayList<? extends Object> lst) {
+                return (ArrayList<Object>) lst;
+            } else {
+                //// in case the list doesn't exist the for each will not iterate
+                return new ArrayList<>();
+            }
+        }
+        return new ArrayList<>();
     }
 
     private static Object getToObject(HashMap<?,?> map, String key){
