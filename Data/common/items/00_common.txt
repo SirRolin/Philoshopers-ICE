@@ -1,3 +1,7 @@
 melee_weapon = {
     name = "knife"
+    Damage = {
+    min = 2
+    max = 5
+    }
 }
