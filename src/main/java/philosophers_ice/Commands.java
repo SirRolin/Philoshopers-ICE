@@ -1,5 +1,7 @@
 package philosophers_ice;
 
+import kotlin.coroutines.CoroutineContext;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -48,6 +50,11 @@ public class Commands {
 
             //if(gameState.p1.inventory.getItems().contains()){}
 
+        }else if(text == "inventory" || text == "i"){
+            System.out.println("Hello this is your inventory");
+            for(Item item: gameState.p1.inventory.getItems()){
+                System.out.println(item.name);
+            }
         }
     }
 
