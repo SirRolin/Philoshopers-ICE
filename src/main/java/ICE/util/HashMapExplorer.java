@@ -4,6 +4,28 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public abstract class HashMapExplorer {
+    public static HashMap<String,Object> getMap(Object obj, String key){
+        if(obj instanceof HashMap<?, ?> map){
+            Object Object = getToObject(map, key);
+            if (Object instanceof HashMap<?,?> map1) {
+                return (HashMap<String, Object>) map1;
+            } else {
+                return null;
+            }
+        }
+        return null;
+    }
+    public static String getImage(Object obj, String key){
+        if(obj instanceof HashMap<?, ?> map){
+            Object Object = getToObject(map, key);
+            if (Object instanceof String theString) {
+                return theString;
+            } else {
+                return "_NULL_.png";
+            }
+        }
+        return "_NULL_.png";
+    }
     public static String getString(Object obj, String key){
         if(obj instanceof HashMap<?, ?> map){
             Object Object = getToObject(map, key);
