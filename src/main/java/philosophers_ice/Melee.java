@@ -1,13 +1,20 @@
 package philosophers_ice;
 
+import ICE.util.HashMapExplorer;
+
+import java.util.HashMap;
 import java.util.Random;
 
 public class Melee extends Weapon {
-    private String name;
     private int minDamage;
     private int maxDamage;
 
 
+    Melee(HashMap<String, Object> map) {
+        super(map);
+        minDamage = (int) HashMapExplorer.getNumber(map, "damage.min");
+        maxDamage = (int) HashMapExplorer.getNumber(map, "damage.max");
+    }
     Melee(String name, int minDamage,int maxDamage,boolean isOneHanded, boolean isTwoHanded){
         super(isOneHanded,isTwoHanded);
         this.name = name;
