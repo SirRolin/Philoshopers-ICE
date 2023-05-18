@@ -25,7 +25,7 @@ public class Player implements Serializable {
     public Player(String name){
         this.name = name;
     }
-    public Player(String name, Race race, int str, int agi, int con,int wits,int willPower,int magi,int hp,int mp){
+    public Player(String name, Race race, int str, int agi, int con,int wits,int willPower,int magi){
         this.name = name;
         this.race = race;
         this.str = str;
@@ -34,8 +34,8 @@ public class Player implements Serializable {
         this.wits = wits;
         this.willPower = willPower;
         this.magi = magi;
-        this.hp = hp;
-        this.mp = mp;
+        this.hp = getMaxHP();
+        this.mp = getMaxMP();
         this.initiative = wits*2+3;
         inventory = new Inventory();
     }
