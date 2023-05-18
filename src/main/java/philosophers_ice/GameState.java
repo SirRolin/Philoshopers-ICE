@@ -11,6 +11,7 @@ public class GameState implements Serializable {
     int y = 0;
     public GameState(String name){
         this.name = name;
+
         StateSaver.saveGame(this);
         this.commandsList = new ArrayList<>();
         commandsList.add("go to");
@@ -18,6 +19,9 @@ public class GameState implements Serializable {
         commandsList.add("inspect");
         commandsList.add("inventory");
         commandsList.add("i");
+
+        //StateSaver.saveGame(this);
+
     }
     GameState(){
 
@@ -35,7 +39,7 @@ public class GameState implements Serializable {
         MapTile output[][] = new MapTile[5][5];
         for(int i = 0; i < 5; ++i){
             for(int j = 0; j < 5; ++j){
-                output[i][j] = new MapTile();
+                output[i][j] = StateSaver.loadMap(this, x, y);
             }
         }
 

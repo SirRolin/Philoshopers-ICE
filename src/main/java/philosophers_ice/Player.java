@@ -1,10 +1,15 @@
 package philosophers_ice;
 
+import javafx.scene.image.Image;
+
+import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Player implements Serializable {
     public String name;
+    public Race race;
+    private String imagePath;
     public int str;
     public int agi;
     public int con;
@@ -20,8 +25,9 @@ public class Player implements Serializable {
     public Player(String name){
         this.name = name;
     }
-    public Player(String name, int str, int agi, int con,int wits,int willPower,int magi,int hp,int mp){
+    public Player(String name, Race race, int str, int agi, int con,int wits,int willPower,int magi,int hp,int mp){
         this.name = name;
+        this.race = race;
         this.str = str;
         this.agi = agi;
         this.con = con;
@@ -47,9 +53,6 @@ public class Player implements Serializable {
     public int getInitiative(){
         return initiative;
     }
-    public void updateIniative(int input){
-        this.initiative += input;
-    }
     public int getSpellBuffProc(){
         return magi*2+30;
     }
@@ -69,11 +72,31 @@ public class Player implements Serializable {
         this.hp += (con+(str/2)+willPower)+ 20;
     }
     public int attack(){
-        return 50;
+        int damage = inventory.getDamage() ;
+        inventory.getEffectModifiers(); // WORK IN PROGESS !!!! Part of nice to have
+        if(inventory.getEquippedWeaponMainHand() instanceof Melee){
+           damage *= str/2;
+        }
+        if(inventory.getEquippedWeaponMainHand() instanceof Ranged){
+            damage *= agi/2;
+        }
+        return damage;
     }
     public void getLoot(ArrayList<Item> items){
         for (Item i: items) {
             this.inventory.addToItems(i);
         }
+    }
+
+    public Image getImage(){
+        String path = imagePath != null ? imagePath : "Data/gfx/item/" + name + ".png";
+        File file = new File(path);
+
+        //// if it does exist
+        if(file.exists()){
+            new Image(file.toURI().toString());
+        }
+        //// if it doesn't exist
+        return new Image("_NULL_.png");
     }
 }

@@ -2,6 +2,9 @@ package philosophers_ice;
 
 import ICE.util.ErrorHandler;
 import ICE.util.FileIO;
+import GUI.Main;
+
+import java.util.ArrayList;
 
 public class Launcher {
     public static void main(String[] args){
@@ -22,11 +25,6 @@ public class Launcher {
                 }
             }
         }
-        GameState newGS = new GameState("test");
-        newGS.p1 = new Player("test");
-        StateSaver.saveGame(newGS);
-
-        GameState loadedGS = StateSaver.loadGame("test");
-        System.out.println(loadedGS.p1.name);
+        Main.main(args);
     }
 }

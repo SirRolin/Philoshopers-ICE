@@ -1,5 +1,8 @@
 package philosophers_ice;
 
+import javafx.scene.image.Image;
+
+import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -17,7 +20,7 @@ public class Enemy implements Serializable {
     private int initiative;
 
     private int damage;
-    private ArrayList<Item> loot;
+    private ArrayList<Item> loot = new ArrayList<>();
 
 
     public Enemy(String name,String imagePath ,String description, int defence,int hp,int initiative ,int damage) {
@@ -57,5 +60,17 @@ public class Enemy implements Serializable {
     }
     public ArrayList<Item> droppedLoot(){
         return loot;
+    }
+
+    public Image getImage(){
+        String path = imagePath != null ? imagePath : "Data/gfx/item/" + name + ".png";
+        File file = new File(path);
+
+        //// if it does exist
+        if(file.exists()){
+            new Image(file.toURI().toString());
+        }
+        //// if it doesn't exist
+        return new Image("_NULL_.png");
     }
 }

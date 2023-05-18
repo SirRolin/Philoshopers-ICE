@@ -12,7 +12,10 @@ public abstract class StateSaver extends FileIO {
         return readSerialised("saves/" + name + "/save.save");
     }
     public static GameState newGame(String name){
-        return new GameState(name);
+        GameState gs = new GameState(name);
+        MapTile mt = new MapTile("grass");
+        saveMap(gs, mt,0,0);
+        return gs;
     }
     public static Boolean saveMap(GameState gs, MapTile map, int x, int y){
         return writeSerialised(map, "saves/" + gs.name + "/mapTiles/" + x + "_" + y + ".map");

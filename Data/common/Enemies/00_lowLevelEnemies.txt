@@ -1,0 +1,7 @@
+rat = {
+    name = "small rat"
+    imagePath = "Small Rat.png"
+    description = "a small rat"
+    defence = 2
+    damage = 2
+}
