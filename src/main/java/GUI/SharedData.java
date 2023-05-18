@@ -11,7 +11,7 @@ import java.util.HashMap;
 public abstract class SharedData {
     public static GameState gs;
 
-    public static ArrayList<HashMap<String, Object>> defines;
+    public static ArrayList<HashMap<String, Object>> defines = new ArrayList<>();
 
     public static String getDefineString(String key){
         for(HashMap<String, Object> def: defines){

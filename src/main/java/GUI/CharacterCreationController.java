@@ -95,7 +95,7 @@ public class CharacterCreationController implements Initializable {
                 }
                 gs.p1 = new Player("name", new Race(races.get(0)),0,0,0,0,0,0,0,0);
                 */
-                gs.p1 = new Player("name", new Race("human", null),0,0,0,0,0,0,0,0);
+                gs.p1 = new Player("name", new Race("human", null),0,0,0,0,0,0);
 
             }
         }else {
