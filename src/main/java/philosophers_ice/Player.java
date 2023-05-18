@@ -9,7 +9,6 @@ import java.util.ArrayList;
 public class Player implements Serializable {
     public String name;
     public Race race;
-    private String imagePath;
     public int str;
     public int agi;
     public int con;
@@ -22,10 +21,11 @@ public class Player implements Serializable {
     private ArrayList<EffectCard> effectCards;
     private Inventory inventory;
 
+
     public Player(String name){
         this.name = name;
     }
-    public Player(String name, Race race, int str, int agi, int con,int wits,int willPower,int magi,int hp,int mp){
+    public Player(String name, Race race, int str, int agi, int con,int wits,int willPower,int magi){
         this.name = name;
         this.race = race;
         this.str = str;
@@ -34,8 +34,8 @@ public class Player implements Serializable {
         this.wits = wits;
         this.willPower = willPower;
         this.magi = magi;
-        this.hp = hp;
-        this.mp = mp;
+        this.hp = getMaxHP();
+        this.mp = getMaxMP();
         this.initiative = wits*2+3;
         inventory = new Inventory();
     }
@@ -100,14 +100,11 @@ public class Player implements Serializable {
     }
 
     public Image getImage(){
-        String path = imagePath != null ? imagePath : "Data/gfx/races/" + name + ".png";
-        File file = new File(path);
-
-        //// if it does exist
-        if(file.exists()){
-            new Image(file.toURI().toString());
+        if(race!=null){
+            return race.getImage();
         }
-        //// if it doesn't exist
         return new Image("_NULL_.png");
     }
+
+
 }

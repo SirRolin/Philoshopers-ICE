@@ -10,6 +10,7 @@ public class Inventory implements Serializable {
     private Weapon equippedWeaponOffhand = null;
     private Armour equippedArmour = null;
     private Accessory equippedAccessory = null;
+    private final ArrayList<Currency> currencies = new ArrayList<>();
     private int maxSize = 30;
     Player p1;
 
@@ -189,6 +190,16 @@ public class Inventory implements Serializable {
     public int getMaxSize() {
         return maxSize + (p1.str * 2);
     }
+
+    public Currency getCurrency(String name){
+        for(Currency c: currencies){
+            if(c.name.equals(name)){
+                return c;
+            }
+        }
+        return null;
+    }
+
 }
 
 
