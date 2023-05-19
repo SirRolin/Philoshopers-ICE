@@ -17,7 +17,7 @@ public class EffectCard implements Serializable {
         return statChanges;
     }
 
-    void addBuffs(){
+    public void addBuffs(){
 
     }
 

@@ -34,8 +34,8 @@ public class GameState implements Serializable {
 
     public Player p1;
 
-    MapTile[][] getMinimap(int size){
-        MapTile output[][] = new MapTile[size*2-1][size*2-1];
+    public MapTile[][] getMinimap(int size){
+        MapTile[][] output = new MapTile[size*2-1][size*2-1];
         for(int i = 0; i < size*2-1; ++i){
             for(int j = 0; j < size*2-1; ++j){
                 output[i][j] = StateSaver.loadMap(this, i + x - size*2, j + y - size*2);

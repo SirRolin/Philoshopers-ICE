@@ -1,3 +1,9 @@
 human = {
-    imagePath = "Data/gfx/races/Humanfixedmore.png"
+    imagePath = "Humanfixedmore.png"
+}
+orge = {
+    imagePath = "Orgefixed.png"
+}
+elf = {
+    imagePath = "Elf.png"
 }

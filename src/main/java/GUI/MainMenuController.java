@@ -37,13 +37,6 @@ public class MainMenuController implements Initializable {
             stage.setScene(scene);
             stage.setTitle("Philosophers ICE - " + gs.name);
             stage.show();
-        }else{
-            gs = null;
-            Parent root2 = FXMLLoader.load(getClass().getClassLoader().getResource("mainMenu.fxml"));
-            Scene scene2 = new Scene(root2, screenBounds.getMaxX()/2,screenBounds.getMaxY()/2);
-            stage.setScene(scene2);
-            stage.setTitle("Philosophers ICE");
-            stage.show();
         }
     }
 

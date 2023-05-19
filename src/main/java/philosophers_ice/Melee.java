@@ -10,12 +10,12 @@ public class Melee extends Weapon {
     private int maxDamage;
 
 
-    Melee(HashMap<String, Object> map) {
+    public Melee(HashMap<String, Object> map) {
         super(map);
         minDamage = (int) HashMapExplorer.getNumber(map, "damage.min");
         maxDamage = (int) HashMapExplorer.getNumber(map, "damage.max");
     }
-    Melee(String name, int minDamage,int maxDamage,boolean isOneHanded, boolean isTwoHanded){
+    public Melee(String name, int minDamage,int maxDamage,boolean isOneHanded, boolean isTwoHanded){
         super(isOneHanded,isTwoHanded);
         this.name = name;
         this.minDamage = minDamage;

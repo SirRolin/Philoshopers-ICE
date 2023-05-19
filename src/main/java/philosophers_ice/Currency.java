@@ -1,29 +1,60 @@
 package philosophers_ice;
 
+import ICE.util.FileInterpreter;
+import ICE.util.HashMapExplorer;
 import javafx.scene.image.Image;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 public class Currency implements Serializable {
-    public int value;
+    private static final ArrayList<Currency> listOfUs = new ArrayList<>();
+    public static Currency getcurrency(String name){
+        for(Currency cur: listOfUs){
+            if(cur.name.equals(name)){
+                return cur;
+            }
+        }
+        return null;
+    }
+    //// remember NOT to override any elements
+    public static ArrayList<Currency> getRaces(){
+        return listOfUs;
+    }
+    public static void load(){
+        if(listOfUs.isEmpty()) {
+            for (HashMap<String, Object> s : FileInterpreter.parseFolder("Data/common/currencies/")) {
+                Set<String> keys = s.keySet();
+                for (String key: keys                     ) {
+                    listOfUs.add(new Currency(HashMapExplorer.getMap(s,key)));
+                }
+            }
+        }
+    }
+    public static void reload(){
+        listOfUs.clear();
+        load();
+    }
+    public int amount;
     public String description;
     public String name;
     public String imagePath;
     public Currency(HashMap<String,Object> map){
        this.description = (String) map.getOrDefault("description","");
-       this.name = (String) map.getOrDefault("currencyType","");
+       this.name = (String) map.getOrDefault("name","");
     }
 
-    public Currency(Currency _this, int value){
-        this.value = value;
+    public Currency(Currency _this, int amount){
+        this.amount = amount;
         this.description = _this.description;
         this.name = _this.name;
     }
 
-    public int getValue() {
-        return value;
+    public int getAmount() {
+        return amount;
     }
 
     public String getDescription(){
@@ -34,8 +65,9 @@ public class Currency implements Serializable {
         return name;
     }
 
+    //// not that I expect it to have one
     public Image getImage(){
-        String path = imagePath != null ? imagePath : "Data/gfx/item/" + name + ".png";
+        String path = imagePath != null ? imagePath : "Data/gfx/currencies/" + name + ".png";
         File file = new File(path);
 
         //// if it does exist

@@ -11,24 +11,17 @@ import java.util.regex.Pattern;
 
 public abstract class FileInterpreter {
     public static ArrayList<HashMap<String, Object>> parseFolder(String path) {
-        return parseFolder(path, false);
-    }
-    public static ArrayList<HashMap<String, Object>> parseFolder(String path, boolean careForFirstKey) {
         ArrayList<HashMap<String, Object>> output = new ArrayList<>();
         File fileOrFolder = new File(path);
 
         if (fileOrFolder.isDirectory()) {
             for (File file : fileOrFolder.listFiles()) {
-                output.add(parseFile(file.toPath().toString(), careForFirstKey));
+                output.add(parseFile(file.toPath().toString()));
             }
         }
         return output;
     }
-
     public static HashMap<String, Object> parseFile(String path) {
-        return parseFile(path, false);
-    }
-    public static HashMap<String, Object> parseFile(String path, boolean careForFirstKey) {
         File fileOrFolder = new File(path);
 
         if (!fileOrFolder.isDirectory()) {
@@ -40,7 +33,6 @@ public abstract class FileInterpreter {
                 int bytesRead = fis.read(data);
                 fis.close();
                 String content = new String(data, 0, bytesRead);
-
                 //// convert data to a hashmap
                 HashMap<String, Object> parsed = FileInterpreter.parse(content, path);
                 return parsed;
@@ -208,8 +200,8 @@ public abstract class FileInterpreter {
     }
 
     private static String ExtractList(String text, ArrayList<Object> listsForOutput) {
-        for(String s: text.split("[ \n]+",-1)){
-            if (!s.equals("\n") && !s.equals("")) {
+        for(String s: text.split("[ \r\n]+",-1)){
+            if (!s.isBlank()) {
                 listsForOutput.add(tryParseFloat(s, false));
                 text = text.replace(s, "");
             }

@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Effect implements Serializable {
-    String name;
-    int valueBy;
+    public String name;
+    public int valueBy;
     public HashMap statChange;
 
-    Effect(String name,int valueBy, HashMap<String ,Integer> statChange){
+    public Effect(String name,int valueBy, HashMap<String ,Integer> statChange){
         this.name = name;
         this.valueBy = valueBy;
         this.statChange = statChange;
@@ -28,7 +28,7 @@ public class Effect implements Serializable {
     public static void load(){
         // todo add effects to common
         if(listOfUs.isEmpty()) {
-            for (HashMap<String, Object> s : FileInterpreter.parseFolder("Data/common/items", true)) {
+            for (HashMap<String, Object> s : FileInterpreter.parseFolder("Data/common/items")) {
                 if (s.containsKey("effect")) {
                     //listOfUs.add(new Effect(s));
                 }
