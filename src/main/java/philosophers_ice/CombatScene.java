@@ -46,8 +46,8 @@ public class CombatScene {
                 for (Enemy e: enemies) {
                     e.updateInitiative(maxInitiative);
                 }
+                situationUpdate();
             }
-            situationUpdate();
         }
         if(currentPlayer.getHP() <= 0){
             System.out.println("YOU DIED!!! :(");
@@ -55,7 +55,6 @@ public class CombatScene {
         }
         endCombat();
     }
-
     private void situationUpdate() {
     }
 
@@ -70,8 +69,8 @@ public class CombatScene {
         System.out.println("4. Use Recover");
         System.out.println("-----------------------------------");
         Scanner scan = new Scanner(System.in);
-            int input = 1; //scan.nextInt();
-            //scan.nextLine();
+            int input = scan.nextInt();
+            scan.nextLine();
             switch (input) {
                 case 1 -> {
                     Enemy choosenEnemy = chooseEnemyToAttack();
@@ -87,7 +86,6 @@ public class CombatScene {
                         currentPlayer.getLoot(choosenEnemy.droppedLoot());// PLACEHOLDER!!
                         enemies.remove(choosenEnemy);
                     }
-                    System.out.println("-----------------------------------");
                     tmpPlayerInitiative-= maxInitiative;
                     turn++;
                     break;
@@ -147,13 +145,13 @@ public class CombatScene {
         }
         System.out.println("which enemy do you want to attack? 1 - " + enemies.size());
         Scanner scan = new Scanner(System.in);
-        /*int input = scan.nextInt();
+        int input = scan.nextInt();
         scan.nextLine();
         if(input > enemies.size()){
             System.out.println("there's not that many enemies");
             return chooseEnemyToAttack();
-        }*/
-        return enemies.get(1); //enemies.get(input - 1);
+        }
+        return enemies.get(input - 1);
     }
 
 }

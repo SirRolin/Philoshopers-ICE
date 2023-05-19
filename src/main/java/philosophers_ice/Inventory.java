@@ -63,7 +63,7 @@ public class Inventory implements Serializable {
     public int getDefence() {
         int def;
         if(equippedArmour == null){
-            def = 1;
+            def = 0;
             return def;
         }
         def = equippedArmour.getDefence();
