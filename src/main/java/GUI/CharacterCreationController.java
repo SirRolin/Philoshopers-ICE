@@ -1,16 +1,24 @@
 package GUI;
+
 import ICE.util.FileInterpreter;
+import ICE.util.HashMapExplorer;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.DialogPane;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.fxml.FXML;
@@ -18,6 +26,7 @@ import philosophers_ice.GameState;
 import philosophers_ice.Player;
 import philosophers_ice.StateSaver;
 import philosophers_ice.*;
+import ICE.util.ErrorHandler;
 
 
 import java.io.File;
@@ -34,31 +43,53 @@ public class CharacterCreationController implements Initializable {
     private Player currentPlayer;
 
     private String playerName;
-    private int playerStr;
-    private int playerAgi;
-    private int playerCon;
-    private int playerWits;
-    private int playerInitiative;
-    private int playerMaxInitiative;
-    private int playerWillPower;
-    private int playerMagi;
-    private int playerHp;
-    private int playerMp;
     private Race playerRace;
+
+    private ArrayList<Label> statLabels = new ArrayList<>();
+    private ArrayList<Button> addButtons = new ArrayList<>();
+    private ArrayList<Button> subtractButtons = new ArrayList<>();
+    private ArrayList<Race> races;
+    private int raceIndex;
+    private int[] stats = {
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+    };
+    private String[] statNames = {
+            "Str: ",
+            "Agi: ",
+            "Con: ",
+            "Wits: ",
+            "Willpower: ",
+            "Magi: "
+    };
+
 
     public GameState gs;
     @FXML
     private Button startButton;
     @FXML
+    private DialogPane raceBio;
+    @FXML
     private ImageView raceImage;
     @FXML
-    private Image currentRaceImage;
+    private GridPane statPane;
+    @FXML
+    private TextField nameField;
+    @FXML
+    private Button leftRaceButton;
+    @FXML
+    private Button rightRaceButton;
 
-    public void switchToMainMenu(ActionEvent event) throws Exception{
+    public void switchToMainMenu(ActionEvent event) throws Exception {
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+        SharedData.gs = null;
         root = FXMLLoader.load(getClass().getClassLoader().getResource("mainMenu.fxml"));
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(root, screenBounds.getMaxX()/2,screenBounds.getMaxY()/2);
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root, screenBounds.getMaxX() / 2, screenBounds.getMaxY() / 2);
         stage.setScene(scene);
         stage.setTitle("Philosophers ICE");
         stage.show();
@@ -66,51 +97,125 @@ public class CharacterCreationController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        if(SharedData.gs != null) {
+        Currency.load();
+        Race.load();
+        SharedData.load();
+        String defaultRace = HashMapExplorer.getString(SharedData.defines.get(0), "defaultRace");
+        races = Race.getRaces();
+
+        if (SharedData.gs != null) {
+            //PLAYER HAS USERDATA
             gs = SharedData.gs;
-            if(gs.p1 != null) {
+            SharedData.gs = null;
+            if (gs.p1 != null) {
                 currentPlayer = gs.p1;
-                currentRaceImage = gs.p1.getImage();
-                raceImage.setImage(currentRaceImage);
+//                raceImage.setScaleX(2.0);
+//                raceImage.setScaleY(2.0);
+                raceImage.setPreserveRatio(true);
+                raceImage.setSmooth(false);
+                raceImage.setFitHeight(256);
+                raceImage.setImage(gs.p1.getImage(256,256));
+                playerName = currentPlayer.name;
+                playerRace = currentPlayer.race;
+                nameField.setText(currentPlayer.name);
+
+            } else {
+                //PLAYER DOES NOT HAVE USERDATA
+                if (defaultRace != null) {
+                    raceIndex = Race.getIndexOf(races, defaultRace);
+                }
+                gs.p1 = new Player("name", races.get(raceIndex), 0, 0, 0, 0, 0, 0);
+                gs.p1.inventory.addCurrency("Life Essence", 30);
+                currentPlayer = gs.p1;
+                playerName = currentPlayer.name;
+                playerRace = currentPlayer.race;
+                raceImage.setImage(currentPlayer.getImage(256,256));
                 raceImage.setScaleX(2.0);
                 raceImage.setScaleY(2.0);
                 raceImage.setSmooth(false);
-            }else {
-                File file = new File("Data/gfx/Races/Humanfixedmore.png");
-                if (file.exists()) {
-                    currentRaceImage = new Image(file.toURI().toString());
-                } else {
-                    currentRaceImage = new Image("_NULL_.png");
-                }
-                raceImage.setImage(currentRaceImage);
-                raceImage.setScaleX(2.0);
-                raceImage.setScaleY(2.0);
-                raceImage.setSmooth(false);
-                /*
-                ArrayList<HashMap<?, ?>> races = new ArrayList<>();
-                for(Object obj: FileInterpreter.parseFolder("Data/common/Races/")){
-                    if(obj instanceof HashMap<?, ?> map){
-                        races.add(map);
-                    }
-                }
-                gs.p1 = new Player("name", new Race(races.get(0)),0,0,0,0,0,0,0,0);
-                */
-                gs.p1 = new Player("name", new Race("human", null),0,0,0,0,0,0,0,0);
 
             }
-        }else {
-            System.out.println("Error");
+            raceBio.setContentText(races.get(raceIndex).bio);
+
+            for (int i = 0; i < statNames.length; i++) {
+                Button subtractBtn = new Button("-");
+                ;
+                subtractBtn.setAlignment(Pos.CENTER);
+                Button plusBtn = new Button("+");
+                plusBtn.setAlignment(Pos.CENTER);
+                Label statLabel = new Label(statNames[i] + gs.p1.getStatFromIndex(i) + "(" + gs.p1.getDerivedStat(i) + ")");
+                statLabel.setAlignment(Pos.CENTER);
+                statLabels.add(statLabel);
+                addButtons.add(plusBtn);
+                subtractButtons.add(subtractBtn);
+
+                setUpSbtButton(i);
+                setUpAddButton(i);
+
+                statPane.add(subtractBtn, 0, i);
+                statPane.add(statLabel, 1, i);
+                statPane.add(plusBtn, 2, i);
+            }
+
+            leftRaceButton.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    raceIndex -= 1;
+                    if (raceIndex < 0) {
+                        raceIndex = races.size() - 1;
+                    }
+                    raceImage.setImage(races.get(raceIndex).getImage(256,256));
+                    raceBio.setContentText(races.get(raceIndex).bio);
+                    System.out.println(races.get(raceIndex).name);
+                }
+            });
+
+            rightRaceButton.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    raceIndex += 1;
+                    if (raceIndex > races.size() - 1) {
+                        raceIndex = 0;
+                    }
+                    raceImage.setImage(races.get(raceIndex).getImage(256,256));
+                    raceBio.setContentText(races.get(raceIndex).bio);
+                    System.out.println(races.get(raceIndex).name);
+                }
+            });
+
+        } else {
+            ErrorHandler.handleError(new Exception("No savefile found! How did you get here?"));
         }
     }
 
-    public void onStartButton(){
-        //File file = new File("Data/gfx/Races/Orgefixed.png");
+    public void onStartButton() {
+        currentPlayer.name = nameField.getText();
+        currentPlayer.race = races.get(raceIndex);
+        gs.p1 = currentPlayer;
         StateSaver.saveGame(gs);
-        //System.out.println(file.exists());
-        //currentRaceImage =  new Image(file.toURI().toString());
-        raceImage.setImage(currentRaceImage);
-        System.out.println(currentRaceImage.getUrl());
+        System.out.println(raceImage.getImage().getUrl());
 
+    }
+
+    private void setUpSbtButton(final int index) {
+        subtractButtons.get(index).setOnAction(e -> {
+            if (gs.p1.getStatFromIndex(index) != -1 && gs.p1.inventory.getCurrency("Life Essence") != null) {
+                gs.p1.setStatFromIndex(index, gs.p1.getStatFromIndex(index) - 1);
+                statLabels.get(index).setText(statNames[index] + gs.p1.getStatFromIndex(index) + "(" + gs.p1.getDerivedStat(index) + ")");
+                gs.p1.inventory.addCurrency("Life Essence",1);
+            }
+        });
+    }
+
+    private void setUpAddButton(final int index) {
+        addButtons.get(index).setOnAction(e -> {
+            if (gs.p1.inventory.getCurrency("Life Essence") != null && gs.p1.inventory.getCurrency("Life Essence").amount > 0) {
+                int value = (int) gs.p1.getStatFromIndex(index) + 1;
+                gs.p1.setStatFromIndex(index, value);
+                statLabels.get(index).setText(statNames[index] + gs.p1.getStatFromIndex(index) + "(" + gs.p1.getDerivedStat(index) + ")");
+                gs.p1.inventory.addCurrency("Life Essence",-1);
+            }
+        });
     }
 
 

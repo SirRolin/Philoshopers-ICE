@@ -10,6 +10,7 @@ public class Inventory implements Serializable {
     private Weapon equippedWeaponOffhand = null;
     private Armour equippedArmour = null;
     private Accessory equippedAccessory = null;
+    private final ArrayList<Currency> currencies = new ArrayList<>();
     private int maxSize = 30;
     Player p1;
 
@@ -25,13 +26,15 @@ public class Inventory implements Serializable {
     }
 
     public void addToItems(Item item) {
-        items.add(item);
+        if (item != null) {
+            items.add(item);
+        }
     }
 
     public int getDamage() {
         //todo implement mainhand and offhand correctly
         int dmg = 1;
-        if(equippedWeaponMainHand != null) {
+        if (equippedWeaponMainHand != null) {
             dmg += equippedWeaponMainHand.getDmg();
             if (!equippedWeaponOffhand.getType()) {
                 dmg += equippedWeaponOffhand.getDmg();
@@ -39,9 +42,12 @@ public class Inventory implements Serializable {
         }
         return dmg;
     }
-    public void getEffectModifiers(){
-       // WORK IN PROGRESS!! part of nice to have
+
+    public Number getEffectModifiers(String stat) {
+        return 0;
+        // todo WORK IN PROGRESS!! part of nice to have
     }
+
     public Weapon getEquippedWeaponMainHand() {
         return equippedWeaponMainHand;
     }
@@ -59,7 +65,13 @@ public class Inventory implements Serializable {
     }
 
     public int getDefence() {
-        return 0;
+        int def;
+        if (equippedArmour == null) {
+            def = 0;
+            return def;
+        }
+        def = equippedArmour.getDefence();
+        return def;
     }
 
     public void equipItem(Item item) {
@@ -69,15 +81,15 @@ public class Inventory implements Serializable {
         if (item instanceof Armour) {
             equipArmour((Armour) item);
         }
-        if(item instanceof Accessory){
-            
+        if (item instanceof Accessory) {
+
         }
     }
 
     private void equipArmour(Armour item) {
         if (this.equippedArmour == null)
             this.equippedArmour = item;
-            items.remove(item);
+        items.remove(item);
         if (this.equippedArmour != null) {
             Scanner s1 = new Scanner(System.in);
             System.out.println("You already got " + this.equippedArmour.name + " equipped, do you want to equip" + item.name + " instead? Y/N");
@@ -107,7 +119,7 @@ public class Inventory implements Serializable {
 
     }
 
-    public void equipOneHanded(Weapon item) {
+    private void equipOneHanded(Weapon item) {
         if (this.equippedWeaponMainHand == null) {
             System.out.println("You equipped " + item.getName() + "in your mainhand.");
             this.equippedWeaponMainHand = ((Weapon) item);
@@ -152,7 +164,7 @@ public class Inventory implements Serializable {
     }
 
 
-    public void equipTwoHanded(Weapon item) {
+    private void equipTwoHanded(Weapon item) {
         if (this.equippedWeaponMainHand == null) {
             this.equippedWeaponMainHand = ((Weapon) item);
             items.remove(item);
@@ -173,9 +185,10 @@ public class Inventory implements Serializable {
             equipOneHanded(item);
         }
     }
-    public Item getItem(String nameOfItem){
-        for(Item item: items){
-            if(item.name.equals(nameOfItem)){
+
+    public Item getItem(String nameOfItem) {
+        for (Item item : items) {
+            if (item.name.equals(nameOfItem)) {
                 return item;
             }
         }
@@ -185,6 +198,35 @@ public class Inventory implements Serializable {
     public int getMaxSize() {
         return maxSize + (p1.str * 2);
     }
+
+    public Currency getCurrency(String name) {
+        for (Currency c : currencies) {
+            if (c.name.equals(name)) {
+                return c;
+            }
+        }
+        return null;
+    }
+
+    public void addCurrency(String name, int amount) {
+        Currency cur = getCurrency(name);
+        if (cur == null) {
+            cur = Currency.getcurrency(name);
+        }
+        addCurrency(cur, amount);
+    }
+
+    public void addCurrency(Currency cur, int amount) {
+        if (cur != null) {
+            Currency cur2 = getCurrency(cur.name);
+            if (cur2 != null) {
+                cur2.amount += amount;
+            } else {
+                currencies.add(new Currency(cur, amount));
+            }
+        }
+    }
+
 }
 
 

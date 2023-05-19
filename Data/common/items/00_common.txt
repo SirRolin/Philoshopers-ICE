@@ -1,8 +1,16 @@
 melee_weapon = {
-    name = "knife"
+    name = "sword"
     damage = {
-    min = 2
-    max = 5
+    min = 5
+    max = 8
+    }
+}
+melee_weapon = {
+    name = "knife"
+    description = "its a dull blade, use the pointy end."
+    damage = {
+        min = 2
+        max = 5
     }
 }
 ranged_weapon = {
@@ -15,4 +23,11 @@ ranged_weapon = {
 armour = {
     name = "mail armour"
     defence = 35
+}
+ranged_weapon = {
+    name = "cheese"
+    damage = {
+        min = 0
+        max = 100
+    }
 }

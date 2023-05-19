@@ -10,25 +10,21 @@ import java.util.regex.Pattern;
 
 
 public abstract class FileInterpreter {
-    public static ArrayList<HashMap<String, Object>> parseFolder(String path) {
-        return parseFolder(path, false);
-    }
-    public static ArrayList<HashMap<String, Object>> parseFolder(String path, boolean careForFirstKey) {
-        ArrayList<HashMap<String, Object>> output = new ArrayList<>();
+    public static ArrayList<ArrayList<HashMap<String, Object>>> parseFolder(String path) {
+        ArrayList<ArrayList<HashMap<String, Object>>> output = new ArrayList<>();
+        ArrayList<HashMap<String, Object>> inner = new ArrayList<>();
         File fileOrFolder = new File(path);
 
         if (fileOrFolder.isDirectory()) {
+            inner.clear();
             for (File file : fileOrFolder.listFiles()) {
-                output.add(parseFile(file.toPath().toString(), careForFirstKey));
+                inner.add(parseFile(file.toPath().toString()));
             }
+            output.add(inner);
         }
         return output;
     }
-
     public static HashMap<String, Object> parseFile(String path) {
-        return parseFile(path, false);
-    }
-    public static HashMap<String, Object> parseFile(String path, boolean careForFirstKey) {
         File fileOrFolder = new File(path);
 
         if (!fileOrFolder.isDirectory()) {
@@ -40,7 +36,6 @@ public abstract class FileInterpreter {
                 int bytesRead = fis.read(data);
                 fis.close();
                 String content = new String(data, 0, bytesRead);
-
                 //// convert data to a hashmap
                 HashMap<String, Object> parsed = FileInterpreter.parse(content, path);
                 return parsed;
@@ -199,6 +194,9 @@ public abstract class FileInterpreter {
         //// extracts all the number = something
         text = ExtractRandomNumbers(text, listsForOutput);
 
+        //// extracts all the number = something
+        text = ExtractBoolean(text, mapsForOutput);
+
         //// extracts all the once standing alone
         text = ExtractList(text, listsForOutput);
         if (!listsForOutput.isEmpty()) {
@@ -207,12 +205,27 @@ public abstract class FileInterpreter {
         return mapsForOutput;
     }
 
+
     private static String ExtractList(String text, ArrayList<Object> listsForOutput) {
-        for(String s: text.split("[ \n]+",-1)){
-            if (!s.equals("\n") && !s.equals("")) {
+        for(String s: text.split("[ \r\n]+",-1)){
+            if (!s.isBlank()) {
                 listsForOutput.add(tryParseFloat(s, false));
                 text = text.replace(s, "");
             }
+        }
+        return text;
+    }
+    final static Pattern patternBoolean = Pattern.compile("(?<whole>\\s*(?<key>\\w+)\\s*=\\s*(?<bool>yes|no))");
+    private static String ExtractBoolean(String text, HashMap<String, Object> mapsForOutput) {
+        Matcher booleans = patternBoolean.matcher(text);
+        while (booleans.find()) {
+            String g1 = booleans.group("key");
+            if(booleans.group("bool").equals("yes")){
+                mapsForOutput.put(g1, true);
+            } else {
+                mapsForOutput.put(g1, false);
+            }
+            text = text.replace(booleans.group("whole"), "");
         }
         return text;
     }

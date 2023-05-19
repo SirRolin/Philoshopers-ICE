@@ -10,12 +10,12 @@ public class Ranged extends Weapon{
     private int minDamage;
     private int maxDamage;
 
-    Ranged(HashMap<String, Object> map) {
+    public Ranged(HashMap<String, Object> map) {
         super(map);
         minDamage = (int) HashMapExplorer.getNumber(map, "damage.min");
         maxDamage = (int) HashMapExplorer.getNumber(map, "damage.max");
     }
-    Ranged(String name, int minDamage,int maxDamage,boolean isOneHanded, boolean isTwoHanded){
+    public Ranged(String name, int minDamage,int maxDamage,boolean isOneHanded, boolean isTwoHanded){
         super(isOneHanded,isTwoHanded);
         this.name = name;
         this.minDamage = minDamage;
