@@ -4,6 +4,8 @@ import ICE.util.FileIO;
 import philosophers_ice.GameState;
 import philosophers_ice.MapTile;
 
+import java.io.File;
+
 public abstract class StateSaver extends FileIO {
     public static Boolean saveGame(GameState gs) {
         return writeSerialised(gs, "saves/" + gs.name + "/save.save");
@@ -14,6 +16,7 @@ public abstract class StateSaver extends FileIO {
     }
 
     public static GameState newGame(String name) {
+        deleteDir(new File("Data/Saves/" + name));
         GameState gs = new GameState(name);
         MapTile mt = new MapTile("grass");
         saveMap(gs, mt,0,0);
@@ -31,5 +34,17 @@ public abstract class StateSaver extends FileIO {
 
     public static MapTile loadMap(GameState gs, int x, int y) {
         return readSerialised("saves/" + gs.name + "/mapTiles/" + x + "_" + y + ".map");
+    }
+
+
+    //// source https://stackoverflow.com/questions/20281835/how-to-delete-a-folder-with-files-using-java
+    private static void deleteDir(File file) {
+        File[] contents = file.listFiles();
+        if (contents != null) {
+            for (File f : contents) {
+                deleteDir(f);
+            }
+        }
+        file.delete();
     }
 }

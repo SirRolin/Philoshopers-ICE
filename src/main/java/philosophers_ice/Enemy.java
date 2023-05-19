@@ -57,6 +57,7 @@ public class Enemy implements Serializable {
                 loot.add(garenteedItem);
             }
         }
+        RngHandler.WeightedObjectsToList(chanceLoot, loot);
 
     }
 
