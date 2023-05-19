@@ -128,5 +128,64 @@ public class Player implements Serializable {
             }
         }
     }
+    public int getStatFromIndex(int index){
+        switch (index) {
+            case 0 -> {
+                return str;
+            }
+            case 1 -> {
+                return agi;
+            }
+            case 2 -> {
+                return con ;
+            }
+            case 3 -> {
+                return wits;
+            }
+            case 4 -> {
+                return willPower;
+            }
+            case 5 -> {
+                return magi;
+            }
+            default -> {
+                ErrorHandler.handleError(new Exception("getStatFromIndex index not 0 through 5"));
+                return -1;
+            }
+        }
+    }
+
+    public int setStatFromIndex(int index, int value){
+        switch (index) {
+            case 0 -> {
+                str = value;
+                return str;
+            }
+            case 1 -> {
+                agi = value;
+                return agi;
+            }
+            case 2 -> {
+                con = value;
+                return con;
+            }
+            case 3 -> {
+                wits = value;
+                return wits;
+            }
+            case 4 -> {
+                willPower = value;
+                return willPower;
+            }
+            case 5 -> {
+                magi = value;
+                return magi;
+            }
+            default -> {
+                ErrorHandler.handleError(new Exception("setStatFromIndex index not 0 through 5"));
+                return -1;
+            }
+        }
+    }
 
 }

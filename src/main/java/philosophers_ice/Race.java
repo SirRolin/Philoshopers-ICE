@@ -62,11 +62,13 @@ public class Race implements Serializable {
     }
 
     public String name;
+    public String bio;
     private String imagePath;
 
     public Race(HashMap<String, Object> map, String key) {
         name = key;
         imagePath = "Data/gfx/races/" + HashMapExplorer.getString(map, key + ".imagePath");
+        bio = HashMapExplorer.getString(map, key + ".bio");
     }
 
     //// debugging and temporary

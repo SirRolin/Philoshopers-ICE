@@ -1,4 +1,5 @@
 package GUI;
+
 import ICE.util.FileInterpreter;
 import ICE.util.HashMapExplorer;
 import javafx.event.ActionEvent;
@@ -11,6 +12,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -70,6 +72,8 @@ public class CharacterCreationController implements Initializable {
     @FXML
     private Button startButton;
     @FXML
+    private DialogPane raceBio;
+    @FXML
     private ImageView raceImage;
     @FXML
     private GridPane statPane;
@@ -80,12 +84,12 @@ public class CharacterCreationController implements Initializable {
     @FXML
     private Button rightRaceButton;
 
-    public void switchToMainMenu(ActionEvent event) throws Exception{
+    public void switchToMainMenu(ActionEvent event) throws Exception {
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
         SharedData.gs = null;
         root = FXMLLoader.load(getClass().getClassLoader().getResource("mainMenu.fxml"));
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(root, screenBounds.getMaxX()/2,screenBounds.getMaxY()/2);
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root, screenBounds.getMaxX() / 2, screenBounds.getMaxY() / 2);
         stage.setScene(scene);
         stage.setTitle("Philosophers ICE");
         stage.show();
@@ -96,35 +100,29 @@ public class CharacterCreationController implements Initializable {
         Currency.load();
         Race.load();
         SharedData.load();
-        String defaultRace = HashMapExplorer.getString(SharedData.defines.get(0),"defaultRace");
+        String defaultRace = HashMapExplorer.getString(SharedData.defines.get(0), "defaultRace");
         races = Race.getRaces();
 
-        if(SharedData.gs != null) {
+        if (SharedData.gs != null) {
             //PLAYER HAS USERDATA
             gs = SharedData.gs;
             SharedData.gs = null;
-            if(gs.p1 != null) {
+            if (gs.p1 != null) {
                 currentPlayer = gs.p1;
                 raceImage.setImage(gs.p1.getImage());
                 raceImage.setScaleX(2.0);
                 raceImage.setScaleY(2.0);
                 raceImage.setSmooth(false);
-                stats[0] = currentPlayer.str;
-                stats[1] = currentPlayer.agi;
-                stats[2] = currentPlayer.con;
-                stats[3] = currentPlayer.wits;
-                stats[4] = currentPlayer.willPower;
-                stats[5] = currentPlayer.magi;
                 playerName = currentPlayer.name;
                 playerRace = currentPlayer.race;
                 nameField.setText(currentPlayer.name);
 
-            }else {
+            } else {
                 //PLAYER DOES NOT HAVE USERDATA
-                if(defaultRace != null){
+                if (defaultRace != null) {
                     raceIndex = Race.getIndexOf(races, defaultRace);
                 }
-                gs.p1 = new Player("name",races.get(raceIndex),0,0,0,0,0,0);
+                gs.p1 = new Player("name", races.get(raceIndex), 0, 0, 0, 0, 0, 0);
                 gs.p1.inventory.addCurrency("Life Essence", 30);
                 currentPlayer = gs.p1;
                 playerName = currentPlayer.name;
@@ -135,13 +133,15 @@ public class CharacterCreationController implements Initializable {
                 raceImage.setSmooth(false);
 
             }
+            raceBio.setContentText(races.get(raceIndex).bio);
 
-            for(int i = 0; i < statNames.length; i++){
-                Button subtractBtn = new Button("-");;
+            for (int i = 0; i < statNames.length; i++) {
+                Button subtractBtn = new Button("-");
+                ;
                 subtractBtn.setAlignment(Pos.CENTER);
                 Button plusBtn = new Button("+");
                 plusBtn.setAlignment(Pos.CENTER);
-                Label statLabel = new Label(statNames[i]+stats[i]+"("+gs.p1.getDerivedStat(i)+")");
+                Label statLabel = new Label(statNames[i] + gs.p1.getStatFromIndex(i) + "(" + gs.p1.getDerivedStat(i) + ")");
                 statLabel.setAlignment(Pos.CENTER);
                 statLabels.add(statLabel);
                 addButtons.add(plusBtn);
@@ -159,10 +159,11 @@ public class CharacterCreationController implements Initializable {
                 @Override
                 public void handle(ActionEvent actionEvent) {
                     raceIndex -= 1;
-                    if(raceIndex < 0){
+                    if (raceIndex < 0) {
                         raceIndex = races.size() - 1;
                     }
                     raceImage.setImage(races.get(raceIndex).getImage());
+                    raceBio.setContentText(races.get(raceIndex).bio);
                     System.out.println(races.get(raceIndex).name);
                 }
             });
@@ -171,51 +172,48 @@ public class CharacterCreationController implements Initializable {
                 @Override
                 public void handle(ActionEvent actionEvent) {
                     raceIndex += 1;
-                    if(raceIndex > races.size() - 1){
+                    if (raceIndex > races.size() - 1) {
                         raceIndex = 0;
                     }
                     raceImage.setImage(races.get(raceIndex).getImage());
+                    raceBio.setContentText(races.get(raceIndex).bio);
                     System.out.println(races.get(raceIndex).name);
                 }
             });
 
-        }else {
+        } else {
             ErrorHandler.handleError(new Exception("No savefile found! How did you get here?"));
         }
     }
 
-    public void onStartButton(){
-        currentPlayer.str = stats[0];
-        currentPlayer.agi = stats[1];
-        currentPlayer.con = stats[2];
-        currentPlayer.wits = stats[3];
-        currentPlayer.willPower = stats[4];
-        currentPlayer.magi = stats[5];
+    public void onStartButton() {
         currentPlayer.name = nameField.getText();
+        currentPlayer.race = races.get(raceIndex);
+        gs.p1 = currentPlayer;
         StateSaver.saveGame(gs);
-        //System.out.println(file.exists());
-        //currentRaceImage =  new Image(file.toURI().toString());
-        //raceImage.setImage(currentRaceImage);
         System.out.println(raceImage.getImage().getUrl());
 
     }
 
-    private void setUpSbtButton(final int index){
+    private void setUpSbtButton(final int index) {
         subtractButtons.get(index).setOnAction(e -> {
-            if(stats[index] != 0 && gs.p1.inventory.getCurrency("Life Essence") != null){
-                stats[index] -=1;
-                statLabels.get(index).setText(statNames[index]+stats[index]+"("+gs.p1.getDerivedStat(index)+")");
-                gs.p1.inventory.getCurrency("Life Essence").amount += 1;
-            }});
+            if (gs.p1.getStatFromIndex(index) != -1 && gs.p1.inventory.getCurrency("Life Essence") != null) {
+                gs.p1.setStatFromIndex(index, gs.p1.getStatFromIndex(index) - 1);
+                statLabels.get(index).setText(statNames[index] + gs.p1.getStatFromIndex(index) + "(" + gs.p1.getDerivedStat(index) + ")");
+                gs.p1.inventory.addCurrency("Life Essence",1);
+            }
+        });
     }
 
-    private void setUpAddButton(final int index){
+    private void setUpAddButton(final int index) {
         addButtons.get(index).setOnAction(e -> {
-            if(gs.p1.inventory.getCurrency("Life Essence") != null && gs.p1.inventory.getCurrency("Life Essence").amount > 0){
-                stats[index] +=1;
-                statLabels.get(index).setText(statNames[index]+stats[index]+"("+gs.p1.getDerivedStat(index)+")");
-                gs.p1.inventory.getCurrency("Life Essence").amount -= 1;
-            }});
+            if (gs.p1.inventory.getCurrency("Life Essence") != null && gs.p1.inventory.getCurrency("Life Essence").amount > 0) {
+                int value = (int) gs.p1.getStatFromIndex(index) + 1;
+                gs.p1.setStatFromIndex(index, value);
+                statLabels.get(index).setText(statNames[index] + gs.p1.getStatFromIndex(index) + "(" + gs.p1.getDerivedStat(index) + ")");
+                gs.p1.inventory.addCurrency("Life Essence",-1);
+            }
+        });
     }
 
 
