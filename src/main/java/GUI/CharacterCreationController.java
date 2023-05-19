@@ -109,10 +109,12 @@ public class CharacterCreationController implements Initializable {
             SharedData.gs = null;
             if (gs.p1 != null) {
                 currentPlayer = gs.p1;
-                raceImage.setImage(gs.p1.getImage());
-                raceImage.setScaleX(2.0);
-                raceImage.setScaleY(2.0);
+//                raceImage.setScaleX(2.0);
+//                raceImage.setScaleY(2.0);
+                raceImage.setPreserveRatio(true);
                 raceImage.setSmooth(false);
+                raceImage.setFitHeight(256);
+                raceImage.setImage(gs.p1.getImage(256,256));
                 playerName = currentPlayer.name;
                 playerRace = currentPlayer.race;
                 nameField.setText(currentPlayer.name);
@@ -127,7 +129,7 @@ public class CharacterCreationController implements Initializable {
                 currentPlayer = gs.p1;
                 playerName = currentPlayer.name;
                 playerRace = currentPlayer.race;
-                raceImage.setImage(currentPlayer.getImage());
+                raceImage.setImage(currentPlayer.getImage(256,256));
                 raceImage.setScaleX(2.0);
                 raceImage.setScaleY(2.0);
                 raceImage.setSmooth(false);
@@ -162,7 +164,7 @@ public class CharacterCreationController implements Initializable {
                     if (raceIndex < 0) {
                         raceIndex = races.size() - 1;
                     }
-                    raceImage.setImage(races.get(raceIndex).getImage());
+                    raceImage.setImage(races.get(raceIndex).getImage(256,256));
                     raceBio.setContentText(races.get(raceIndex).bio);
                     System.out.println(races.get(raceIndex).name);
                 }
@@ -175,7 +177,7 @@ public class CharacterCreationController implements Initializable {
                     if (raceIndex > races.size() - 1) {
                         raceIndex = 0;
                     }
-                    raceImage.setImage(races.get(raceIndex).getImage());
+                    raceImage.setImage(races.get(raceIndex).getImage(256,256));
                     raceBio.setContentText(races.get(raceIndex).bio);
                     System.out.println(races.get(raceIndex).name);
                 }

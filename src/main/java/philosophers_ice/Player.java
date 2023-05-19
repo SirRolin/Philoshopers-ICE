@@ -99,9 +99,9 @@ public class Player implements Serializable {
         }
     }
 
-    public Image getImage(){
+    public Image getImage(int sizeX, int sizeY){
         if(race!=null){
-            return race.getImage();
+            return race.getImage(sizeX,sizeY);
         }
         return new Image("_NULL_.png");
     }

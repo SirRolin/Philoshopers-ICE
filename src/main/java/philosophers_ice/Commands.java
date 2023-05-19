@@ -15,9 +15,13 @@ public class Commands {
     private final ArrayList<Pattern> searchPattern = new ArrayList<>();
     private Function<String, String> ACTION;
 
-    public static ArrayList<Commands> commandsList;
+    public static ArrayList<Commands> commandsList = new ArrayList<Commands>();
 
     public static void loadDefaults() {
+        if (!commandsList.isEmpty()) {
+            return;
+        }
+        //// movement
         commandsList.add(new Commands("(go|walk|run)(?: to)? (?<input>\\w*)", (s) -> {
             GameState gameState = SharedData.gs;
             switch (s) {
@@ -43,6 +47,7 @@ public class Commands {
 
             }
         }));
+        //// look at item
         commandsList.add(new Commands("(inspect|x)(?: the)? (?<input>.*)", (s) -> {
             GameState gameState = SharedData.gs;
             for (Item item1 : gameState.p1.inventory.getItems()) {
@@ -52,10 +57,11 @@ public class Commands {
             }
             return "I don't have that item";
         }));
+        //// equip item
         commandsList.add(new Commands("(equip|e)(?: the)? (?<input>.*)", (s) -> {
             GameState gameState = SharedData.gs;
             Item item = gameState.p1.inventory.getItem(s);
-            if(item != null){
+            if (item != null) {
                 gameState.p1.inventory.equipItem(item); // todo return this when it's implemented.
                 return "";
             }
@@ -64,7 +70,7 @@ public class Commands {
     }
 
     public Commands(String searchPatterns, Function<String, String> ACTION) {
-        this((ArrayList<String>) List.of("(?:I )?(?:want to )?" + searchPatterns), ACTION);
+        this(new ArrayList<String>(List.of("(?:I )?(?:want to )?" + searchPatterns)), ACTION);
     }
 
     public Commands(ArrayList<String> searchPatterns, Function<String, String> ACTION) {
@@ -74,15 +80,15 @@ public class Commands {
         this.ACTION = ACTION;
     }
 
-    public String action(String text) {
-        for (Pattern p : searchPattern) {
-            Matcher m = p.matcher(text);
-            if (m.find()) {
-                return ACTION.apply((String) m.group("input"));
+    public static String action(String text) {
+        for (Commands c : commandsList) {
+            for (Pattern p : c.searchPattern) {
+                Matcher m = p.matcher(text);
+                if (m.find()) {
+                    return c.ACTION.apply((String) m.group("input"));
+                }
             }
         }
         return "sorry we don't have an action like that.";
     }
-
-
 }

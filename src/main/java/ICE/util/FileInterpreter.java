@@ -10,14 +10,17 @@ import java.util.regex.Pattern;
 
 
 public abstract class FileInterpreter {
-    public static ArrayList<HashMap<String, Object>> parseFolder(String path) {
-        ArrayList<HashMap<String, Object>> output = new ArrayList<>();
+    public static ArrayList<ArrayList<HashMap<String, Object>>> parseFolder(String path) {
+        ArrayList<ArrayList<HashMap<String, Object>>> output = new ArrayList<>();
+        ArrayList<HashMap<String, Object>> inner = new ArrayList<>();
         File fileOrFolder = new File(path);
 
         if (fileOrFolder.isDirectory()) {
+            inner.clear();
             for (File file : fileOrFolder.listFiles()) {
-                output.add(parseFile(file.toPath().toString()));
+                inner.add(parseFile(file.toPath().toString()));
             }
+            output.add(inner);
         }
         return output;
     }
