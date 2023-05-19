@@ -8,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -16,10 +17,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.fxml.FXML;
-import philosophers_ice.GameState;
-import philosophers_ice.Item;
-import philosophers_ice.MapTile;
-import philosophers_ice.StateSaver;
+import philosophers_ice.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,6 +26,7 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class GameSceneController implements Initializable {
@@ -48,6 +47,10 @@ public class GameSceneController implements Initializable {
     @FXML
     private GridPane map;
     @FXML GridPane inventoryPane;
+    @FXML
+    private DialogPane gamePane;
+    @FXML
+    private DialogPane logPane;
 
     public void switchToMainMenu(ActionEvent event) throws Exception {
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
@@ -128,6 +131,20 @@ public class GameSceneController implements Initializable {
         }
 
 
+        java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();
+        System.setOut(new java.io.PrintStream(out));
+        startCombat(new CombatScene(gs.p1, (ArrayList<Enemy>) List.of(new Enemy("lars",null,"",5,5,5,5))));
+        logPane.setContentText(out.toString());
+        
+
+
 
     }
+
+
+    private void startCombat(CombatScene combatScene){
+        combatScene.startCombat();
+
+    }
+
 }

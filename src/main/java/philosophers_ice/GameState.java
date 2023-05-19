@@ -11,8 +11,8 @@ public class GameState implements Serializable {
     int y = 0;
     public GameState(String name){
         this.name = name;
-         maptile = getMinimap(9, 5);
-        //StateSaver.saveGame(this);
+        StateSaver.saveGame(this);
+        maptile = getMinimap(9, 5);
     }
     GameState(){
 
