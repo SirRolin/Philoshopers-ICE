@@ -31,6 +31,7 @@ public class Enemy implements Serializable {
         this.initiative = initiative;
         this.damage = damage;
         this.loot.add(new Melee("Ged",23,53,true,false)); // PLACEHOLDER!!!
+        this.loot.add(new Melee("Ged2",23,53,true,false));
     }
     public Enemy(HashMap<String, Object> map){
         name = HashMapExplorer.getString(map,"name");

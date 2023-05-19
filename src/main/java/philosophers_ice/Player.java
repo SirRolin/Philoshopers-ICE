@@ -71,11 +71,15 @@ public class Player implements Serializable {
     public int getMP(){
         return this.mp;
     }
-    public void recover(){
-        this.hp += (con+(str/2)+willPower)+ 20;
+    public int recover(){
+        int recoverAmount = (con+(str/2)+willPower)+ 20;
+        this.hp += recoverAmount;
         if(this.hp > getMaxHP()){
+            int rest = (this.hp + recoverAmount)-getMaxHP();
             this.hp = getMaxHP();
+            return recoverAmount-rest;
         }
+        return recoverAmount;
     }
     public int attack(){
         int damage = inventory.getDamage() ;
