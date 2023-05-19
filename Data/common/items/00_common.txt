@@ -1,5 +1,5 @@
 melee_weapon = {
-    name = "Great Sword"
+    name = "Great_Sword"
     description = "it's a big sword too big for one hand."
     isOneHanded = no
     isTwoHanded = yes

@@ -1,5 +1,6 @@
 package philosophers_ice;
 
+import ICE.util.FileInterpreter;
 import ICE.util.HashMapExplorer;
 import ICE.util.RngHandler;
 import ICE.util.WeightedObject;
@@ -26,7 +27,44 @@ public class Enemy implements Serializable {
     private ArrayList<String> loot = new ArrayList<>();
     private ArrayList<WeightedObject> chanceLoot = new ArrayList<>();
     private ArrayList<Currency> currencies = new ArrayList<>();
+    private static final HashMap<String, Enemy> listOfUs = new HashMap<String, Enemy> ();
 
+    public static Enemy getEnemy(String nameOfEnemy) {
+        load();
+        return listOfUs.get(nameOfEnemy);
+    }
+
+    public static void load() {
+        if (listOfUs.isEmpty()) {
+            for (ArrayList<HashMap<String, Object>> lst : FileInterpreter.parseFolder("Data/common/enemies/")) {
+                HashMapExplorer.ListMapToForEach(lst, (s, map) -> {
+                    listOfUs.put(s, new Enemy((HashMap<String, Object>) map));
+                });
+            }
+        }
+    }
+
+    public static void reload() {
+        listOfUs.clear();
+        load();
+    }
+
+    public Enemy(String name) {
+        this(Enemy.getEnemy(name));
+    }
+    public Enemy(Enemy enemy) {
+        this.name = enemy.name;
+        this.imagePath = enemy.imagePath;
+        this.description = enemy.description;
+        this.defence = enemy.defence;
+        this.hp = enemy.hp;
+        this.maxInitiative = enemy.maxInitiative;
+        this.damage = enemy.damage;
+        this.loot = enemy.loot;
+        this.chanceLoot = enemy.chanceLoot;
+        this.currencies = enemy.currencies;
+
+    }
 
     public Enemy(String name, String imagePath, String description, int defence, int hp, int initiative, int damage) {
         this.name = name;
@@ -45,12 +83,12 @@ public class Enemy implements Serializable {
         name = HashMapExplorer.getString(map, "name");
         imagePath = HashMapExplorer.getString(map, "imagePath");
         description = HashMapExplorer.getString(map, "description");
-        defence = (int) HashMapExplorer.getNumber(map, "defence");
-        hp = (int) HashMapExplorer.getNumber(map, "hp");
-        initiative = (int) HashMapExplorer.getNumber(map, "initiative");
+        defence = HashMapExplorer.getNumber(map, "defence").intValue();
+        hp = HashMapExplorer.getNumber(map, "hp").intValue();
+        initiative = HashMapExplorer.getNumber(map, "initiative").intValue();
         maxInitiative = initiative;
-        damage = (int) HashMapExplorer.getNumber(map, "damage");
-        ArrayList<Object> lst = HashMapExplorer.getList(map, "droplist");
+        damage = HashMapExplorer.getNumber(map, "damage").intValue();
+        ArrayList<Object> lst = HashMapExplorer.getList(map, "droplist.list");
         for (int ite = 0; ite < lst.size(); ++ite) {
             if (lst.get(ite) instanceof WeightedObject chanceItem) {
                 if (chanceItem.weight.floatValue() > 0f) {

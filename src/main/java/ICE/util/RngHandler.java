@@ -10,7 +10,7 @@ public class RngHandler {
         float totalWeight = 0;
         for (WeightedObject wo : chanceList) {
             if (wo.weight.floatValue() > 0f) {
-                totalWeight += (float) wo.weight;
+                totalWeight += wo.weight.floatValue();
             }
         }
         if (totalWeight > 0) {
