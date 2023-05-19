@@ -16,8 +16,6 @@ import java.io.File;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Set;
 
 public class Race implements Serializable {
 
@@ -42,13 +40,9 @@ public class Race implements Serializable {
     public static void load() {
         if (listOfUs.isEmpty()) {
             for (ArrayList<HashMap<String, Object>> lst : FileInterpreter.parseFolder("Data/common/" + folderName + "/")) {
-                for (HashMap<String,Object> s: lst
-                     ) {
-                    Set<String> keys = s.keySet();
-                    for (String key : keys) {
-                        listOfUs.add(new Race(HashMapExplorer.getMap(s, key), key));
-                    }
-                }
+                HashMapExplorer.ListMapToforEach(lst, "melee_weapon", (key, map) -> {
+                    listOfUs.add(new Race(map, key));
+                });
             }
         }
     }

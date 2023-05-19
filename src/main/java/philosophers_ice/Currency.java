@@ -27,12 +27,7 @@ public class Currency implements Serializable {
     public static void load(){
         if(listOfUs.isEmpty()) {
             for (ArrayList<HashMap<String, Object>> lst : FileInterpreter.parseFolder("Data/common/currencies/")) {
-                for (HashMap<String,Object> s: lst) {
-                    Set<String> keys = s.keySet();
-                    for (String key : keys) {
-                        listOfUs.add(new Currency(HashMapExplorer.getMap(s, key)));
-                    }
-                }
+                HashMapExplorer.ListMapToforEach(lst, "currency", (map) -> {listOfUs.add(new Currency(map));});
             }
         }
     }

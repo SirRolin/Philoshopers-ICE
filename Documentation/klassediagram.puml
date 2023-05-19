@@ -203,8 +203,10 @@ class GameState extends External.Serializable{
 class Commands {
     - String searchPatterns
     - VoidFunction action
-    commands(String, VoidFunction)
-    + boolean Action(String text)
+    + Commands(String, Function<String, String>)
+    + Commands(ArrayList<String>, Function<String, String>)
+    + {static} void load()
+    + {static} boolean Action(String text)
 }
 class Player extends External.Serializable {
     + Player(String)

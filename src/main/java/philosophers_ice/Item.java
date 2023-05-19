@@ -24,17 +24,9 @@ public abstract class Item implements Serializable {
     public static void load() {
         if (listOfUs.isEmpty()) {
             for (ArrayList<HashMap<String, Object>> lst : FileInterpreter.parseFolder("Data/common/items/")) {
-                for (HashMap<String, Object> s : lst) {
-                    if (s.containsKey("melee_weapon")) {
-                        listOfUs.add(new Melee(HashMapExplorer.getMap(s,"melee_weapon")));
-                    }
-                    if (s.containsKey("ranged_weapon")) {
-                        listOfUs.add(new Ranged(s));
-                    }
-                    if (s.containsKey("armour")) {
-                        listOfUs.add(new Armour(s));
-                    }
-                }
+                HashMapExplorer.ListMapToforEach(lst, "melee_weapon", (map) -> {listOfUs.add(new Melee(map));});
+                HashMapExplorer.ListMapToforEach(lst, "ranged_weapon", (map) -> {listOfUs.add(new Ranged(map));});
+                HashMapExplorer.ListMapToforEach(lst, "armour", (map) -> {listOfUs.add(new Armour(map));});
             }
         }
     }
