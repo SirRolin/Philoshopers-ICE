@@ -29,7 +29,6 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
-
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("mainMenu.fxml"));
         primaryStage.setTitle("Philosophers ICE");
         primaryStage.setScene(new Scene(root,screenBounds.getMaxX()/2,screenBounds.getMaxY()/2));

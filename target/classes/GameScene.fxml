@@ -74,7 +74,7 @@
          </font>
       </Label>
       <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
-      <DialogPane contentText="Massere af tekst omkring rummet man lige er gået ind i. Gad vide hvad der er derinde? Idk... jeg står der ikke selv. Måske er der en drage? Eller en kiste.. måske din mor? idk, hvad jeg dog ved er, at jeg stadigvæk skal skrive lidt flere linjer, for, at teste hele testfeltet." expanded="true" headerText="Room name:" prefHeight="330.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <DialogPane fx:id="gamePane" contentText="Massere af tekst omkring rummet man lige er gået ind i. Gad vide hvad der er derinde? Idk... jeg står der ikke selv. Måske er der en drage? Eller en kiste.. måske din mor? idk, hvad jeg dog ved er, at jeg stadigvæk skal skrive lidt flere linjer, for, at teste hele testfeltet." expanded="true" headerText="Room name:" prefHeight="330.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       <Label fx:id="statsLabel" alignment="CENTER" layoutX="475.0" layoutY="10.0" text="Stats + Name of current character" GridPane.halignment="CENTER">
          <font>
             <Font size="17.0" />
@@ -82,7 +82,7 @@
       </Label>
       <ScrollPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
          <content>
-            <GridPane alignment="TOP_CENTER" gridLinesVisible="true" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="318.0">
+            <GridPane fx:id="inventoryPane" alignment="TOP_CENTER" gridLinesVisible="true" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="318.0">
               <columnConstraints>
                   <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="32.0" prefWidth="38.0" />
                 <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="183.0" />
@@ -91,11 +91,6 @@
                 <RowConstraints maxHeight="1.7976931348623157E308" minHeight="32.0" prefHeight="30.0" vgrow="ALWAYS" />
               </rowConstraints>
                <children>
-                  <Label text="Item" GridPane.columnIndex="1" GridPane.halignment="CENTER">
-                     <font>
-                        <Font size="16.0" />
-                     </font></Label>
-                  <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.valignment="CENTER" GridPane.vgrow="NEVER" />
                </children>
                <padding>
                   <Insets top="5.0" />
@@ -167,7 +162,7 @@
                <children>
                   <ScrollPane layoutX="-2.0" prefHeight="237.0" prefWidth="320.0">
                      <content>
-                        <DialogPane expanded="true" prefHeight="53.0" prefWidth="318.0" />
+                        <DialogPane fx:id="logPane" expanded="true" prefHeight="53.0" prefWidth="318.0" />
                      </content>
                   </ScrollPane>
                </children>
