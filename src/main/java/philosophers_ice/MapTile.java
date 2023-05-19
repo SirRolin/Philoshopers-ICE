@@ -1,6 +1,7 @@
 package philosophers_ice;
 
 import ICE.util.HashMapExplorer;
+import ICE.util.RngHandler;
 import javafx.scene.image.Image;
 
 import java.io.File;
@@ -10,6 +11,7 @@ import java.util.HashMap;
 
 public class MapTile implements Serializable {
     public String name = "";
+    public String structure;
     public String imagePath = "";
     public ArrayList<Enemy> enemies = new ArrayList<Enemy>();
     public ArrayList<EffectCard> effectCards = new ArrayList<EffectCard>();
@@ -18,10 +20,10 @@ public class MapTile implements Serializable {
     }
     public MapTile(String name, String imagePath){
         this.name = name;
+        this.imagePath = imagePath;
     }
     public MapTile(MapTile mt){
-        this.name = mt.name;
-        this.imagePath = mt.imagePath;
+        this(mt.name, mt.imagePath);
     }
     public MapTile(HashMap<?,?> map){
         name = HashMapExplorer.getString(map, "name");
@@ -30,7 +32,7 @@ public class MapTile implements Serializable {
 
     public Image[] getImage(){
         Image[] output = {null, null};
-        String path = !imagePath.equals("") ? imagePath : "Data/gfx/MapTiles/" + name + ".png";
+        String path = (imagePath != null) && !imagePath.equals("") ? imagePath : "Data/gfx/map_tiles/" + name + ".png";
         File file = new File(path);
 
         //// if it does exist
@@ -41,7 +43,7 @@ public class MapTile implements Serializable {
             output[0] = new Image("_NULL_.png");
         }
 
-        path = !imagePath.equals("") ? imagePath : "Data/gfx/Structures/" + name + ".png";
+        path = "Data/gfx/structures/" + structure + ".png";
         file = new File(path);
 
         //// if it does exist
@@ -49,9 +51,20 @@ public class MapTile implements Serializable {
             output[1] = new Image(file.toURI().toString());
         } else {
             //// if it doesn't exist
-            output[1] = new Image("_NULL_.png");
+            output[1] = null;
         }
         return output;
+    }
+
+    public void visit(){
+        // todo pre comabt events
+        // todo combat
+        // todo post combat events (if alive)
+    }
+
+    public void passTime(){
+        // todo chance for enemies to spawn
+        // PS. Use the RngHandler
     }
 
 }

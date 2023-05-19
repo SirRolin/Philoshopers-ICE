@@ -13,19 +13,19 @@ public class CombatScene {
     public CombatScene(Player player,ArrayList<Enemy> enemies){
         this.currentPlayer = player;
         this.enemies = enemies;
-        this.tmpPlayerInitiative = currentPlayer.getInitiative();
     }
 
 
     public void startCombat(){
-        int enemyInitative = 0;
+        this.tmpPlayerInitiative = currentPlayer.getInitiative();
+        maxInitiative = tmpPlayerInitiative;
         for (Enemy enemy: enemies) {
             int tmpEnemyInitative = enemy.getInitiative();
-            if(tmpEnemyInitative > enemyInitative){
-                enemyInitative = tmpEnemyInitative;
+            if(tmpEnemyInitative > maxInitiative){
+                maxInitiative = tmpEnemyInitative;
             }
         }
-        maxInitiative = Math.max(tmpPlayerInitiative,enemyInitative);
+//        maxInitiative = Math.max(tmpPlayerInitiative,enemyInitative);
         combat();
     }
     private void combat(){
