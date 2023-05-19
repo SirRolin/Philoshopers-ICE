@@ -1,9 +1,19 @@
 human = {
     imagePath = "Humanfixedmore.png"
+    bio = "I'm me, aren't I?"
 }
 orge = {
     imagePath = "Orgefixed.png"
+    bio = "Me ogre! Big, strong, smash!
+No like puny creatures. Smash!
+Eat everything, no manners. Ugly, scary, but me have feelings too.
+Sometimes sad, sometimes angry.
+Ogre misunderstood, but me just want peace... and maybe a tasty snack."
 }
 elf = {
     imagePath = "Elf.png"
+    bio = "As a High Elf, I am the epitome of intellect and refinement.
+Blessed with exceptional wisdom and keen insight, I embody the pursuit of knowledge and mastery of arcane arts.
+Graceful, with an air of elegance, I excel in magic, diplomacy, and the pursuit of perfection.
+I am the embodiment of sophistication and the pinnacle of elven society."
 }
