@@ -5,14 +5,24 @@ import ICE.util.FileInterpreter;
 import ICE.util.HashMapExplorer;
 import javafx.scene.image.Image;
 
+
+
+import java.util.HashMap;
+
+
+
+
 import java.io.File;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
 public class Race implements Serializable {
+
     private static final String folderName = "races";
+
     private static final ArrayList<Race> listOfUs = new ArrayList<>();
 
     public static Race getRace(String nameOfRace) {
@@ -44,6 +54,7 @@ public class Race implements Serializable {
         listOfUs.clear();
         load();
     }
+
 
     public static int getIndexOf(ArrayList<Race> list, String name) {
         int i = 0;
@@ -88,4 +99,5 @@ public class Race implements Serializable {
         //// if it doesn't exist
         return new Image("_NULL_.png");
     }
+
 }
