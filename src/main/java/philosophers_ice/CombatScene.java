@@ -29,13 +29,16 @@ public class CombatScene {
         combat();
     }
     private void combat(){
-
+        System.out.println("|||||||||||||||||||||||||||||||||||||||||||||");
+        System.out.println("|||||||||||||You entered combat!|||||||||||||");
         while(currentPlayer.getHP()>0 && enemies.size()>0 && turn < 99){
             if(tmpPlayerInitiative >= getHigestInitiativeEnemy().getInitiative()){
                 chooseActionPlayer();
             }else{
-               currentPlayer.takeDamage(getHigestInitiativeEnemy().attack());
-               getHigestInitiativeEnemy().updateInitiative(-maxInitiative);
+                System.out.println(getHigestInitiativeEnemy().getName()+" attacked you for: "+currentPlayer.takeDamage(getHigestInitiativeEnemy().attack())+"damage");
+                System.out.println("You have: "+currentPlayer.getHP()+" health remaining after the attack");
+                System.out.println("-----------------------------------");
+                getHigestInitiativeEnemy().updateInitiative(-maxInitiative);
             }
 
             if(tmpPlayerInitiative < maxInitiative && enemyNotAboveMaxInitiative()){
@@ -43,29 +46,44 @@ public class CombatScene {
                 for (Enemy e: enemies) {
                     e.updateInitiative(maxInitiative);
                 }
+                situationUpdate();
             }
         }
         if(currentPlayer.getHP() <= 0){
+            System.out.println("YOU DIED!!! :(");
             endGame();
         }
         endCombat();
     }
+    private void situationUpdate() {
+    }
 
     private void chooseActionPlayer() {
+        System.out.println("|||||||||||||||||||||||||||||||||||||||||||||");
+        System.out.println("Its now turn: "+turn);
+        System.out.println("-----------------------------------");
         System.out.println("You have the following choices: ");
         System.out.println("1. Attack an enemy");
         System.out.println("2. Cast a spell");
         System.out.println("3. Use Item");
         System.out.println("4. Use Recover");
+        System.out.println("-----------------------------------");
         Scanner scan = new Scanner(System.in);
             int input = scan.nextInt();
             scan.nextLine();
             switch (input) {
                 case 1 -> {
                     Enemy choosenEnemy = chooseEnemyToAttack();
-                    choosenEnemy.takeDamage(currentPlayer.attack());
+                    System.out.println("You attacked: "+ choosenEnemy.getName() + " and delt: " + choosenEnemy.takeDamage(currentPlayer.attack())+" damage");
+                    System.out.println(choosenEnemy.getName() + " now have " + choosenEnemy.getHp() +" health remaining");
                     if (choosenEnemy.getHp() <= 0) {
-                        currentPlayer.getLoot(choosenEnemy.droppedLoot()); // PLACEHOLDER!!
+                        System.out.println("The "+choosenEnemy.getName() +" died and you loot the following items:");
+                        int sizeOfEnemyInventory = choosenEnemy.droppedLoot().size();
+                        for (Item i:choosenEnemy.droppedLoot()) {
+                            System.out.print("- "+i.getName()+"\n");
+                        }
+                        System.out.println("from the remains.");
+                        currentPlayer.getLoot(choosenEnemy.droppedLoot());// PLACEHOLDER!!
                         enemies.remove(choosenEnemy);
                     }
                     tmpPlayerInitiative-= maxInitiative;
@@ -83,8 +101,8 @@ public class CombatScene {
                     chooseActionPlayer();
                 }
                 case 4 -> {
-                    System.out.println("You sit down and rest recovering hp");
-                    currentPlayer.recover();
+                    System.out.println("You sit down and rest, recovering: "+currentPlayer.recover()+" hp");
+                    System.out.println("After your rest, your health is now: "+currentPlayer.getHP());
                     turn++;
                 }
                 default -> {
