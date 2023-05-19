@@ -32,7 +32,6 @@ public class CombatScene {
             System.out.println(choosenEnemy.getName() + " now have " + choosenEnemy.getHp() + " health remaining");
             if (choosenEnemy.getHp() <= 0) {
                 System.out.println("The " + choosenEnemy.getName() + " died and you loot the following items:");
-                int sizeOfEnemyInventory = choosenEnemy.droppedLoot().size();
                 for (Item i : choosenEnemy.droppedLoot()) {
                     System.out.print("- " + i.getName() + "\n");
                 }
