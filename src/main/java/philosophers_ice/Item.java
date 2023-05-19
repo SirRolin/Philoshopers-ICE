@@ -20,7 +20,7 @@ public abstract class Item implements Serializable {
     }
     public static void load(){
         if(listOfUs.isEmpty()) {
-            for (HashMap<String, Object> s : FileInterpreter.parseFolder("Data/common/items", true)) {
+            for (HashMap<String, Object> s : FileInterpreter.parseFolder("Data/common/items/")) {
                 if (s.containsKey("melee_weapon")) {
                     listOfUs.add(new Melee(s));
                 }

@@ -40,8 +40,9 @@ public class Inventory implements Serializable {
         }
         return dmg;
     }
-    public void getEffectModifiers(){
-       // WORK IN PROGRESS!! part of nice to have
+    public Number getEffectModifiers(String stat){
+        return 0;
+       // todo WORK IN PROGRESS!! part of nice to have
     }
     public Weapon getEquippedWeaponMainHand() {
         return equippedWeaponMainHand;
@@ -198,6 +199,24 @@ public class Inventory implements Serializable {
             }
         }
         return null;
+    }
+
+    public void addCurrency(String name, int amount){
+        Currency cur = getCurrency(name);
+        if(cur == null){
+            cur = Currency.getcurrency(name);
+        }
+        addCurrency(cur, amount);
+    }
+    public void addCurrency(Currency cur, int amount){
+        if(cur != null){
+            Currency cur2 = getCurrency(cur.name);
+            if(cur2 != null){
+                cur2.amount += amount;
+            } else {
+                currencies.add(new Currency(cur, amount));
+            }
+        }
     }
 
 }

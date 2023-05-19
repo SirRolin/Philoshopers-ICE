@@ -37,12 +37,6 @@ public class Main extends Application {
 
     }
 
-    /*
-    private void closeProgram() {
-        // HER SKAL TING KØRES FOR AT GEMME, IKKE SIKKERT VI SKAL BRUGE DEN ALLIGVEL
-        window.close();
-    }
-    */
 }
 
 
