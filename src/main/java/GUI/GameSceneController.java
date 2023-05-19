@@ -19,14 +19,8 @@ import javafx.stage.Stage;
 import javafx.fxml.FXML;
 import philosophers_ice.*;
 
-import java.io.File;
-import java.io.IOException;
 import java.net.URL;
-import java.nio.file.DirectoryStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class GameSceneController implements Initializable {
@@ -131,18 +125,18 @@ public class GameSceneController implements Initializable {
         }
 
 
-        java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();
-        System.setOut(new java.io.PrintStream(out));
-        startCombat(new CombatScene(gs.p1, (ArrayList<Enemy>) List.of(new Enemy("lars",null,"",5,5,5,5))));
-        logPane.setContentText(out.toString());
-        
+        //java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();
+        PrintStreamWithLog out = new PrintStreamWithLog(System.out, logPane);
+        System.setOut(out);
 
 
-
+        //startCombat(new CombatScene(SharedData.gs.p1,new ArrayList<Enemy>(List.of(new Enemy("lars",null,"",5,5,5,5)))));
+        //startCombat(new CombatScene(gs.p1, (ArrayList<Enemy>) List.of(new Enemy("lars",null,"",5,5,5,5))));
+        //logPane.setContentText(out.toString());
     }
 
 
-    private void startCombat(CombatScene combatScene){
+    public void startCombat(CombatScene combatScene){
         combatScene.startCombat();
 
     }

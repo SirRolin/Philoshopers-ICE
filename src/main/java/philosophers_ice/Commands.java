@@ -1,26 +1,37 @@
 package philosophers_ice;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Commands {
 
-    private String searchPatterns;
+    private ArrayList<String> searchPattern = new ArrayList<>();
+    private final Runnable ACTION;
 
-    public ArrayList<String> commandsList;
+    public static ArrayList<Commands> commandsList;
 
-    public Commands(String searchPatterns){
-        this.searchPatterns = searchPatterns;
-        commandsList.add("go");
-        commandsList.add("inspect");
-        commandsList.add("x");
-        commandsList.add("equip");
-        commandsList.add("e");
+    public static void loadDefaults(){
+        commandsList.add(new Commands("(go|walk|run)(?: to)? (?<place>\\w*)", () -> {}));
+        commandsList.add(new Commands("(inspect|x)(?: the)? (?<item>.*)", () -> {}));
+        commandsList.add(new Commands("(equip|e)(?: the)? (?<item>.*)", () -> {}));
+    }
+
+    public Commands(String searchPatterns, Runnable ACTION){
+        this((ArrayList<String>) List.of("(?:I )?(?:want to )?" + searchPatterns), ACTION);
+    }
+    public Commands(ArrayList<String> searchPatterns, Runnable ACTION){
+        this.searchPattern = searchPatterns;
+        this.ACTION = ACTION;
+    }
+
+    public void action(String text){
 
     }
 
 
-    public void action(String text) {
+
+    public void actionNotUsed(String text) {
         GameState gameState = new GameState("action");
         if (text == "go") {
             System.out.println("which direction do you want to go to, north,south,east,west?");
@@ -78,7 +89,6 @@ public class Commands {
         if(commandsList.contains(text)){
             action(text);
         }
-
     }
 
 
