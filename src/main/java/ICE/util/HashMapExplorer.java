@@ -37,6 +37,17 @@ public abstract class HashMapExplorer {
         }
         return key + "_missing";
     }
+    public static boolean getBoolean(Object obj, String key){
+        if(obj instanceof HashMap<?, ?> map){
+            Object Object = getToObject(map, key);
+            if (Object instanceof Boolean bool) {
+                return (boolean) bool;
+            } else {
+                return false;
+            }
+        }
+        return false;
+    }
 
     public static Number getNumber(Object obj, String key){
         if(obj instanceof HashMap<?, ?> map){

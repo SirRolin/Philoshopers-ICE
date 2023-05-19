@@ -37,7 +37,13 @@ public abstract class Item implements Serializable {
         listOfUs.clear();
         load();
     }
-
+//
+//    public Item(Item item){
+//        name = item.name;
+//        description = item.name;
+//        imagePath = item.imagePath;
+//        statChanges = new ArrayList<Effect>();
+//    }
 
     public String name;
     public String description;

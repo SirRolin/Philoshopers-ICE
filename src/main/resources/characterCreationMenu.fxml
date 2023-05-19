@@ -72,7 +72,7 @@
             <Button fx:id="rightRaceButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="46.0" text="-&gt;" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
          </children>
       </GridPane>
-      <DialogPane contentText="Wow sikke en sej race! Jeg håber virkeligt ikke, at der sker noget slemt ved dem, efter denne skærm. Det ville være ret så trist! Anyway, jeg skriver egentligt bare videre for, at tjekke hvor meget tekst der kan være herinde, tilsyneladende ret meget." expanded="true" headerText="Race name:" prefHeight="172.0" prefWidth="200.0" GridPane.rowIndex="1" />
+      <DialogPane fx:id = "raceBio" contentText="Wow sikke en sej race! Jeg håber virkeligt ikke, at der sker noget slemt ved dem, efter denne skærm. Det ville være ret så trist! Anyway, jeg skriver egentligt bare videre for, at tjekke hvor meget tekst der kan være herinde, tilsyneladende ret meget." expanded="true" headerText="Race name:" prefHeight="172.0" prefWidth="200.0" GridPane.rowIndex="1" />
       <ImageView fx:id="raceImage" id="raceImage" fitHeight="128" fitWidth="128" pickOnBounds="true" preserveRatio="true" smooth="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
          <image>
             <Image url="@_NULL_.png" />
