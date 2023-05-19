@@ -3,31 +3,29 @@ package GUI;
 import ICE.util.FileInterpreter;
 import ICE.util.HashMapExplorer;
 import philosophers_ice.GameState;
-import philosophers_ice.Race;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 public abstract class SharedData {
     public static GameState gs;
 
-    public static ArrayList<HashMap<String, Object>> defines = new ArrayList<>();
+    private static HashMap<String, Object> defines = new HashMap<String, Object>();
 
     public static String getDefineString(String key){
-        for(HashMap<String, Object> def: defines){
-            String temp = (String) HashMapExplorer.getString(def,key);
-            if(temp.equals(key)){
-                return temp;
-            }
+        if(defines.isEmpty()) {
+            load();
         }
-        return null;
+        return HashMapExplorer.getString(defines,key);
     }
     public static void load(){
-        if(defines.isEmpty()) {
-            for (ArrayList<HashMap<String,Object>> lst: FileInterpreter.parseFolder("Data/common/defines/")
-                 ) {
-                defines.addAll(lst);
-            }
+        for (ArrayList<HashMap<String,Object>> lst: FileInterpreter.parseFolder("Data/common/defines/")){
+            HashMapExplorer.ListMapToForEach(lst, (s, map) -> {
+                for (Object inner: ((HashMap<String, Object>)map).keySet()) {
+                    defines.put((String) inner, ((HashMap<String, Object>) map).get(inner));
+                }
+            });
         }
     }
     public static void reload(){

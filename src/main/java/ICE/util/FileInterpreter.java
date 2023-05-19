@@ -15,8 +15,8 @@ public abstract class FileInterpreter {
         File Folder = new File(path);
 
         if (Folder.isDirectory()) {
-            for (File f: Folder.listFiles(File::isFile)
-                 ) {
+            File[] files = Folder.listFiles();
+            for(File f: Folder.listFiles(File::isFile)) {
                 output.add(parseFile(f.toPath().toString()));
             }
         }
@@ -37,8 +37,7 @@ public abstract class FileInterpreter {
 
                 //// convert data to a hashmap
                 ArrayList<HashMap<String, Object>> list = new ArrayList<>();
-                for (String s: findObjects(content,path, false)
-                     ) {
+                for (String s: findObjects(content,path, false)) {
                     list.add(FileInterpreter.parse(s, path));
                 }
                 return list;

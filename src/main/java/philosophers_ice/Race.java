@@ -40,8 +40,8 @@ public class Race implements Serializable {
     public static void load() {
         if (listOfUs.isEmpty()) {
             for (ArrayList<HashMap<String, Object>> lst : FileInterpreter.parseFolder("Data/common/" + folderName + "/")) {
-                HashMapExplorer.ListMapToforEach(lst, "melee_weapon", (key, map) -> {
-                    listOfUs.add(new Race(map, key));
+                HashMapExplorer.ListMapToForEach(lst, (key, map) -> {
+                    listOfUs.add(new Race((HashMap<String, Object>) map, key));
                 });
             }
         }

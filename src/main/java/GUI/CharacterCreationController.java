@@ -100,7 +100,7 @@ public class CharacterCreationController implements Initializable {
         Currency.load();
         Race.load();
         SharedData.load();
-        String defaultRace = HashMapExplorer.getString(SharedData.defines.get(0), "defaultRace");
+        String defaultRace = SharedData.getDefineString("defaultRace");
         races = Race.getRaces();
 
         if (SharedData.gs != null) {

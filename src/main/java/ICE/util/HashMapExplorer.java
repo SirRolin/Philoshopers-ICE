@@ -19,7 +19,7 @@ public abstract class HashMapExplorer {
     public static ArrayList<HashMap<String, Object>> getMapFromList(ArrayList<HashMap<String, Object>> list, String key) {
         ArrayList<HashMap<String, Object>> output = new ArrayList<HashMap<String, Object>>();
         for (HashMap<String, Object> map : list) {
-            Object Object = getToObject(map, key);
+            Object Object = getObject(map, key);
             if (Object instanceof HashMap<?, ?> map1) {
                 output.add((HashMap<String, Object>) map1);
             }
@@ -36,13 +36,17 @@ public abstract class HashMapExplorer {
      * @param biConsumer
      * BiConsumer which is called whenever a key is found in the listmap
      */
-    public static void ListMapToforEach(ArrayList<HashMap<String, Object>> inputList, String key, BiConsumer<String, HashMap<String, Object>> biConsumer) {
+    public static <T> void ListMapToForEach(ArrayList<HashMap<String, Object>> inputList, String key, BiConsumer<String, T> biConsumer) {
         for (HashMap<String, Object> map : inputList) {
             Set<String> keys = map.keySet();
             for (String s : keys) {
-                HashMap<String, Object> innerMap = HashMapExplorer.getMap(map, s);
-                if (innerMap != null) {
-                    biConsumer.accept(s, innerMap);
+                Object object = HashMapExplorer.getObject(map, s);
+                if (object != null) {
+                    try {
+                        biConsumer.accept(s, (T) object);
+                    } catch (Exception e){
+                        ErrorHandler.handleError(e);
+                    }
                 }
             }
         }
@@ -53,11 +57,11 @@ public abstract class HashMapExplorer {
      * @param inputList
      * ArrayList<HashMap<String, Object>>
      * @param key
-     * looks for this in each map
+     * limit to this key
      * @param consumer
      * Consumer which is called whenever a key is found in the listmap
      */
-    public static <T> void ListMapToforEach(ArrayList<HashMap<String, Object>> inputList, String key, Consumer<HashMap<String, Object>> consumer) {
+    public static <T> void ListMapToForEach(ArrayList<HashMap<String, Object>> inputList, String key, Consumer<HashMap<String, Object>> consumer) {
         for (HashMap<String, Object> map : inputList) {
             Set<String> keys = map.keySet();
             for (String s : keys) {
@@ -69,9 +73,30 @@ public abstract class HashMapExplorer {
         }
     }
 
+
+    /**
+     * Used on a listMap where the key is important,
+     * but we are not searching for any specific one.
+     * @param inputList
+     * ArrayList<HashMap<String, Object>>
+     * @param consumer
+     * Consumer which is called whenever a key is found in the listmap
+     */
+    public static <T> void ListMapToForEach(ArrayList<HashMap<String, Object>> inputList, BiConsumer<String, T> consumer) {
+        for (HashMap<String, Object> map : inputList) {
+            Set<String> keys = map.keySet();
+            for (String s : keys) {
+                Object innerThing = HashMapExplorer.getObject(map, s);
+                if (innerThing != null) {
+                    consumer.accept(s, (T) innerThing);
+                }
+            }
+        }
+    }
+
     private static HashMap<String, Object> getMap(Object obj, String key) {
         if (obj instanceof HashMap<?, ?> map) {
-            Object Object = getToObject(map, key);
+            Object Object = getObject(map, key);
             if (Object instanceof HashMap<?, ?> map1) {
                 return (HashMap<String, Object>) map1;
             } else {
@@ -83,7 +108,7 @@ public abstract class HashMapExplorer {
 
     public static String getImage(Object obj, String key) {
         if (obj instanceof HashMap<?, ?> map) {
-            Object Object = getToObject(map, key);
+            Object Object = getObject(map, key);
             if (Object instanceof String theString) {
                 return theString;
             } else {
@@ -95,7 +120,7 @@ public abstract class HashMapExplorer {
 
     public static String getString(Object obj, String key) {
         if (obj instanceof HashMap<?, ?> map) {
-            Object Object = getToObject(map, key);
+            Object Object = getObject(map, key);
             if (Object instanceof String theString) {
                 return theString;
             } else {
@@ -107,7 +132,7 @@ public abstract class HashMapExplorer {
 
     public static boolean getBoolean(Object obj, String key, boolean defaultValue) {
         if (obj instanceof HashMap<?, ?> map) {
-            Object Object = getToObject(map, key);
+            Object Object = getObject(map, key);
             if (Object instanceof Boolean bool) {
                 return (boolean) bool;
             } else {
@@ -119,7 +144,7 @@ public abstract class HashMapExplorer {
 
     public static Number getNumber(Object obj, String key) {
         if (obj instanceof HashMap<?, ?> map) {
-            Object Object = getToObject(map, key);
+            Object Object = getObject(map, key);
             if (Object instanceof Number theNumber) {
                 return theNumber;
             } else {
@@ -131,7 +156,7 @@ public abstract class HashMapExplorer {
 
     public static ArrayList<Object> getList(Object obj, String key) {
         if (obj instanceof HashMap<?, ?> map) {
-            Object Object = getToObject(map, key);
+            Object Object = getObject(map, key);
             if (Object instanceof ArrayList<? extends Object> lst) {
                 return (ArrayList<Object>) lst;
             } else {
@@ -142,7 +167,7 @@ public abstract class HashMapExplorer {
         return new ArrayList<>();
     }
 
-    private static Object getToObject(HashMap<?, ?> map, String key) {
+    private static Object getObject(HashMap<?, ?> map, String key) {
         String[] keys = key.trim().split("\\."); //// Split at dots
         HashMap<?, ?> nestedMap = map;
         for (int i = 0; i < keys.length - 1; ++i) { //// every dot except the last needs to nest the map
@@ -152,7 +177,7 @@ public abstract class HashMapExplorer {
                 }
             }
         }
-        //// we are at the end of nesting and just need the String/Number
+        //// we are at the end of nesting and just need the String/Number/boolean/map
         return nestedMap.get(keys[keys.length - 1]);
     }
 }

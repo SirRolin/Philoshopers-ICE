@@ -8,7 +8,6 @@ import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Set;
 
 public class Currency implements Serializable {
     private static final ArrayList<Currency> listOfUs = new ArrayList<>();
@@ -27,7 +26,7 @@ public class Currency implements Serializable {
     public static void load(){
         if(listOfUs.isEmpty()) {
             for (ArrayList<HashMap<String, Object>> lst : FileInterpreter.parseFolder("Data/common/currencies/")) {
-                HashMapExplorer.ListMapToforEach(lst, "currency", (map) -> {listOfUs.add(new Currency(map));});
+                HashMapExplorer.ListMapToForEach(lst, "currency", (map) -> {listOfUs.add(new Currency(map));});
             }
         }
     }
