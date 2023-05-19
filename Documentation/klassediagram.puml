@@ -1,20 +1,59 @@
 @startuml
 'https://plantuml.com/class-diagram
 
+
+
+
+package GUI{
+class CharacterCreationController{
+}
+
+class GameSceneController{
+}
+
+class LoadGameController{
+}
+
+class MainMenuController{
+}
+
+class Main{
+}
+
+abstract class SharedData{
+}
+
+abstract class AlertBox{
+}
+}
+
+
+abstract class util.FileIO {
+    + String defaultPath
+    + readSerialised(String)
+    + readTextFile(String)
+    + writeSerialised(Object, String)
+
+
+}
+
+package philosophers_ice{
+abstract class StateSaver Extends util.FileIO {
+    + Boolean saveMap(GameState,MapTile,int,int)
+    + Boolean saveGame(GameState)
+    + GameState loadGame(String)
+    + MapTile loadMap(GameState,int,int)
+    + GameState newGame()
+}
+
 class Launcher extends javafx.Application {
     '+ void start(Stage stage) throws Exception
     '- Parent createContent()
     '+ void main(String[] args)
     '+ GameState game
-    '+ MainMenuGUI ui
     + main
 }
-abstract class GUI {
-    + update(GameState gs)
-    + ArrayList<Commands> commands
-}
-class explorerScene extends GUI {
-}
+
 class CharacterScene{
     - Player currentPlayer
     - ArrayList<Enemy> enemies
@@ -31,21 +70,7 @@ class CharacterScene{
     - boolean enemyNotAboveMaxInitiative()
 
 }
-abstract class StateSaver Extends util.FileIO {
-    + Boolean saveMap(GameState,MapTile,int,int)
-    + Boolean saveGame(GameState)
-    + GameState loadGame(String)
-    + MapTile loadMap(GameState,int,int)
-    + GameState newGame()
-}
-abstract class util.FileIO {
-    + String defaultPath
-    + readSerialised(String)
-    + readTextFile(String)
-    + writeSerialised(Object, String)
-}
 class GameState extends External.Serializable{
-    + GUI activeGUI
     + MapTile[][] maptile
     + String name
     + Player p1
@@ -55,7 +80,7 @@ class GameState extends External.Serializable{
     + GameState(String)
     + MapTile[][] getMinimap(int)
 }
-abstract class JSONInterpreter {
+abstract class FileInterpreter {
     + List<Object> Interpret(String[] lines)
     - List<Object> Interpret(String[] lines, Int start)
 }
@@ -260,7 +285,7 @@ class Enemy extends External.Serializable {
     + int takeDamage(int)
     + void updateInitiative(int)
 }
-class CombatScene extends GUI {
+class CombatScene {
     - ArrayList<Enemy> enemies
     - currentPlayer p
     - int maxInitiative
@@ -291,17 +316,12 @@ class Race extends External.Serializable  {
 interface External.Serializable
 Launcher --> StateSaver
 Launcher *-- GameState
-Launcher *-- MainMenuGUI
-GameState *-- GUI
-GUI -> MapTile
 StateSaver -> MapTile
 StateSaver -> GameState
 GameState --> CharacterScene
-GameState -* explorerScene
-JSONInterpreter --> GameState
+FileInterpreter --> GameState
 Player <- CharacterScene
 GameState *-- Player
-Commands --* explorerScene
 Commands --* CharacterScene
 Commands --* CombatScene
 Player o-- Allies
@@ -322,5 +342,16 @@ Player -* CombatScene
 CombatScene *- Enemy
 Player o-- EffectCard
 MapTile o-- EffectCard
+Main <-- Launcher
+Main <-- MainMenuController
+MainMenuController <-- LoadGameController
+MainMenuController <-- CharacterCreationController
+MainMenuController <-- AlertBox
+LoadGameController <-- GameSceneController
+CharacterCreationController <-- GameSceneController
+Main <-- SharedData
+MainMenuController <-- SharedData
+LoadGameController <-- SharedData
+GameSceneController <-- SharedData
 
 @enduml

@@ -17,6 +17,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.fxml.FXML;
 import philosophers_ice.GameState;
+import philosophers_ice.Item;
 import philosophers_ice.MapTile;
 import philosophers_ice.StateSaver;
 
@@ -45,7 +46,8 @@ public class GameSceneController implements Initializable {
     @FXML
     private GridPane statsPane;
     @FXML
-    GridPane map;
+    private GridPane map;
+    @FXML GridPane inventoryPane;
 
     public void switchToMainMenu(ActionEvent event) throws Exception {
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
@@ -115,6 +117,16 @@ public class GameSceneController implements Initializable {
                 map.add(pos1, i, j);
             }
         }
+
+
+
+        int counter = 0;
+        for(Item i: gs.p1.inventory.getItems()){
+            inventoryPane.add(new Label (i.name), 1,counter);
+            inventoryPane.add(new ImageView(i.getImage()),0,counter);
+            counter++;
+        }
+
 
 
     }
