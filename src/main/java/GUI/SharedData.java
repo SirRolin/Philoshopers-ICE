@@ -24,7 +24,10 @@ public abstract class SharedData {
     }
     public static void load(){
         if(defines.isEmpty()) {
-            defines.addAll(FileInterpreter.parseFolder("Data/common/defines/"));
+            for (ArrayList<HashMap<String,Object>> lst: FileInterpreter.parseFolder("Data/common/defines/")
+                 ) {
+                defines.addAll(lst);
+            }
         }
     }
     public static void reload(){

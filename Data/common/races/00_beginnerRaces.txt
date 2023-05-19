@@ -1,5 +1,5 @@
 human = {
-    imagePath = "Humanfixedmore.png"
+    imagePath = "Human.png"
     bio = "I'm me, aren't I?"
 }
 orge = {

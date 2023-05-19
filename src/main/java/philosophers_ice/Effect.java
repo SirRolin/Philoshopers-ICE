@@ -28,9 +28,12 @@ public class Effect implements Serializable {
     public static void load(){
         // todo add effects to common
         if(listOfUs.isEmpty()) {
-            for (HashMap<String, Object> s : FileInterpreter.parseFolder("Data/common/items")) {
-                if (s.containsKey("effect")) {
-                    //listOfUs.add(new Effect(s));
+            for (ArrayList<HashMap<String, Object>> lst : FileInterpreter.parseFolder("Data/common/items")) {
+                for (HashMap<String, Object> s : lst
+                ) {
+                    if (s.containsKey("effect")) {
+                        //listOfUs.add(new Effect(s));
+                    }
                 }
             }
         }

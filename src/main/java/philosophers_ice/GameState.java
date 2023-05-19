@@ -6,13 +6,11 @@ import java.util.ArrayList;
 public class GameState implements Serializable {
 
     public String name = "";
-    transient MapTile[][] maptile;
     int x = 0;
     int y = 0;
     public GameState(String name){
         this.name = name;
         StateSaver.saveGame(this);
-        maptile = getMinimap(9, 5);
     }
     GameState(){
 

@@ -26,10 +26,12 @@ public class Currency implements Serializable {
     }
     public static void load(){
         if(listOfUs.isEmpty()) {
-            for (HashMap<String, Object> s : FileInterpreter.parseFolder("Data/common/currencies/")) {
-                Set<String> keys = s.keySet();
-                for (String key: keys                     ) {
-                    listOfUs.add(new Currency(HashMapExplorer.getMap(s,key)));
+            for (ArrayList<HashMap<String, Object>> lst : FileInterpreter.parseFolder("Data/common/currencies/")) {
+                for (HashMap<String,Object> s: lst) {
+                    Set<String> keys = s.keySet();
+                    for (String key : keys) {
+                        listOfUs.add(new Currency(HashMapExplorer.getMap(s, key)));
+                    }
                 }
             }
         }

@@ -41,10 +41,13 @@ public class Race implements Serializable {
 
     public static void load() {
         if (listOfUs.isEmpty()) {
-            for (HashMap<String, Object> s : FileInterpreter.parseFolder("Data/common/" + folderName + "/")) {
-                Set<String> keys = s.keySet();
-                for (String key : keys) {
-                    listOfUs.add(new Race(HashMapExplorer.getMap(s, key), key));
+            for (ArrayList<HashMap<String, Object>> lst : FileInterpreter.parseFolder("Data/common/" + folderName + "/")) {
+                for (HashMap<String,Object> s: lst
+                     ) {
+                    Set<String> keys = s.keySet();
+                    for (String key : keys) {
+                        listOfUs.add(new Race(HashMapExplorer.getMap(s, key), key));
+                    }
                 }
             }
         }
@@ -88,16 +91,16 @@ public class Race implements Serializable {
         this.imagePath = imagePath;
     }
 
-    public Image getImage() {
+    public Image getImage(int sizeX, int sizeY) {
         String path = imagePath != null ? imagePath : "Data/gfx/" + folderName + "/" + name + ".png";
         File file = new File(path);
 
         //// if it does exist
         if (file.exists()) {
-            return new Image(file.toURI().toString());
+            return new Image(file.toURI().toString(),sizeX,sizeY,true,false);
         }
         //// if it doesn't exist
-        return new Image("_NULL_.png");
+        return new Image("_NULL_.png",sizeX,sizeY,true,false);
     }
 
 }

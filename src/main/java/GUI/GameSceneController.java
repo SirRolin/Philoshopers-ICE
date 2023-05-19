@@ -107,7 +107,7 @@ public class GameSceneController implements Initializable {
                     playerImageView.setX(playerImageView.getFitWidth()/2);
                     playerImageView.setFitWidth(32f);
                     playerImageView.setFitHeight(32f);
-                    playerImageView.setImage(gs.p1.getImage());
+                    playerImageView.setImage(gs.p1.getImage(32,32));
                     pos1.getChildren().add(playerImageView);
                 }
 

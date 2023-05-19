@@ -11,6 +11,7 @@ public abstract class Weapon extends Item {
     private boolean isTwoHanded;
     public Weapon(HashMap<String,Object> map){
         name = HashMapExplorer.getString(map,"name");
+        description = HashMapExplorer.getString(map,"description");
         isOneHanded = true; //// todo remove when parser knows booleans :P
         isTwoHanded = true; //// todo remove when parser knows booleans :P
     }
