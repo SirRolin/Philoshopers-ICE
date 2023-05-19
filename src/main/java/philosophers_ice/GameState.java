@@ -18,19 +18,8 @@ public class GameState implements Serializable {
 
     }
 
-    //HashMap<philosophers_ice.GUI> guis;
-
-    GUI activeGUI;
-
     public Player p1;
 
-<<<<<<< Updated upstream
-    public MapTile[][] getMinimap(int size){
-        MapTile[][] output = new MapTile[size*2-1][size*2-1];
-        for(int i = 0; i < size*2-1; ++i){
-            for(int j = 0; j < size*2-1; ++j){
-                output[i][j] = StateSaver.loadMap(this, i + x - size*2, j + y - size*2);
-=======
     public MapTile[][] getMinimap(int size, int mid){
         if(mid <= 0){
             mid = 0;
@@ -41,8 +30,9 @@ public class GameState implements Serializable {
         for(int i = 0; i < size; ++i){
             MapTile[] inner = new MapTile[size];
             for(int j = 0; j < size; ++j){
-                inner[j] = StateSaver.loadMap(this, i + x - (mid - 1), j + y - (mid - 1));
->>>>>>> Stashed changes
+                int mapx = x + i - mid;
+                int mapy = y - j + mid;
+                inner[j] = StateSaver.loadMap(this, mapx, mapy);
             }
             output[i] = inner;
         }
