@@ -14,14 +14,6 @@ public class GameState implements Serializable {
 
         StateSaver.saveGame(this);
 
-        /*this.commandsList = new ArrayList<>();
-        commandsList.add("go to");
-        commandsList.add("x");
-        commandsList.add("inspect");
-        commandsList.add("inventory");
-        commandsList.add("i");*/
-
-        //StateSaver.saveGame(this);
 
     }
     GameState(){
