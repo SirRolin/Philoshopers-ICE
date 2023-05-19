@@ -191,6 +191,9 @@ public abstract class FileInterpreter {
         //// extracts all the number = something
         text = ExtractRandomNumbers(text, listsForOutput);
 
+        //// extracts all the number = something
+        text = ExtractBoolean(text, mapsForOutput);
+
         //// extracts all the once standing alone
         text = ExtractList(text, listsForOutput);
         if (!listsForOutput.isEmpty()) {
@@ -199,12 +202,27 @@ public abstract class FileInterpreter {
         return mapsForOutput;
     }
 
+
     private static String ExtractList(String text, ArrayList<Object> listsForOutput) {
         for(String s: text.split("[ \r\n]+",-1)){
             if (!s.isBlank()) {
                 listsForOutput.add(tryParseFloat(s, false));
                 text = text.replace(s, "");
             }
+        }
+        return text;
+    }
+    final static Pattern patternBoolean = Pattern.compile("(?<whole>\\s*(?<key>\\w+)\\s*=\\s*(?<bool>yes|no))");
+    private static String ExtractBoolean(String text, HashMap<String, Object> mapsForOutput) {
+        Matcher booleans = patternBoolean.matcher(text);
+        while (booleans.find()) {
+            String g1 = booleans.group("key");
+            if(booleans.group("bool").equals("yes")){
+                mapsForOutput.put(g1, true);
+            } else {
+                mapsForOutput.put(g1, false);
+            }
+            text = text.replace(booleans.group("whole"), "");
         }
         return text;
     }
