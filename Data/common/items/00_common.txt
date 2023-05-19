@@ -1,5 +1,8 @@
 melee_weapon = {
-    name = "sword"
+    name = "Great Sword"
+    description = "it's a big sword too big for one hand."
+    isOneHanded = no
+    isTwoHanded = yes
     damage = {
     min = 5
     max = 8
@@ -8,6 +11,7 @@ melee_weapon = {
 melee_weapon = {
     name = "knife"
     description = "its a dull blade, use the pointy end."
+    isOneHanded = yes
     damage = {
         min = 2
         max = 5

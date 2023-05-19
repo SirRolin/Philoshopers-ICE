@@ -10,7 +10,7 @@ public class Armour extends Item{
 
     Armour(HashMap<String,Object> map){
         name = HashMapExplorer.getString(map,"name");
-        defence = (int) HashMapExplorer.getNumber(map, "defence");
+        defence = HashMapExplorer.getNumber(map, "defence").intValue();
     }
 
     public Armour(String name,int defence){
