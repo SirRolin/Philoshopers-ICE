@@ -36,7 +36,7 @@ public class Inventory implements Serializable {
         int dmg = 1;
         if (equippedWeaponMainHand != null) {
             dmg += equippedWeaponMainHand.getDmg();
-            if (!equippedWeaponOffhand.getType()) {
+            if (equippedWeaponOffhand!= null) {
                 dmg += equippedWeaponOffhand.getDmg();
             }
         }
@@ -124,6 +124,7 @@ public class Inventory implements Serializable {
             System.out.println("You equipped " + item.getName() + "in your mainhand.");
             this.equippedWeaponMainHand = ((Weapon) item);
             items.remove(item);
+            return;
         }
         Scanner s1 = new Scanner(System.in);
         System.out.println("You already got " + this.equippedWeaponMainHand.name + " equipped in mainhand, do you want to equip" + item.name + " instead? Y/N");
@@ -133,6 +134,7 @@ public class Inventory implements Serializable {
             items.add(this.equippedWeaponMainHand);
             this.equippedWeaponMainHand = ((Weapon) item);
             items.remove(item);
+            return;
         } else if (input.equalsIgnoreCase("n") && equippedWeaponOffhand == null) {
             System.out.println("do you want to equip" + item.name + " in offhand? Y/N");
             String input2 = s1.nextLine();
@@ -140,6 +142,7 @@ public class Inventory implements Serializable {
                 System.out.println("You equipped " + item.getName() + "in your offhand.");
                 this.equippedWeaponOffhand = ((Weapon) item);
                 items.remove(item);
+                return;
             } else if (input2.equalsIgnoreCase("n")) {
                 System.out.println("You did not equip" + item.getName());
             } else {
@@ -154,6 +157,7 @@ public class Inventory implements Serializable {
                 items.add(this.equippedWeaponMainHand);
                 this.equippedWeaponOffhand = ((Weapon) item);
                 items.remove(item);
+                return;
             } else if (input2.equalsIgnoreCase("n")) {
                 System.out.println("You did not equip" + item.getName());
             } else {

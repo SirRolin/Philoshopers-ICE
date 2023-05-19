@@ -10,6 +10,7 @@ import java.util.Set;
 
 public abstract class SharedData {
     public static GameState gs;
+    public static GameSceneController gsc;
 
     private static HashMap<String, Object> defines = new HashMap<String, Object>();
 

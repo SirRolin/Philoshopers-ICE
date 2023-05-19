@@ -29,6 +29,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.Scanner;
 
 public class LoadGameController implements Initializable {
     private Stage stage;
@@ -95,7 +96,6 @@ public class LoadGameController implements Initializable {
                         } catch (Exception e) {
                             throw new RuntimeException(e);
                         }
-
                     }
                 });
             }

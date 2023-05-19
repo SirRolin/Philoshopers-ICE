@@ -123,9 +123,13 @@ public class CharacterCreationController implements Initializable {
                 //PLAYER DOES NOT HAVE USERDATA
                 if (defaultRace != null) {
                     raceIndex = Race.getIndexOf(races, defaultRace);
+                } else {
+                    raceIndex = 0;
                 }
                 gs.p1 = new Player("name", races.get(raceIndex), 0, 0, 0, 0, 0, 0);
                 gs.p1.inventory.addCurrency("Life Essence", 30);
+                gs.p1.inventory.addToItems(Item.getItem("knife"));
+                gs.p1.inventory.addToItems(Item.getItem("cheese"));
                 currentPlayer = gs.p1;
                 playerName = currentPlayer.name;
                 playerRace = currentPlayer.race;

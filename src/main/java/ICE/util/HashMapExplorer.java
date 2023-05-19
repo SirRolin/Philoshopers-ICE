@@ -63,13 +63,13 @@ public abstract class HashMapExplorer {
      */
     public static <T> void ListMapToForEach(ArrayList<HashMap<String, Object>> inputList, String key, Consumer<HashMap<String, Object>> consumer) {
         for (HashMap<String, Object> map : inputList) {
-            Set<String> keys = map.keySet();
-            for (String s : keys) {
-                HashMap<String, Object> innerMap = HashMapExplorer.getMap(map, s);
+//            Set<String> keys = map.keySet();
+//            for (String s : keys) {
+                HashMap<String, Object> innerMap = HashMapExplorer.getMap(map, key);
                 if (innerMap != null) {
                     consumer.accept(innerMap);
                 }
-            }
+//            }
         }
     }
 

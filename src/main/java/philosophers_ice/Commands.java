@@ -4,8 +4,6 @@ import GUI.SharedData;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
-import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -26,25 +24,36 @@ public class Commands {
             GameState gameState = SharedData.gs;
             switch (s) {
                 case "north", "up", "n" -> {
+                    System.out.println("I moved north");
                     gameState.y = gameState.y + 1;
-                    return "I moved north";
+                    SharedData.gsc.updateMap();
+                    gameState.visitMap();
+                    return "";
                 }
                 case "south", "down", "s" -> {
+                    System.out.println("I moved south");
                     gameState.y = gameState.y - 1;
-                    return "I moved south";
+                    SharedData.gsc.updateMap();
+                    gameState.visitMap();
+                    return "";
                 }
                 case "west", "left", "w" -> {
+                    System.out.println("I moved west");
                     gameState.x = gameState.x - 1;
-                    return "I moved west";
+                    SharedData.gsc.updateMap();
+                    gameState.visitMap();
+                    return "";
                 }
                 case "east", "right", "e" -> {
+                    System.out.println("I moved east");
                     gameState.x = gameState.x + 1;
-                    return "I moved east";
+                    SharedData.gsc.updateMap();
+                    gameState.visitMap();
+                    return "";
                 }
                 default -> {
                     return "I don't get that Dirrection";
                 }
-
             }
         }));
         //// look at item
@@ -65,7 +74,7 @@ public class Commands {
                 gameState.p1.inventory.equipItem(item); // todo return this when it's implemented.
                 return "";
             }
-            return "";
+            return "don't have an item like that";
         }));
     }
 
@@ -81,6 +90,7 @@ public class Commands {
     }
 
     public static String action(String text) {
+        if(commandsList.isEmpty()) loadDefaults();
         for (Commands c : commandsList) {
             for (Pattern p : c.searchPattern) {
                 Matcher m = p.matcher(text);
@@ -89,6 +99,7 @@ public class Commands {
                 }
             }
         }
-        return "sorry we don't have an action like that.";
+        System.out.println("sorry we don't have an action like that.");
+        return "";
     }
 }

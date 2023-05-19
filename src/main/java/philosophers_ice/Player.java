@@ -32,7 +32,6 @@ public class Player implements Serializable {
         this.magi = magi;
         this.hp = getMaxHP();
         this.mp = getMaxMP();
-        this.initiative = wits*2+3;
     }
     public int getMaxHP(){
         return con*3+50;
@@ -45,6 +44,9 @@ public class Player implements Serializable {
     }
     public int getInitiative(){
         return initiative;
+    }
+    public int getMaxInitiative(){
+        return wits*2+3;
     }
     public int getSpellBuffProc(){
         return magi*2+30;
@@ -85,11 +87,11 @@ public class Player implements Serializable {
         int damage = inventory.getDamage() ;
         // WORK IN PROGESS !!!! Part of nice to have
         damage += (int) inventory.getEffectModifiers("damage"); //todo add more modifiers, and correct once
-        if(inventory.getEquippedWeaponMainHand() instanceof Melee){
-           damage *= str/2;
+        if(inventory.getEquippedWeaponMainHand() instanceof Melee || inventory.getEquippedWeaponMainHand() == null){
+           damage += str/2;
         }
         if(inventory.getEquippedWeaponMainHand() instanceof Ranged){
-            damage *= agi/2;
+            damage += agi/2;
         }
         return damage;
     }

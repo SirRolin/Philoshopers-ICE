@@ -17,6 +17,7 @@ import philosophers_ice.StateSaver;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.Scanner;
 
 public class MainMenuController implements Initializable {
     private Stage stage;

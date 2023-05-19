@@ -21,6 +21,7 @@ public class Enemy implements Serializable {
     private int defence;
     private int hp;
     private int initiative;
+    private int maxInitiative;
     private int damage;
     private ArrayList<String> loot = new ArrayList<>();
     private ArrayList<WeightedObject> chanceLoot = new ArrayList<>();
@@ -34,6 +35,7 @@ public class Enemy implements Serializable {
         this.defence = defence;
         this.hp = hp;
         this.initiative = initiative;
+        this.maxInitiative = initiative;
         this.damage = damage;
         this.loot.add("cheese");
         //this.loot.add(new Melee("Ged", 23, 53, true, false)); // PLACEHOLDER!!!
@@ -46,6 +48,7 @@ public class Enemy implements Serializable {
         defence = (int) HashMapExplorer.getNumber(map, "defence");
         hp = (int) HashMapExplorer.getNumber(map, "hp");
         initiative = (int) HashMapExplorer.getNumber(map, "initiative");
+        maxInitiative = initiative;
         damage = (int) HashMapExplorer.getNumber(map, "damage");
         ArrayList<Object> lst = HashMapExplorer.getList(map, "droplist");
         for (int ite = 0; ite < lst.size(); ++ite) {
@@ -67,6 +70,10 @@ public class Enemy implements Serializable {
 
     public int getInitiative() {
         return initiative;
+    }
+
+    public int getMaxInitiative() {
+        return maxInitiative;
     }
 
     public void updateInitiative(int input) {
@@ -111,7 +118,12 @@ public class Enemy implements Serializable {
         RngHandler.WeightedObjectsToList(chanceLoot, items);
 
         //// add guaranteed items
-        loot.forEach((String s) -> items.add(Item.getItem((s))));
+        loot.forEach((String s) -> {
+            Item item = Item.getItem((s));
+            if(item != null) {
+                items.add(item);
+            }
+        });
 
         //// return
         return items;

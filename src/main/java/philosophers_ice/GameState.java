@@ -1,7 +1,6 @@
 package philosophers_ice;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class GameState implements Serializable {
 
@@ -17,6 +16,11 @@ public class GameState implements Serializable {
     }
 
     public Player p1;
+    public MapTile currentTile;
+    public void visitMap(){
+        currentTile = StateSaver.loadMap(this, x, y);
+        currentTile.visit(p1);
+    }
 
     public MapTile[][] getMinimap(int size, int mid){
         if(mid <= 0){
