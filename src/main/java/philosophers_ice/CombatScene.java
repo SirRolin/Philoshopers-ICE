@@ -1,13 +1,18 @@
 package philosophers_ice;
 
 
+import javafx.scene.control.TextField;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class CombatScene {
-    private ArrayList<Enemy> enemies;
-    private Player currentPlayer;
+public class CombatScene extends Thread {
+    public static CombatScene currentlyRunningCS;
+    private final ArrayList<Enemy> enemies;
+    private final Player currentPlayer;
     private int maxInitiative;
+    public boolean isRunning;
+    private String text = "";
     int turn = 1;
 
     public CombatScene(Player player, ArrayList<Enemy> enemies) {
@@ -15,8 +20,14 @@ public class CombatScene {
         this.enemies = enemies;
     }
 
-
     public void startCombat() {
+        currentlyRunningCS = this;
+        start();
+    }
+
+    @Override
+    public void run() {
+        isRunning = true;
         currentPlayer.initiative = currentPlayer.getMaxInitiative();
         maxInitiative = currentPlayer.initiative;
         for (Enemy enemy : enemies) {
@@ -90,9 +101,7 @@ public class CombatScene {
             System.out.println("4. Use Recover");
             System.out.println("-----------------------------------");
         }
-//        Scanner scan = new Scanner(System.in);
-        int input = 1;//scan.nextInt();
-        //scan.nextLine();
+        int input = retrieveInput();
         switch (input) {
             case 1 -> {
                 Enemy choosenEnemy = chooseEnemyToAttack();
@@ -140,7 +149,7 @@ public class CombatScene {
     }
 
     public void endGame() {
-
+        isRunning = false;
     }
 
     private boolean enemyNotAboveMaxInitiative() {
@@ -170,9 +179,7 @@ public class CombatScene {
             return enemies.get(0);
         }
         System.out.println("which enemy do you want to attack? 1 - " + enemies.size());
-        Scanner scan = new Scanner(System.in);
-        int input = scan.nextInt();
-        scan.nextLine();
+        int input = retrieveInput();
         if (input > enemies.size()) {
             System.out.println("there's not that many enemies");
             return chooseEnemyToAttack();
@@ -180,4 +187,37 @@ public class CombatScene {
         return enemies.get(input - 1);
     }
 
+    private int retrieveInput() {
+        while(this.text.equals("")){
+            try {
+                //noinspection BusyWait
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        try{
+            String localHolder = this.text;
+            this.text = "";
+            return Integer.parseInt(localHolder.trim());
+        } catch (NumberFormatException e){
+            return -1;
+        }
+    }
+
+    public static boolean setInput(String text){
+        if(currentlyRunningCS != null && currentlyRunningCS.isRunning){
+            while(!currentlyRunningCS.text.equals("")){
+                try {
+                    //noinspection BusyWait
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            currentlyRunningCS.text = text;
+            return true;
+        }
+        return false;
+    }
 }

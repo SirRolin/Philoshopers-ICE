@@ -4,6 +4,7 @@ rat = {
     description = "a small rat"
     defence = 2
     damage = 2
+    health = 10
     dropCounts = 5
     droplist = {
         "Great_Sword"

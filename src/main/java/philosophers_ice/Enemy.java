@@ -84,7 +84,7 @@ public class Enemy implements Serializable {
         imagePath = HashMapExplorer.getString(map, "imagePath");
         description = HashMapExplorer.getString(map, "description");
         defence = HashMapExplorer.getNumber(map, "defence").intValue();
-        hp = HashMapExplorer.getNumber(map, "hp").intValue();
+        hp = HashMapExplorer.getNumber(map, "health").intValue();
         initiative = HashMapExplorer.getNumber(map, "initiative").intValue();
         maxInitiative = initiative;
         damage = HashMapExplorer.getNumber(map, "damage").intValue();

@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 public class Commands {
 
     private final ArrayList<Pattern> searchPattern = new ArrayList<>();
-    private Function<String, String> ACTION;
+    private Function<Matcher, String> ACTION;
 
     public static ArrayList<Commands> commandsList = new ArrayList<Commands>();
 
@@ -22,7 +22,7 @@ public class Commands {
         //// movement
         commandsList.add(new Commands("(go|walk|run)(?: to)? (?<input>\\w*)", (s) -> {
             GameState gameState = SharedData.gs;
-            switch (s) {
+            switch (s.group("input")) {
                 case "north", "up", "n" -> {
                     System.out.println("I moved north");
                     gameState.y = gameState.y + 1;
@@ -52,7 +52,7 @@ public class Commands {
                     return "";
                 }
                 default -> {
-                    return "I don't get that Dirrection";
+                    return "I don't get that Direction";
                 }
             }
         }));
@@ -60,7 +60,7 @@ public class Commands {
         commandsList.add(new Commands("(inspect|x)(?: the)? (?<input>.*)", (s) -> {
             GameState gameState = SharedData.gs;
             for (Item item1 : gameState.p1.inventory.getItems()) {
-                if (item1.getName().equals(s)) {
+                if (item1.getName().equals(s.group("input"))) {
                     return item1.description; //todo change to getDescription when that's implemented.
                 }
             }
@@ -69,20 +69,27 @@ public class Commands {
         //// equip item
         commandsList.add(new Commands("(equip|e)(?: the)? (?<input>.*)", (s) -> {
             GameState gameState = SharedData.gs;
-            Item item = gameState.p1.inventory.getItem(s);
+            Item item = gameState.p1.inventory.getItem(s.group("input"));
             if (item != null) {
                 gameState.p1.inventory.equipItem(item); // todo return this when it's implemented.
                 return "";
             }
             return "don't have an item like that";
         }));
+        //// Test OutputStream
+        commandsList.add(new Commands("test", (s) -> {
+            for(int i = 0; i < 20; i++){
+                System.out.println(i);
+            }
+            return "";
+        }));
     }
 
-    public Commands(String searchPatterns, Function<String, String> ACTION) {
+    public Commands(String searchPatterns, Function<Matcher, String> ACTION) {
         this(new ArrayList<String>(List.of("(?:I )?(?:want to )?" + searchPatterns)), ACTION);
     }
 
-    public Commands(ArrayList<String> searchPatterns, Function<String, String> ACTION) {
+    public Commands(ArrayList<String> searchPatterns, Function<Matcher, String> ACTION) {
         for (String s : searchPatterns) {
             this.searchPattern.add(Pattern.compile(s));
         }
@@ -90,12 +97,14 @@ public class Commands {
     }
 
     public static String action(String text) {
+        if(CombatScene.currentlyRunningCS.setInput(text)) return "";
+
         if(commandsList.isEmpty()) loadDefaults();
         for (Commands c : commandsList) {
             for (Pattern p : c.searchPattern) {
                 Matcher m = p.matcher(text);
                 if (m.find()) {
-                    return c.ACTION.apply((String) m.group("input"));
+                    return c.ACTION.apply(m);
                 }
             }
         }

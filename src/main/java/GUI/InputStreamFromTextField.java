@@ -11,8 +11,8 @@ public class InputStreamFromTextField extends InputStream {
     int pointer = 0;
 
     public InputStreamFromTextField(final TextField text) {
-
         text.setOnAction((e) -> {
+            System.out.println(contents);
             contents = text.getText().getBytes();
             pointer = 0;
             text.setText("");

@@ -23,7 +23,7 @@ public abstract class StateSaver extends FileIO {
         saveMap(gs, mt,0,1);
         saveMap(gs, mt,0,2);
         saveMap(gs, mt,0,3);
-        mt.enemies.add(new Enemy("rat"));
+        mt.enemies.add(new Enemy("rat", "Data/enemies/Small Rat.png", "Hello",0, 10,25,4));
         mt.structure = "Alter";
         saveMap(gs, mt,1,3);
         return gs;

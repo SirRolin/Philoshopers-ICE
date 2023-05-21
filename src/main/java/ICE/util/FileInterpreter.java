@@ -208,14 +208,22 @@ public abstract class FileInterpreter {
     }
 
 
+    final static Pattern patternList = Pattern.compile("(\"[\\s\\w]+\"|\\w+)");
     private static String ExtractList(String text, ArrayList<Object> listsForOutput) {
-        for(String s: text.split("[ \r\n]+",-1)){
-            if (!s.isBlank()) {
-                listsForOutput.add(tryParseFloat(s, false));
-                text = text.replace(s, "");
-            }
+        Matcher list = patternList.matcher(text.trim());
+        while (list.find()) {
+            String g = list.group();
+            listsForOutput.add(tryParseFloat(g, false));
+            text = text.replace(g, "");
         }
         return text;
+//        for(String s: text.split("[ \r\n]+",-1)){
+//            if (!s.isBlank()) {
+//                listsForOutput.add(tryParseFloat(s, false));
+//                text = text.replace(s, "");
+//            }
+//        }
+//        return text;
     }
     final static Pattern patternBoolean = Pattern.compile("(?<whole>\\s*(?<key>\\w+)\\s*=\\s*(?<bool>yes|no))");
     private static String ExtractBoolean(String text, HashMap<String, Object> mapsForOutput) {

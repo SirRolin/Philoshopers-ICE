@@ -107,12 +107,11 @@ public class GameSceneController implements Initializable {
         //java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();
         PrintStreamWithLog out = new PrintStreamWithLog(System.out, logPane);
         System.setOut(out);
-//        InputStream in = new InputStreamFromTextField(chat);
-//        System.setIn(in);
+        InputStream in = new InputStreamFromTextField(chat);
+        System.setIn(in);
         chat.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                //System.out.println(chat.getText());
                 Commands.action(chat.getText());
                 chat.setText("");
             }
