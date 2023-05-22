@@ -121,25 +121,25 @@ public class Inventory implements Serializable {
 
     private void equipOneHanded(Weapon item) {
         if (this.equippedWeaponMainHand == null) {
-            System.out.println("You equipped " + item.getName() + "in your mainhand.");
+            System.out.println("You equipped " + item.getName() + " in your mainhand.");
             this.equippedWeaponMainHand = ((Weapon) item);
             items.remove(item);
             return;
         }
-        Scanner s1 = new Scanner(System.in);
+        //Scanner s1 = new Scanner(System.in);
         System.out.println("You already got " + this.equippedWeaponMainHand.name + " equipped in mainhand, do you want to equip" + item.name + " instead? Y/N");
-        String input = s1.nextLine();
+        String input = "n";//s1.nextLine();
         if (input.equalsIgnoreCase("y")) {
-            System.out.println("You equipped " + item.getName() + "in your mainhand, instead of" + this.equippedWeaponMainHand.getName());
+            System.out.println("You equipped " + item.getName() + " in your mainhand, instead of" + this.equippedWeaponMainHand.getName());
             items.add(this.equippedWeaponMainHand);
             this.equippedWeaponMainHand = ((Weapon) item);
             items.remove(item);
             return;
         } else if (input.equalsIgnoreCase("n") && equippedWeaponOffhand == null) {
             System.out.println("do you want to equip" + item.name + " in offhand? Y/N");
-            String input2 = s1.nextLine();
+            String input2 = "y";//s1.nextLine();
             if (input2.equalsIgnoreCase("y")) {
-                System.out.println("You equipped " + item.getName() + "in your offhand.");
+                System.out.println("You equipped " + item.getName() + " in your offhand.");
                 this.equippedWeaponOffhand = ((Weapon) item);
                 items.remove(item);
                 return;
@@ -151,9 +151,9 @@ public class Inventory implements Serializable {
             }
         } else if (input.equalsIgnoreCase("n") && equippedWeaponOffhand != null) {
             System.out.println("You already have " + equippedWeaponOffhand.getName() + "do you want to equiped in your offhand, do you want to equip" + item.name + " instead? Y/N");
-            String input2 = s1.nextLine();
+            String input2 = "n"; //s1.nextLine();
             if (input2.equalsIgnoreCase("y")) {
-                System.out.println("You equipped " + item.getName() + "in your offhand.");
+                System.out.println("You equipped " + item.getName() + " in your offhand.");
                 items.add(this.equippedWeaponMainHand);
                 this.equippedWeaponOffhand = ((Weapon) item);
                 items.remove(item);

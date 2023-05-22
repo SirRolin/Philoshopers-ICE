@@ -12,7 +12,6 @@ public class Commands {
 
     private final ArrayList<Pattern> searchPattern = new ArrayList<>();
     private Function<Matcher, String> ACTION;
-
     public static ArrayList<Commands> commandsList = new ArrayList<Commands>();
 
     public static void loadDefaults() {
