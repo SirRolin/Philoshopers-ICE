@@ -146,10 +146,10 @@ public class CombatScene extends Thread {
 
     public void endCombat() {
         System.out.println("woohoo it worked?");
+        isRunning = false;
     }
 
     public void endGame() {
-        isRunning = false;
     }
 
     private boolean enemyNotAboveMaxInitiative() {

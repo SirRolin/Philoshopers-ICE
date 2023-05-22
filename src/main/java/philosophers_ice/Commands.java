@@ -97,7 +97,7 @@ public class Commands {
     }
 
     public static String action(String text) {
-        if(CombatScene.currentlyRunningCS.setInput(text)) return "";
+        if(CombatScene.setInput(text)) return "";
 
         if(commandsList.isEmpty()) loadDefaults();
         for (Commands c : commandsList) {

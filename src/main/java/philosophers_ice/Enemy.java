@@ -24,6 +24,7 @@ public class Enemy implements Serializable {
     private int initiative;
     private int maxInitiative;
     private int damage;
+    private float dropChances = 1;
     private ArrayList<String> loot = new ArrayList<>();
     private ArrayList<WeightedObject> chanceLoot = new ArrayList<>();
     private ArrayList<Currency> currencies = new ArrayList<>();
@@ -61,9 +62,9 @@ public class Enemy implements Serializable {
         this.maxInitiative = enemy.maxInitiative;
         this.damage = enemy.damage;
         this.loot = enemy.loot;
+        this.dropChances = enemy.dropChances;
         this.chanceLoot = enemy.chanceLoot;
         this.currencies = enemy.currencies;
-
     }
 
     public Enemy(String name, String imagePath, String description, int defence, int hp, int initiative, int damage) {
@@ -88,6 +89,7 @@ public class Enemy implements Serializable {
         initiative = HashMapExplorer.getNumber(map, "initiative").intValue();
         maxInitiative = initiative;
         damage = HashMapExplorer.getNumber(map, "damage").intValue();
+        dropChances = HashMapExplorer.getNumber(map, "cropChances").floatValue();
         ArrayList<Object> lst = HashMapExplorer.getList(map, "droplist.list");
         for (int ite = 0; ite < lst.size(); ++ite) {
             if (lst.get(ite) instanceof WeightedObject chanceItem) {
@@ -98,7 +100,7 @@ public class Enemy implements Serializable {
                 loot.add(garenteedItem);
             }
         }
-        RngHandler.WeightedObjectsToList(chanceLoot, loot);
+//        RngHandler.WeightedObjectsToList(chanceLoot, loot);
 
     }
 
@@ -153,7 +155,7 @@ public class Enemy implements Serializable {
         ArrayList<Item> items = new ArrayList<>();
 
         //// Add a random item from chancelist
-        RngHandler.WeightedObjectsToList(chanceLoot, items);
+        RngHandler.WeightedObjectsToList(chanceLoot, items, dropChances);
 
         //// add guaranteed items
         loot.forEach((String s) -> {
