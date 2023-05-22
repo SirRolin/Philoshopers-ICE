@@ -56,9 +56,13 @@ public class MapTile implements Serializable {
         return output;
     }
 
-    public void visit(){
+    public void visit(Player p1){
         // todo pre comabt events
         // todo combat
+        if(!enemies.isEmpty()){
+            CombatScene cs = new CombatScene(p1, enemies);
+            cs.startCombat();
+        }
         // todo post combat events (if alive)
     }
 

@@ -72,9 +72,12 @@ public class TestFileInterpreter {
 
     @Test
     void testsubstring(){
-        String experiementText = " hello = {987654321}";
-        int firstBracket = experiementText.indexOf('{');
-        int endBracket = experiementText.lastIndexOf('}');
-        System.out.println(experiementText.substring(firstBracket + 1, endBracket));
+        String first = """
+            items = {
+                "small rat"
+                "Great Sword"
+            }""";
+        ArrayList<HashMap<String, Object>> hashMap = FileInterpreter.parseList(first, "UnitTest testParse of FileInterpreter");
+        Assertions.assertEquals("small rat", HashMapExplorer.getList(hashMap.get(0), "list").get(0));
     }
 }

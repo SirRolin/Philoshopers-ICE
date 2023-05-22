@@ -26,24 +26,28 @@ public class Inventory implements Serializable {
     }
 
     public void addToItems(Item item) {
-        items.add(item);
+        if (item != null) {
+            items.add(item);
+        }
     }
 
     public int getDamage() {
         //todo implement mainhand and offhand correctly
         int dmg = 1;
-        if(equippedWeaponMainHand != null) {
+        if (equippedWeaponMainHand != null) {
             dmg += equippedWeaponMainHand.getDmg();
-            if (!equippedWeaponOffhand.getType()) {
+            if (equippedWeaponOffhand!= null) {
                 dmg += equippedWeaponOffhand.getDmg();
             }
         }
         return dmg;
     }
-    public Number getEffectModifiers(String stat){
+
+    public Number getEffectModifiers(String stat) {
         return 0;
-       // todo WORK IN PROGRESS!! part of nice to have
+        // todo WORK IN PROGRESS!! part of nice to have
     }
+
     public Weapon getEquippedWeaponMainHand() {
         return equippedWeaponMainHand;
     }
@@ -61,10 +65,12 @@ public class Inventory implements Serializable {
     }
 
     public int getDefence() {
-        int def = 1;
-        if(equippedArmour != null){
-            def = equippedArmour.getDefence();;
+        int def;
+        if (equippedArmour == null) {
+            def = 0;
+            return def;
         }
+        def = equippedArmour.getDefence();
         return def;
     }
 
@@ -75,15 +81,15 @@ public class Inventory implements Serializable {
         if (item instanceof Armour) {
             equipArmour((Armour) item);
         }
-        if(item instanceof Accessory){
-            
+        if (item instanceof Accessory) {
+
         }
     }
 
     private void equipArmour(Armour item) {
         if (this.equippedArmour == null)
             this.equippedArmour = item;
-            items.remove(item);
+        items.remove(item);
         if (this.equippedArmour != null) {
             Scanner s1 = new Scanner(System.in);
             System.out.println("You already got " + this.equippedArmour.name + " equipped, do you want to equip" + item.name + " instead? Y/N");
@@ -118,6 +124,7 @@ public class Inventory implements Serializable {
             System.out.println("You equipped " + item.getName() + "in your mainhand.");
             this.equippedWeaponMainHand = ((Weapon) item);
             items.remove(item);
+            return;
         }
         Scanner s1 = new Scanner(System.in);
         System.out.println("You already got " + this.equippedWeaponMainHand.name + " equipped in mainhand, do you want to equip" + item.name + " instead? Y/N");
@@ -127,6 +134,7 @@ public class Inventory implements Serializable {
             items.add(this.equippedWeaponMainHand);
             this.equippedWeaponMainHand = ((Weapon) item);
             items.remove(item);
+            return;
         } else if (input.equalsIgnoreCase("n") && equippedWeaponOffhand == null) {
             System.out.println("do you want to equip" + item.name + " in offhand? Y/N");
             String input2 = s1.nextLine();
@@ -134,6 +142,7 @@ public class Inventory implements Serializable {
                 System.out.println("You equipped " + item.getName() + "in your offhand.");
                 this.equippedWeaponOffhand = ((Weapon) item);
                 items.remove(item);
+                return;
             } else if (input2.equalsIgnoreCase("n")) {
                 System.out.println("You did not equip" + item.getName());
             } else {
@@ -148,6 +157,7 @@ public class Inventory implements Serializable {
                 items.add(this.equippedWeaponMainHand);
                 this.equippedWeaponOffhand = ((Weapon) item);
                 items.remove(item);
+                return;
             } else if (input2.equalsIgnoreCase("n")) {
                 System.out.println("You did not equip" + item.getName());
             } else {
@@ -179,9 +189,10 @@ public class Inventory implements Serializable {
             equipOneHanded(item);
         }
     }
-    public Item getItem(String nameOfItem){
-        for(Item item: items){
-            if(item.name.equals(nameOfItem)){
+
+    public Item getItem(String nameOfItem) {
+        for (Item item : items) {
+            if (item.name.equals(nameOfItem)) {
                 return item;
             }
         }
@@ -192,26 +203,27 @@ public class Inventory implements Serializable {
         return maxSize + (p1.str * 2);
     }
 
-    public Currency getCurrency(String name){
-        for(Currency c: currencies){
-            if(c.name.equals(name)){
+    public Currency getCurrency(String name) {
+        for (Currency c : currencies) {
+            if (c.name.equals(name)) {
                 return c;
             }
         }
         return null;
     }
 
-    public void addCurrency(String name, int amount){
+    public void addCurrency(String name, int amount) {
         Currency cur = getCurrency(name);
-        if(cur == null){
+        if (cur == null) {
             cur = Currency.getcurrency(name);
         }
         addCurrency(cur, amount);
     }
-    public void addCurrency(Currency cur, int amount){
-        if(cur != null){
+
+    public void addCurrency(Currency cur, int amount) {
+        if (cur != null) {
             Currency cur2 = getCurrency(cur.name);
-            if(cur2 != null){
+            if (cur2 != null) {
                 cur2.amount += amount;
             } else {
                 currencies.add(new Currency(cur, amount));

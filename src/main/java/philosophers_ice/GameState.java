@@ -1,16 +1,15 @@
 package philosophers_ice;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class GameState implements Serializable {
 
     public String name = "";
-    transient MapTile[][] maptile;
     int x = 0;
     int y = 0;
     public GameState(String name){
         this.name = name;
+
 
 
         StateSaver.saveGame(this);
@@ -21,12 +20,20 @@ public class GameState implements Serializable {
         //StateSaver.saveGame(this);
 
         
+
+        StateSaver.saveGame(this);
+
     }
     GameState(){
 
     }
 
     public Player p1;
+    public MapTile currentTile;
+    public void visitMap(){
+        currentTile = StateSaver.loadMap(this, x, y);
+        currentTile.visit(p1);
+    }
 
     public MapTile[][] getMinimap(int size, int mid){
         if(mid <= 0){

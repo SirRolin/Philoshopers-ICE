@@ -1,5 +1,6 @@
 package philosophers_ice;
 
+import ICE.util.FileInterpreter;
 import ICE.util.HashMapExplorer;
 import ICE.util.RngHandler;
 import ICE.util.WeightedObject;
@@ -21,11 +22,49 @@ public class Enemy implements Serializable {
     private int defence;
     private int hp;
     private int initiative;
+    private int maxInitiative;
     private int damage;
     private ArrayList<String> loot = new ArrayList<>();
     private ArrayList<WeightedObject> chanceLoot = new ArrayList<>();
     private ArrayList<Currency> currencies = new ArrayList<>();
+    private static final HashMap<String, Enemy> listOfUs = new HashMap<String, Enemy> ();
 
+    public static Enemy getEnemy(String nameOfEnemy) {
+        load();
+        return listOfUs.get(nameOfEnemy);
+    }
+
+    public static void load() {
+        if (listOfUs.isEmpty()) {
+            for (ArrayList<HashMap<String, Object>> lst : FileInterpreter.parseFolder("Data/common/enemies/")) {
+                HashMapExplorer.ListMapToForEach(lst, (s, map) -> {
+                    listOfUs.put(s, new Enemy((HashMap<String, Object>) map));
+                });
+            }
+        }
+    }
+
+    public static void reload() {
+        listOfUs.clear();
+        load();
+    }
+
+    public Enemy(String name) {
+        this(Enemy.getEnemy(name));
+    }
+    public Enemy(Enemy enemy) {
+        this.name = enemy.name;
+        this.imagePath = enemy.imagePath;
+        this.description = enemy.description;
+        this.defence = enemy.defence;
+        this.hp = enemy.hp;
+        this.maxInitiative = enemy.maxInitiative;
+        this.damage = enemy.damage;
+        this.loot = enemy.loot;
+        this.chanceLoot = enemy.chanceLoot;
+        this.currencies = enemy.currencies;
+
+    }
 
     public Enemy(String name, String imagePath, String description, int defence, int hp, int initiative, int damage) {
         this.name = name;
@@ -34,6 +73,7 @@ public class Enemy implements Serializable {
         this.defence = defence;
         this.hp = hp;
         this.initiative = initiative;
+        this.maxInitiative = initiative;
         this.damage = damage;
         this.loot.add("cheese");
         //this.loot.add(new Melee("Ged", 23, 53, true, false)); // PLACEHOLDER!!!
@@ -43,11 +83,12 @@ public class Enemy implements Serializable {
         name = HashMapExplorer.getString(map, "name");
         imagePath = HashMapExplorer.getString(map, "imagePath");
         description = HashMapExplorer.getString(map, "description");
-        defence = (int) HashMapExplorer.getNumber(map, "defence");
-        hp = (int) HashMapExplorer.getNumber(map, "hp");
-        initiative = (int) HashMapExplorer.getNumber(map, "initiative");
-        damage = (int) HashMapExplorer.getNumber(map, "damage");
-        ArrayList<Object> lst = HashMapExplorer.getList(map, "droplist");
+        defence = HashMapExplorer.getNumber(map, "defence").intValue();
+        hp = HashMapExplorer.getNumber(map, "health").intValue();
+        initiative = HashMapExplorer.getNumber(map, "initiative").intValue();
+        maxInitiative = initiative;
+        damage = HashMapExplorer.getNumber(map, "damage").intValue();
+        ArrayList<Object> lst = HashMapExplorer.getList(map, "droplist.list");
         for (int ite = 0; ite < lst.size(); ++ite) {
             if (lst.get(ite) instanceof WeightedObject chanceItem) {
                 if (chanceItem.weight.floatValue() > 0f) {
@@ -57,6 +98,7 @@ public class Enemy implements Serializable {
                 loot.add(garenteedItem);
             }
         }
+        RngHandler.WeightedObjectsToList(chanceLoot, loot);
 
     }
 
@@ -66,6 +108,10 @@ public class Enemy implements Serializable {
 
     public int getInitiative() {
         return initiative;
+    }
+
+    public int getMaxInitiative() {
+        return maxInitiative;
     }
 
     public void updateInitiative(int input) {
@@ -110,7 +156,12 @@ public class Enemy implements Serializable {
         RngHandler.WeightedObjectsToList(chanceLoot, items);
 
         //// add guaranteed items
-        loot.forEach((String s) -> items.add(Item.getItem((s))));
+        loot.forEach((String s) -> {
+            Item item = Item.getItem((s));
+            if(item != null) {
+                items.add(item);
+            }
+        });
 
         //// return
         return items;

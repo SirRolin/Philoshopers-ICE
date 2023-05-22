@@ -73,8 +73,8 @@
             <Font size="17.0" />
          </font>
       </Label>
-      <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
-      <DialogPane contentText="Massere af tekst omkring rummet man lige er gået ind i. Gad vide hvad der er derinde? Idk... jeg står der ikke selv. Måske er der en drage? Eller en kiste.. måske din mor? idk, hvad jeg dog ved er, at jeg stadigvæk skal skrive lidt flere linjer, for, at teste hele testfeltet." expanded="true" headerText="Room name:" prefHeight="330.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <TextField fx:id="chat" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <DialogPane fx:id="gamePane" contentText="Massere af tekst omkring rummet man lige er gået ind i. Gad vide hvad der er derinde? Idk... jeg står der ikke selv. Måske er der en drage? Eller en kiste.. måske din mor? idk, hvad jeg dog ved er, at jeg stadigvæk skal skrive lidt flere linjer, for, at teste hele testfeltet." expanded="true" headerText="Room name:" prefHeight="330.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       <Label fx:id="statsLabel" alignment="CENTER" layoutX="475.0" layoutY="10.0" text="Stats + Name of current character" GridPane.halignment="CENTER">
          <font>
             <Font size="17.0" />
@@ -162,7 +162,7 @@
                <children>
                   <ScrollPane layoutX="-2.0" prefHeight="237.0" prefWidth="320.0">
                      <content>
-                        <DialogPane expanded="true" prefHeight="53.0" prefWidth="318.0" />
+                        <DialogPane fx:id="logPane" expanded="true" prefHeight="53.0" prefWidth="318.0" />
                      </content>
                   </ScrollPane>
                </children>

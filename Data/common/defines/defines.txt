@@ -1,1 +1,3 @@
-defaultRace = "human"
+unimportant = {
+    defaultRace = "human"
+}

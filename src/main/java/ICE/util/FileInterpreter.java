@@ -10,18 +10,19 @@ import java.util.regex.Pattern;
 
 
 public abstract class FileInterpreter {
-    public static ArrayList<HashMap<String, Object>> parseFolder(String path) {
-        ArrayList<HashMap<String, Object>> output = new ArrayList<>();
-        File fileOrFolder = new File(path);
+    public static ArrayList<ArrayList<HashMap<String, Object>>> parseFolder(String path) {
+        ArrayList<ArrayList<HashMap<String, Object>>> output = new ArrayList<>();
+        File Folder = new File(path);
 
-        if (fileOrFolder.isDirectory()) {
-            for (File file : fileOrFolder.listFiles()) {
-                output.add(parseFile(file.toPath().toString()));
+        if (Folder.isDirectory()) {
+            File[] files = Folder.listFiles();
+            for(File f: Folder.listFiles(File::isFile)) {
+                output.add(parseFile(f.toPath().toString()));
             }
         }
         return output;
     }
-    public static HashMap<String, Object> parseFile(String path) {
+    public static ArrayList<HashMap<String, Object>> parseFile(String path) {
         File fileOrFolder = new File(path);
 
         if (!fileOrFolder.isDirectory()) {
@@ -33,9 +34,13 @@ public abstract class FileInterpreter {
                 int bytesRead = fis.read(data);
                 fis.close();
                 String content = new String(data, 0, bytesRead);
+
                 //// convert data to a hashmap
-                HashMap<String, Object> parsed = FileInterpreter.parse(content, path);
-                return parsed;
+                ArrayList<HashMap<String, Object>> list = new ArrayList<>();
+                for (String s: findObjects(content,path, false)) {
+                    list.add(FileInterpreter.parse(s, path));
+                }
+                return list;
             } catch (IOException e) {
                 ErrorHandler.handleError(e);
             }
@@ -203,14 +208,22 @@ public abstract class FileInterpreter {
     }
 
 
+    final static Pattern patternList = Pattern.compile("(\"[\\s\\w]+\"|\\w+)");
     private static String ExtractList(String text, ArrayList<Object> listsForOutput) {
-        for(String s: text.split("[ \r\n]+",-1)){
-            if (!s.isBlank()) {
-                listsForOutput.add(tryParseFloat(s, false));
-                text = text.replace(s, "");
-            }
+        Matcher list = patternList.matcher(text.trim());
+        while (list.find()) {
+            String g = list.group();
+            listsForOutput.add(tryParseFloat(g, false));
+            text = text.replace(g, "");
         }
         return text;
+//        for(String s: text.split("[ \r\n]+",-1)){
+//            if (!s.isBlank()) {
+//                listsForOutput.add(tryParseFloat(s, false));
+//                text = text.replace(s, "");
+//            }
+//        }
+//        return text;
     }
     final static Pattern patternBoolean = Pattern.compile("(?<whole>\\s*(?<key>\\w+)\\s*=\\s*(?<bool>yes|no))");
     private static String ExtractBoolean(String text, HashMap<String, Object> mapsForOutput) {
@@ -251,7 +264,6 @@ public abstract class FileInterpreter {
     private static String ExtractProperty(String text, HashMap<String, Object> mapsForOutput) {
         Matcher strings = patternProperty.matcher(text.trim());
         while (strings.find()) {
-            String group = strings.group(0);
             String g1 = strings.group("key");
             String g2 = strings.group("value");
             mapsForOutput.put(g1, tryParseFloat(g2, false));
@@ -317,6 +329,21 @@ public abstract class FileInterpreter {
         return -1; ////bracket was not found
     }
 
+
+    public static ArrayList<String> findObjects(String text, String path){
+        ArrayList<String> output = new ArrayList<String>();
+        Matcher elements = patternMap.matcher(text);
+        while (elements.find()) {
+            //// can also use firstReplace
+            String g1 = elements.group("key");
+            String g2 = elements.group("value");
+            int charToClosingBracket = charsToPairedClosingBracket(g2);
+            g2 = g2.substring(0, charToClosingBracket);
+            output.add(g1 + " = {" + g2);
+        }
+        return output;
+    }
+
     //// lines is the lines of text, path is just for error handling.
     public static ArrayList<String> findObjects(String text, String path, boolean doThrowTokenError) {
         StringBuilder sb = new StringBuilder();
@@ -331,16 +358,17 @@ public abstract class FileInterpreter {
             if (!quoted && c == '#') { //// Start a comment - only while not quoted though
                 commented = true;
             } else if (commented) { //// while commenting don't activate any other logic until we are not commenting anymore
-                if (c == '\n') {
+                if (c == '\n' || c == '\r') {
                     commented = false;
-                    sb.append(c);
                     ++line;
                     if (brackets == 0) {
                         temp.setLength(0);
+                    } else {
+                        sb.append(c);
                     }
                 }
             } else if (brackets == 0) { //// We haven't started an entry yet
-                if (c == '\n') { //// keep track of line number and resetting
+                if (c == '\n' || c == '\r') { //// keep track of line number and resetting
                     ++line;
                     if (!temp.isEmpty()) {
                         if (doThrowTokenError) {
@@ -370,11 +398,14 @@ public abstract class FileInterpreter {
                     ++brackets;
                 } else if (c == '}') { //// "recursive" decrease bracket tracking
                     --brackets;
+                } else if (c == '\n' || c == '\r'){
+                    ++line;
                 }
                 sb.append(c);
                 if (brackets == 0) {
                     output.add(sb.toString());
                     sb.setLength(0); //// reset data
+                    temp.setLength(0);
                 }
             }
         }
@@ -384,6 +415,8 @@ public abstract class FileInterpreter {
                 sb.append('}');
             }
             output.add(sb.toString());
+            sb.setLength(0); //// reset data
+            temp.setLength(0);
         }
         return output;
     }

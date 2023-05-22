@@ -32,7 +32,6 @@ public class Player implements Serializable {
         this.magi = magi;
         this.hp = getMaxHP();
         this.mp = getMaxMP();
-        this.initiative = wits*2+3;
     }
     public int getMaxHP(){
         return con*3+50;
@@ -45,6 +44,9 @@ public class Player implements Serializable {
     }
     public int getInitiative(){
         return initiative;
+    }
+    public int getMaxInitiative(){
+        return wits*2+3;
     }
     public int getSpellBuffProc(){
         return magi*2+30;
@@ -71,21 +73,25 @@ public class Player implements Serializable {
     public int getMP(){
         return this.mp;
     }
-    public void recover(){
-        this.hp += (con+(str/2)+willPower)+ 20;
+    public int recover(){
+        int recoverAmount = (con+(str/2)+willPower)+ 20;
+        this.hp += recoverAmount;
         if(this.hp > getMaxHP()){
+            int rest = (this.hp + recoverAmount)-getMaxHP();
             this.hp = getMaxHP();
+            return recoverAmount-rest;
         }
+        return recoverAmount;
     }
     public int attack(){
         int damage = inventory.getDamage() ;
         // WORK IN PROGESS !!!! Part of nice to have
         damage += (int) inventory.getEffectModifiers("damage"); //todo add more modifiers, and correct once
-        if(inventory.getEquippedWeaponMainHand() instanceof Melee){
-           damage *= str/2;
+        if(inventory.getEquippedWeaponMainHand() instanceof Melee || inventory.getEquippedWeaponMainHand() == null){
+           damage += str/2;
         }
         if(inventory.getEquippedWeaponMainHand() instanceof Ranged){
-            damage *= agi/2;
+            damage += agi/2;
         }
         return damage;
     }
@@ -95,9 +101,9 @@ public class Player implements Serializable {
         }
     }
 
-    public Image getImage(){
+    public Image getImage(int sizeX, int sizeY){
         if(race!=null){
-            return race.getImage();
+            return race.getImage(sizeX,sizeY);
         }
         return new Image("_NULL_.png");
     }

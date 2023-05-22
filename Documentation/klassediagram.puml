@@ -1,44 +1,168 @@
 @startuml
 'https://plantuml.com/class-diagram
 
+package ICE.util{
+abstract class ErrorHandler{
++{static} String debugLogPath = "";
++{static} String errorLogPath = "";
++{static} void handleError(Exception e)
++{static} void logDebug(String text)
+}
 
+abstract class FileInterpreter {
++{static} ArrayList<HashMap<String, Object>> parseFolder(String path)
++{static} HashMap<String, Object> parseFile(String path)
++{static} ArrayList<HashMap<String, Object> parseList(String text, String path)
++{static} ArrayList<HashMap<String, Object>> parseList(String text, String path, boolean careForFirstKey)
++{static} HashMap<String, Object> parse(String text, String path)
++{static} String ExtractList(String text, ArrayList<Object> listsForOutput)
+FINAL {static} Pattern patternBoolean
+-{static} String ExtractBoolean(String text, HashMap<String, Object> mapsForOutput)
+FINAL {static} Pattern patternMap
+-{static} String ExtractElements(String text, HashMap<String, Object> map, ArrayList<Object> list, String path)
+FINAL {static} Pattern patternProperty
+- {static} String ExtractProperty(String text, HashMap<String, Object> mapsForOutput)
+FINAL {static} Pattern patternNumber
+- {static} String ExtractRandomNumbers(String text, ArrayList<Object> listsForOutput)
+- {static} Object tryParseFloat(String text, boolean defaultIsZero)
+- {static} boolean isNumeric(String text)
+- {static} Object tryParseFloat(String text, boolean defaultIsZero)
+- {static} boolean isNumeric(String text)
+- {static} int charsToPairedClosingBracket(String text)
++ {static} ArrayList<String> findObjects(String text, String path, boolean doThrowTokenError)
+}
+
+abstract class FileIO {
+    + {static} String defaultPath
+    + {static} List<String> readTextFile(String path)
+    + {static} <T> @Nullable T readSerialised(String path)
+    + {static} boolean writeSerialised(Object obj, String path)
+}
+
+abstract class HashMapExplorer{
++ {static} HashMap<String,Object> getMap(Object obj, String key)
++ {static} String getImage(Object obj, String key)
++ {static} String getString(Object obj, String key)
++ {static} boolean getBoolean(Object obj, String key)
++ {static} Number getNumber(Object obj, String key)
++ {static} ArrayList<Object> getList(Object obj, String key)
+- {static} Object getToObject(HashMap<?,?> map, String key)
+}
+
+class RngHandler{
++ {static} <T> void WeightedObjectsToList(ArrayList<WeightedObject> chanceList, ArrayList<T> loot)
+}
+
+class WeightedObject {
++ Number weight
++ Object obj
+
+WeightedObject(Number weight, Object obj)
+}
+}
 
 
 package GUI{
-class CharacterCreationController{
+class CharacterCreationController Implements javafx.Initializable{
+-Stage stage
+-Scene scene
+-Parent root
+-Player currentPlayer
+-String playerName
+-Race playerRace
+-ArrayList<Label> statLabels
+-ArrayList<Button> addButtons
+-ArrayList<Button> subtractButtons
+-ArrayList<Race> races
+-int raceIndex
+-int[] stats
+-String[] statNames
++GameState gs
+-@FXML Button startButton
+-@FXML DialogPane raceBio
+-@FXML ImageView raceImage
+-@FXML GridPane statPane
+-@FXML TextField nameField
+-@FXML Button leftRaceButton
+-@FXML Button rightRaceButton
+
++void switchToMainMenu(ActionEvent event) throws Exception
++void initialize(URL url, ResourceBundle resourceBundle)
++void onStartButton()
+-void setUpSbtButton(final int index)
+-void setUpAddButton(final int index)
+
 }
 
-class GameSceneController{
+class GameSceneController Implements javafx.Initializable{
+-Stage stage
+-Scene scene
+-Parent root
+-GameState gs
+- @FXML Button MainMenu
+- @FXML Button QuitGame
+- @FXML Label statsLabel
+- @FXML GridPane statsPane
+- @FXML GridPane map
+- @FXML GridPane inventoryPane
+- @FXML DialogPane gamePane
+- @FXML DialogPane logPane
+
++ void SwitchToMainMenu(ActionEvent event) throws Exception
++ void initialize(URL url, ResourceBundle resourceBundle)
+- void startCombat(CombatScene combatScene)
 }
 
-class LoadGameController{
+
+class LoadGameController Implements javafx.Initializable{
+-Stage stage
+-Scene scene
+-Parent root
+-GameState gs
+-@FXML GridPane testGrid
++void switchToMainMenu(Action event) throws Exception
++void switchToGameScene(ActionEvent event) throws Exception
++void initialize(Url url, resourceBundle resourceBundle)
 }
 
-class MainMenuController{
+
+class MainMenuController Implements javafx.Initializable{
+-Stage stage
+-Scene scene
+-Parent root
+-GameState gs
++void switchToCharacterCreation(ActionEvent event) throws Exception
++void switchToLoadGame(ActionEvent event) throws Exception
++void closeProgram()
++void initialize(URL url, ResourceBundle resourceBundle)
 }
 
-class Main{
+class Main extends javafx.Application{
++{static}void main(String[] args)
++void start(Stage primaryStage) throws Exception
 }
 
 abstract class SharedData{
++{static} GameState gs
++{static} ArrayList<HashMap<String, Object>> defines
++{static} String getdefineString(String key)
++{static} void load()
++{static} void reload()
+
 }
 
 abstract class AlertBox{
+{static} -GameState gs
+{static} -boolean isClosed
++{static} void display(String title, String message)
++{static} GameState display(String title, String message, String typeOfInput)
 }
 }
 
 
-abstract class util.FileIO {
-    + String defaultPath
-    + readSerialised(String)
-    + readTextFile(String)
-    + writeSerialised(Object, String)
-
-
-}
 
 package philosophers_ice{
-abstract class StateSaver Extends util.FileIO {
+abstract class StateSaver Extends ICE.util.FileIO {
     + Boolean saveMap(GameState,MapTile,int,int)
     + Boolean saveGame(GameState)
     + GameState loadGame(String)
@@ -46,12 +170,8 @@ abstract class StateSaver Extends util.FileIO {
     + GameState newGame()
 }
 
-class Launcher extends javafx.Application {
-    '+ void start(Stage stage) throws Exception
-    '- Parent createContent()
-    '+ void main(String[] args)
-    '+ GameState game
-    + main
+class Launcher {
+    + {static} void main
 }
 
 class CharacterScene{
@@ -80,14 +200,13 @@ class GameState extends External.Serializable{
     + GameState(String)
     + MapTile[][] getMinimap(int)
 }
-abstract class FileInterpreter {
-    + List<Object> Interpret(String[] lines)
-    - List<Object> Interpret(String[] lines, Int start)
-}
 class Commands {
     - String searchPatterns
-    + Void Action()
-    + void Search(String text)
+    - VoidFunction action
+    + Commands(String, Function<String, String>)
+    + Commands(ArrayList<String>, Function<String, String>)
+    + {static} void load()
+    + {static} boolean Action(String text)
 }
 class Player extends External.Serializable {
     + Player(String)
@@ -122,27 +241,27 @@ class Player extends External.Serializable {
     + void recover()
     + int takeDamge(int)
 }
-class Effect{
-    - FINAL ArrayList<Effect> listOfUs
+class Effect Implements External.Serializable{
     + String name
-    + HashMap statChange
     + int valueBy
-    + Effect(String,int,HashMap<String,Integer>)
-    + Effect getItem(String)
+    + HashMap statChange
+    + Effect(String name,int valueBy, HashMap<String ,Integer> statChange)
+    - {static} FINAL ArrayList<Effect> listOfUs = new ArrayList<Effect>()
+    + {static} void load()
+    + {static} void reload()
+    + int statCalculator(String stat)
     + String getName()
-    + int getValue()
-    + void load()
-    + void reload()
-    + int statCalculator(String)
+    + int getValueBy()
 }
-class Allies {
+class Allies Implements External.Serializable{
     + ArrayList<Effect> buffs
     + String name
     + String description
-    + Allies(ArrayList<Effect>,String,String)
-    + ArrayList<Effect> getbuffs()
-    + String getDescription()
+    + Allies(ArrayList<Effect> buffs ,String name,String description)
+    + ArrayList<Effect> getBuffs()
     + String getName()
+    + String getDescription()
+
 }
 class Inventory extends External.Serializable {
     - Accessory equippedAccessory
@@ -226,10 +345,10 @@ class Ranged extends Weapon, External.Serializable {
     + boolean getType()
 }
 abstract class Armour extends Item, External.Serializable {
-    + String name
     + String type
-    + Armour(HashMap<String,Object>)
-    + Armour(String,int)
+    + int defence
+    + Armour(HashMap<String,Object> map)
+    + Armour(String name ,int defence)
     + getDef()
 }
 class Consumable extends Item, External.Serializable {
@@ -238,6 +357,7 @@ class Consumable extends Item, External.Serializable {
     + String name
 }
 class Accessory extends Item, External.Serializable {
++Accessory(Accessory accessory)
 }
 class Enchantment extends External.Serializable{
     + ArrayList<Effect> stats
@@ -245,19 +365,24 @@ class Enchantment extends External.Serializable{
     + String suffix
     + Enchantment(ArrayList<Effect>,String,String)
     + String getPrefix()
-    + String getSufix()
+    + String getSuffix()
 }
-class Currency{
-    + int value
-    + String name
+class Currency Implements External.Serializable{
+    - {static} FINAL ArrayList<Currency> listOfUs
+    + {static} Currency getCurrency(String name)
+    + {static} void load()
+    + {static} void reload()
+    + int amount
     + String description
+    + String name
     + String imagePath
-    + Currency(Currency,int)
-    + Currency(HashMap<String,Object>)
-    + String getDescription
-    + Image getImage()
+    + Currency(HashMap<String,Object> map)
+    + Currency(Currency _this, int amount)
+    + int getAmount()
+    + String getDescription()
     + String getName()
-    + int getValue()
+    + Image getImage()
+
 }
 class Enemy extends External.Serializable {
     - String name
@@ -287,12 +412,21 @@ class Enemy extends External.Serializable {
 }
 class CombatScene {
     - ArrayList<Enemy> enemies
-    - currentPlayer p
+    - Player currentPlayer
+    - int tmpPlayerInitiative;
     - int maxInitiative
-    + void startCombat(player)
+    - int turn
+    + CombatScene(Player player,ArrayList<Enemy> enemies)
+    + void startCombat()
+    - void combat()
+    - void chooseActionPlayer()
     + void endCombat()
+    + void endGame(){
+    - boolean enemyNotAboveMaxInitiative()
+    - Enemy getHighestInitiativeEnemy()
+    - Enemy chooseEnemyToAttack()
 }
-class EffectCard {
+class EffectCard Implements External.Serializable {
     + ArrayList<Effect> statChanges
     + String name
     + String desc

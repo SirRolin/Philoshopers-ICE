@@ -1,6 +1,8 @@
 package ICE.util;
 
-public class WeightedObject {
+import java.io.Serializable;
+
+public class WeightedObject implements Serializable {
     public Number weight;
     public Object obj;
     WeightedObject(Number weight, Object obj){

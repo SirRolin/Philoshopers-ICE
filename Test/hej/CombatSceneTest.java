@@ -16,8 +16,10 @@ class CombatSceneTest {
         Player p1 = new Player("Patrick",null,10, 10, 10,10,10,10);
 
         ArrayList<Enemy> enemies = new ArrayList<>();
-        Enemy e1 = new Enemy("Rat","path" ,"its brown! ARGH", 25,100,25 ,5);
+        Enemy e1 = new Enemy("Rat","path" ,"its brown! ARGH", 0,50,25 ,5);
+        Enemy e2 = new Enemy("Rat","path" ,"its brown! ARGH", 0,5,25 ,5);
         enemies.add(e1);
+        enemies.add(e2);
         scene1 = new CombatScene(p1,enemies);
     }
 
