@@ -187,6 +187,19 @@ public class CharacterCreationController implements Initializable {
                 }
             });
 
+
+            startButton.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    onStartButton();
+                    try{
+                        switchToGameScene(actionEvent);
+                    }catch (Exception e) {
+
+                    }
+                }
+            });
+
         } else {
             ErrorHandler.handleError(new Exception("No savefile found! How did you get here?"));
         }
@@ -197,7 +210,11 @@ public class CharacterCreationController implements Initializable {
         currentPlayer.race = races.get(raceIndex);
         gs.p1 = currentPlayer;
         StateSaver.saveGame(gs);
+        SharedData.gs = gs;
+        StateSaver.loadGame(gs.name);
+
         System.out.println(raceImage.getImage().getUrl());
+
 
     }
 
@@ -222,5 +239,13 @@ public class CharacterCreationController implements Initializable {
         });
     }
 
+    public void switchToGameScene(ActionEvent event) throws Exception{
+        Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+        root = FXMLLoader.load(getClass().getClassLoader().getResource("GameScene.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root, screenBounds.getMaxX()/2,screenBounds.getMaxY()/2);
+        stage.setScene(scene);
+        stage.show();
+    }
 
 }
