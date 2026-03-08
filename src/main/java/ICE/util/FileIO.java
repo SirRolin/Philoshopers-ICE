@@ -17,13 +17,15 @@ public abstract class FileIO {
         }
         return null;
     }
-    public static <T> @Nullable T readSerialised(String path){
+    @SuppressWarnings("unchecked")
+	public static <T> T readSerialised(String path){
 
         try {
             FileInputStream fis = new FileInputStream(defaultPath + path);
-            ObjectInputStream ois = new ObjectInputStream(fis);
-            final T t = (T) ois.readObject();
-            return t;
+            try (ObjectInputStream ois = new ObjectInputStream(fis)) {
+				final T t = (T) ois.readObject();
+				return t;
+			}
         } catch (ClassNotFoundException e) {
             ErrorHandler.handleError(e);
         } catch (FileNotFoundException ignored){

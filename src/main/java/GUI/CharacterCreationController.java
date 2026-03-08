@@ -168,9 +168,10 @@ public class CharacterCreationController implements Initializable {
                     if (raceIndex < 0) {
                         raceIndex = races.size() - 1;
                     }
-                    raceImage.setImage(races.get(raceIndex).getImage(256,256));
-                    raceBio.setContentText(races.get(raceIndex).bio);
-                    System.out.println(races.get(raceIndex).name);
+                    gs.p1.race = races.get(raceIndex);
+                    raceImage.setImage(gs.p1.race.getImage(256,256));
+                    raceBio.setContentText(gs.p1.race.bio);
+                    System.out.println(gs.p1.race.name);
                 }
             });
 
@@ -178,12 +179,13 @@ public class CharacterCreationController implements Initializable {
                 @Override
                 public void handle(ActionEvent actionEvent) {
                     raceIndex += 1;
-                    if (raceIndex > races.size() - 1) {
+                    if (raceIndex > races.size() - 1) { 
                         raceIndex = 0;
                     }
-                    raceImage.setImage(races.get(raceIndex).getImage(256,256));
-                    raceBio.setContentText(races.get(raceIndex).bio);
-                    System.out.println(races.get(raceIndex).name);
+                    gs.p1.race = races.get(raceIndex);
+                    raceImage.setImage(gs.p1.race.getImage(256,256));
+                    raceBio.setContentText(gs.p1.race.bio);
+                    System.out.println(gs.p1.race.name);
                 }
             });
 

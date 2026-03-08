@@ -111,22 +111,22 @@ public class Player implements Serializable {
     public int getDerivedStat(int index){
         switch (index) {
             case 0 -> {
-                return str + (int) inventory.getEffectModifiers("str");
+                return str + (int) inventory.getEffectModifiers("str") + race.getAttribute("str");
             }
             case 1 -> {
-                return agi + (int) inventory.getEffectModifiers("agi");
+                return agi + (int) inventory.getEffectModifiers("agi") + race.getAttribute("agi");
             }
             case 2 -> {
-                return con + (int) inventory.getEffectModifiers("con");
+                return con + (int) inventory.getEffectModifiers("con") + race.getAttribute("con");
             }
             case 3 -> {
-                return wits + (int) inventory.getEffectModifiers("wits");
+                return wits + (int) inventory.getEffectModifiers("wits") + race.getAttribute("wits");
             }
             case 4 -> {
-                return willPower + (int) inventory.getEffectModifiers("willpower");
+                return willPower + (int) inventory.getEffectModifiers("willpower") + race.getAttribute("willpower");
             }
             case 5 -> {
-                return magi + (int) inventory.getEffectModifiers("magi");
+                return magi + (int) inventory.getEffectModifiers("magi") + race.getAttribute("magi");
             }
             default -> {
                 ErrorHandler.handleError(new Exception("getDerivedStat index not 0 through 5"));

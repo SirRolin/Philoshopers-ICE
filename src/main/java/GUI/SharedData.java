@@ -23,7 +23,7 @@ public abstract class SharedData {
     public static void load(){
         for (ArrayList<HashMap<String,Object>> lst: FileInterpreter.parseFolder("Data/common/defines/")){
             HashMapExplorer.ListMapToForEach(lst, (s, map) -> {
-                for (Object inner: ((HashMap<String, Object>)map).keySet()) {
+                for (Object inner: ((HashMap<String, Object>) map).keySet()) {
                     defines.put((String) inner, ((HashMap<String, Object>) map).get(inner));
                 }
             });

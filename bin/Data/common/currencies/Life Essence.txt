@@ -1,0 +1,3 @@
+currency = {
+    name = "Life Essence"
+}

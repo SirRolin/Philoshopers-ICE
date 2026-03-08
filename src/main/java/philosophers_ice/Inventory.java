@@ -91,19 +91,20 @@ public class Inventory implements Serializable {
             this.equippedArmour = item;
         items.remove(item);
         if (this.equippedArmour != null) {
-            Scanner s1 = new Scanner(System.in);
-            System.out.println("You already got " + this.equippedArmour.name + " equipped, do you want to equip" + item.name + " instead? Y/N");
-            String input = s1.nextLine();
-            if (input.equalsIgnoreCase("y")) {
-                items.add(this.equippedArmour);
-                this.equippedArmour = item;
-                items.remove(item);
-            } else if (input.equalsIgnoreCase("n")) {
-                System.out.println(item.name + "Was not equiped");
-            } else {
-                System.out.println("did not recognize your input");
-                equipArmour(item);
-            }
+            try (Scanner s1 = new Scanner(System.in)) {
+				System.out.println("You already got " + this.equippedArmour.name + " equipped, do you want to equip" + item.name + " instead? Y/N");
+				String input = s1.nextLine();
+				if (input.equalsIgnoreCase("y")) {
+				    items.add(this.equippedArmour);
+				    this.equippedArmour = item;
+				    items.remove(item);
+				} else if (input.equalsIgnoreCase("n")) {
+				    System.out.println(item.name + "Was not equiped");
+				} else {
+				    System.out.println("did not recognize your input");
+				    equipArmour(item);
+				}
+			}
         }
     }
 
@@ -174,16 +175,17 @@ public class Inventory implements Serializable {
             items.remove(item);
         }
         if (this.equippedWeaponMainHand != null) {
-            Scanner s1 = new Scanner(System.in);
-            System.out.println("You already got " + this.equippedWeaponMainHand.name + " equipped in mainhand, do you want to equip" + item.name + " instead? Y/N");
-            String input = s1.nextLine();
-            if (input.equalsIgnoreCase("y")) {
-                items.add(this.equippedWeaponMainHand);
-                this.equippedWeaponMainHand = ((Weapon) item);
-                items.remove(item);
-            } else if (input.equalsIgnoreCase("n")) {
-                System.out.println("You did not equip" + item.getName());
-            }
+            try (Scanner s1 = new Scanner(System.in)) {
+				System.out.println("You already got " + this.equippedWeaponMainHand.name + " equipped in mainhand, do you want to equip" + item.name + " instead? Y/N");
+				String input = s1.nextLine();
+				if (input.equalsIgnoreCase("y")) {
+				    items.add(this.equippedWeaponMainHand);
+				    this.equippedWeaponMainHand = ((Weapon) item);
+				    items.remove(item);
+				} else if (input.equalsIgnoreCase("n")) {
+				    System.out.println("You did not equip" + item.getName());
+				}
+			}
         } else {
             System.out.println("did not recognize your input");
             equipOneHanded(item);

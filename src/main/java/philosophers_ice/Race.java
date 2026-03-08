@@ -72,11 +72,17 @@ public class Race implements Serializable {
     public String name;
     public String bio;
     private String imagePath;
+    private HashMap<String, Integer> attributes = new HashMap<>();
 
     public Race(HashMap<String, Object> map, String key) {
         name = key;
         imagePath = "Data/gfx/races/" + HashMapExplorer.getString(map, key + ".imagePath");
         bio = HashMapExplorer.getString(map, key + ".bio");
+        String[] atts = {"str", "agi", "con", "wits", "willpower", "magi"};
+        for(String attri : atts) {
+        	attributes.put(attri, HashMapExplorer.getNumber(map, key + "." + attri).intValue());
+            //System.out.println(name + " - " + attri + ": " + HashMapExplorer.getNumber(map, key + "." + attri).intValue());
+        }
     }
 
     //// debugging and temporary
@@ -95,6 +101,13 @@ public class Race implements Serializable {
         }
         //// if it doesn't exist
         return new Image("_NULL_.png",sizeX,sizeY,true,false);
+    }
+    
+    public int getAttribute(String name) {
+    	if (attributes.containsKey(name)) {
+    		return attributes.get(name);
+    	}
+    	return 0;
     }
 
 }

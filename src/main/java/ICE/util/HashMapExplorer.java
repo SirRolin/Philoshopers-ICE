@@ -16,7 +16,8 @@ public abstract class HashMapExplorer {
      * @return
      *  every HashMap that has the key
      */
-    public static ArrayList<HashMap<String, Object>> getMapFromList(ArrayList<HashMap<String, Object>> list, String key) {
+    @SuppressWarnings("unchecked")
+	public static ArrayList<HashMap<String, Object>> getMapFromList(ArrayList<HashMap<String, Object>> list, String key) {
         ArrayList<HashMap<String, Object>> output = new ArrayList<HashMap<String, Object>>();
         for (HashMap<String, Object> map : list) {
             Object Object = getObject(map, key);
@@ -36,7 +37,8 @@ public abstract class HashMapExplorer {
      * @param biConsumer
      * BiConsumer which is called whenever a key is found in the listmap
      */
-    public static <T> void ListMapToForEach(ArrayList<HashMap<String, Object>> inputList, String key, BiConsumer<String, T> biConsumer) {
+    @SuppressWarnings("unchecked")
+	public static <T> void ListMapToForEach(ArrayList<HashMap<String, Object>> inputList, String key, BiConsumer<String, T> biConsumer) {
         for (HashMap<String, Object> map : inputList) {
             Set<String> keys = map.keySet();
             for (String s : keys) {
@@ -82,7 +84,8 @@ public abstract class HashMapExplorer {
      * @param consumer
      * Consumer which is called whenever a key is found in the listmap
      */
-    public static <T> void ListMapToForEach(ArrayList<HashMap<String, Object>> inputList, BiConsumer<String, T> consumer) {
+    @SuppressWarnings("unchecked")
+	public static <T> void ListMapToForEach(ArrayList<HashMap<String, Object>> inputList, BiConsumer<String, T> consumer) {
         for (HashMap<String, Object> map : inputList) {
             Set<String> keys = map.keySet();
             for (String s : keys) {
@@ -94,7 +97,8 @@ public abstract class HashMapExplorer {
         }
     }
 
-    private static HashMap<String, Object> getMap(Object obj, String key) {
+    @SuppressWarnings("unchecked")
+	private static HashMap<String, Object> getMap(Object obj, String key) {
         if (obj instanceof HashMap<?, ?> map) {
             Object Object = getObject(map, key);
             if (Object instanceof HashMap<?, ?> map1) {
@@ -154,7 +158,8 @@ public abstract class HashMapExplorer {
         return 0;
     }
 
-    public static ArrayList<Object> getList(Object obj, String key) {
+    @SuppressWarnings("unchecked")
+	public static ArrayList<Object> getList(Object obj, String key) {
         if (obj instanceof HashMap<?, ?> map) {
             Object Object = getObject(map, key);
             if (Object instanceof ArrayList<? extends Object> lst) {

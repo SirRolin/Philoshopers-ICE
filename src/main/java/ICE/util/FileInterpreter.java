@@ -15,7 +15,7 @@ public abstract class FileInterpreter {
         File Folder = new File(path);
 
         if (Folder.isDirectory()) {
-            File[] files = Folder.listFiles();
+            //File[] files = Folder.listFiles();
             for(File f: Folder.listFiles(File::isFile)) {
                 output.add(parseFile(f.toPath().toString()));
             }
@@ -271,6 +271,7 @@ public abstract class FileInterpreter {
         }
         return text;
     }
+    
     final static Pattern patternNumber = Pattern.compile("(?<whole>\\s*(?<key>\\d+.?\\d*)\\s*=\\s*(?<value>\\d+.?\\d*)\\s*)");
     private static String ExtractRandomNumbers(String text, ArrayList<Object> listsForOutput) {
         Matcher numbers = patternNumber.matcher(text.trim());
