@@ -10,7 +10,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Currency implements Serializable {
-    private static final ArrayList<Currency> listOfUs = new ArrayList<>();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 106L;
+	private static final ArrayList<Currency> listOfUs = new ArrayList<>();
     public static Currency getcurrency(String name){
         for(Currency cur: listOfUs){
             if(cur.name.equals(name)){

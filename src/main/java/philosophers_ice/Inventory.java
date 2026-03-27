@@ -5,7 +5,11 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Inventory implements Serializable {
-    private ArrayList<Item> items = new ArrayList<>();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 111L;
+	private ArrayList<Item> items = new ArrayList<>();
     private Weapon equippedWeaponMainHand = null;
     private Weapon equippedWeaponOffhand = null;
     private Armour equippedArmour = null;

@@ -19,7 +19,12 @@ import java.util.ArrayList;
 
 public class Race implements Serializable {
 
-    private static final String folderName = "races";
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 117L;
+
+	private static final String folderName = "races";
 
     private static final ArrayList<Race> listOfUs = new ArrayList<>();
 

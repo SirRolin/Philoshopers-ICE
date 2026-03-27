@@ -5,7 +5,6 @@ import javafx.geometry.Rectangle2D;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
-import philosophers_ice.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 
@@ -25,10 +24,11 @@ public class Main extends Application {
         launch(args);
     }
 
-    @Override
+    @SuppressWarnings("exports")
+	@Override
     public void start(Stage primaryStage) throws Exception {
-
-        Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+        window = primaryStage;
+		Rectangle2D screenBounds = Screen.getPrimary().getBounds();
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("mainMenu.fxml"));
         primaryStage.setTitle("Philosophers ICE");
         primaryStage.setScene(new Scene(root,screenBounds.getMaxX()/2,screenBounds.getMaxY()/2));

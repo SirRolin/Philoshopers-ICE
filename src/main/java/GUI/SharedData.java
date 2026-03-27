@@ -6,7 +6,6 @@ import philosophers_ice.GameState;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Set;
 
 public abstract class SharedData {
     public static GameState gs;

@@ -1,13 +1,14 @@
 package philosophers_ice;
 
 import ICE.util.HashMapExplorer;
-import philosophers_ice.Item;
-
 import java.util.HashMap;
-import java.util.Hashtable;
 
 public abstract class Weapon extends Item {
-    private boolean isOneHanded;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 120L;
+	private boolean isOneHanded;
     private boolean isTwoHanded;
     public Weapon(HashMap<String,Object> map){
         name = HashMapExplorer.getString(map,"name");

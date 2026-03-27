@@ -7,7 +7,11 @@ import java.util.Random;
 
 public class Ranged extends Weapon{
 
-    private int minDamage;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 118L;
+	private int minDamage;
     private int maxDamage;
 
     public Ranged(HashMap<String, Object> map) {

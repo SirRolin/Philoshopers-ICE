@@ -70,117 +70,6 @@ public abstract class FileInterpreter {
 
         return output;
     }
-    /*
-    public static Object parse(String text, String path) { //// usually returns HashMap
-        HashMap<String, Object> mapsForOutput = new HashMap<String, Object>();
-        ArrayList<Object> listsForOutput = new ArrayList<>();
-        ArrayList<Object> randomListsForOutput = new ArrayList<>();
-        String[] splitText = text.split("=", 2);
-        String objectName = splitText[0].trim();
-        String key;
-
-
-        boolean isRandomList = false;
-        Number weight = 0;
-        try { //// is it a weight_object? aka an item in a random_list
-            weight = Float.parseFloat(objectName);
-            isRandomList = true;
-        } catch (NumberFormatException ignored) {
-            //// no it's not
-        }
-
-        //// if it's just a value
-        if (splitText.length == 1) {
-            if (isRandomList) {
-                return weight; //// it's not actually the weight but the number value
-            } else {
-                return objectName.replace("\"", "");
-            }
-        }
-
-        String analyseText;
-
-        //// otherwise find all values in it
-        int firstBracket = splitText[1].indexOf('{');
-        int endBracket = splitText[1].lastIndexOf('}');
-        if (firstBracket < endBracket) {
-            analyseText = splitText[1].substring(firstBracket + 1, endBracket);
-            ArrayList<String> nest = findObjects(analyseText, path + "." + objectName, false);
-            for (String nestedObject : nest) {
-                String[] splitObject = nestedObject.split("=", 2);
-                key = splitObject[0].trim();
-                Object objects = parse(nestedObject, path + "." + key);
-
-                Number keyWeight = 0;
-                try { //// is it a weight_object? aka an item in a random_list
-                    keyWeight = Float.parseFloat(key);
-                    //mapsForOutput.put(key, new WeightedObject(keyWeight, objects));
-                    listsForOutput.add(objects);
-                } catch (NumberFormatException ignored) {
-                    mapsForOutput.put(key, objects);
-                    //listsForOutput.add(objects);
-                }
-                analyseText = analyseText.replace(nestedObject, "");
-            }
-        } else {
-            analyseText = splitText[1];
-        }
-        Matcher objects = patternObject.matcher(analyseText.trim());
-
-        //// any strings or numbers?
-        if (objects.matches()) {
-            objects.reset();
-            for (MatchResult s : objects.results().toList()) {
-                try { //// Find out if it's a number, if so add it as such
-                    return Float.parseFloat(s.group(0));
-                } catch (NumberFormatException nfe) {
-                    return s.group(0).replace("\"", "");
-                }
-            }
-        }
-        ////
-        if (listsForOutput.size() > 0 || isRandomList) {
-            if (isRandomList) {
-                return new WeightedObject(weight, listsForOutput);
-                //mapsForOutput.put("value", new WeightedObject(weight, listsForOutput));
-            } else { //// if it has a list of things
-                mapsForOutput.put("value", listsForOutput);
-            }
-        }
-        return mapsForOutput;
-//        if (isRandomList) {
-//            return new WeightedObject(weight, parse(splitText[1], path + "." + weight)); //// it's not actually the weight but the number value
-//        } else {
-//        mapsForOutput.put(objectName, parse(splitText[1].trim(), path + "." + objectName));
-//        return parse(splitText[1], path + "." + objectName);
-//        }
-//
-//        Matcher numbers = patternNumber.matcher(text.trim());
-//        Matcher strings = patternString.matcher(text.trim());
-//
-//        while (strings.find()) {
-//            String g1 = strings.group("key");
-//            String g2 = strings.group("value");
-//            return g2;
-//            //mapsForOutput.put("value", g2);
-//            //text = text.replace(strings.group("whole"), "");
-//        }
-//        while (numbers.find()) {
-//            String g1 = numbers.group("key");
-//            String g2 = numbers.group("value");
-//            return Float.parseFloat(g2);
-//            //mapsForOutput.put("value", Float.parseFloat(g2));
-//            //text = text.replace(numbers.group("whole"), "");
-//        }
-//
-//        if (listsForOutput.size() > 0) {
-//            mapsForOutput.put("list", listsForOutput);
-//        }
-//        if (randomListsForOutput.size() > 0) {
-//            mapsForOutput.put("random_list", randomListsForOutput);
-//        }
-//        return mapsForOutput;
-    }*/
 
     private static HashMap<String, Object> parse(String text, String path) { //// usually returns HashMap
         HashMap<String, Object> mapsForOutput = new HashMap<String, Object>();
@@ -196,7 +85,7 @@ public abstract class FileInterpreter {
         //// extracts all the number = something
         text = ExtractRandomNumbers(text, listsForOutput);
 
-        //// extracts all the number = something
+        //// extracts all the something = <true/false>
         text = ExtractBoolean(text, mapsForOutput);
 
         //// extracts all the once standing alone
@@ -204,6 +93,7 @@ public abstract class FileInterpreter {
         if (!listsForOutput.isEmpty()) {
             mapsForOutput.put("list", listsForOutput);
         }
+        
         return mapsForOutput;
     }
 

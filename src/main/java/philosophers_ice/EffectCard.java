@@ -4,7 +4,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class EffectCard implements Serializable {
-    public ArrayList<Effect> statChanges;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 108L;
+	public ArrayList<Effect> statChanges;
     public String name;
     public String desc;
     public EffectCard(ArrayList<Effect> statChanges, String name, String desc) {

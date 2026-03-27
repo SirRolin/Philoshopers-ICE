@@ -16,7 +16,11 @@ import java.util.HashMap;
 import static javafx.scene.input.KeyCode.T;
 
 public class Enemy implements Serializable {
-    private String name;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 110L;
+	private String name;
     private String imagePath;
     private String description;
     private int defence;

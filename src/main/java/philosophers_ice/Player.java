@@ -8,7 +8,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Player implements Serializable {
-    public String name;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 116L;
+	public String name;
     public Race race;
     public int str;
     public int agi;

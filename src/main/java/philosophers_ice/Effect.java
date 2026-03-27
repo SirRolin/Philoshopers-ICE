@@ -7,7 +7,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Effect implements Serializable {
-    public String name;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 107L;
+	public String name;
     public int valueBy;
     public HashMap statChange;
 

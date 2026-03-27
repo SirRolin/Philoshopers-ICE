@@ -6,7 +6,11 @@ import java.util.HashMap;
 import java.util.Random;
 
 public class Melee extends Weapon {
-    private int minDamage;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 116L;
+	private int minDamage;
     private int maxDamage;
 
 

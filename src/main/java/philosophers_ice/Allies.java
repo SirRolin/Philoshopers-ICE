@@ -4,7 +4,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Allies implements Serializable {
-    public ArrayList<Effect> buffs;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 102L;
+	public ArrayList<Effect> buffs;
     public String name;
     
     public String description;

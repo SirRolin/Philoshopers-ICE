@@ -10,7 +10,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public abstract class Item implements Serializable {
-    private static final ArrayList<Item> listOfUs = new ArrayList<Item>();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 112L;
+	private static final ArrayList<Item> listOfUs = new ArrayList<Item>();
 
     public static Item getItem(String nameOfItem) {
         load();

@@ -4,7 +4,12 @@ import java.io.Serializable;
 
 public class GameState implements Serializable {
 
-    public String name = "";
+    /**
+	 * Serial 0 for Serializability.
+	 */
+	private static final long serialVersionUID = 0L;
+	
+	public String name = "";
     int x = 0;
     int y = 0;
     public GameState(String name){

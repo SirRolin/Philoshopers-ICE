@@ -10,7 +10,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MapTile implements Serializable {
-    public String name = "";
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 115L;
+	public String name = "";
     public String structure;
     public String imagePath = "";
     public ArrayList<Enemy> enemies = new ArrayList<Enemy>();

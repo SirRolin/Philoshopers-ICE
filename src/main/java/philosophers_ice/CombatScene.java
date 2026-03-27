@@ -1,10 +1,7 @@
 package philosophers_ice;
 
 
-import javafx.scene.control.TextField;
-
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class CombatScene extends Thread {
     public static CombatScene currentlyRunningCS;

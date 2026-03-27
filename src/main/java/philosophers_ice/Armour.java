@@ -5,7 +5,11 @@ import ICE.util.HashMapExplorer;
 import java.util.HashMap;
 
 public class Armour extends Item{
-    public String type;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 103L;
+	public String type;
     public int defence;
 
     Armour(HashMap<String,Object> map){
